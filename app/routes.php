@@ -15,3 +15,6 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+Route::resource('user.project.file', 'FileController');
+Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
