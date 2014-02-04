@@ -21,11 +21,6 @@ Route::get('login', function()
 	return View::make('login');
 });
 
-Route::get('editor', function()
-{
-	return View::make('editor');
-});
-
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
 {
     return View::make('editor', ['user' => $user, 'project' => $project]);
