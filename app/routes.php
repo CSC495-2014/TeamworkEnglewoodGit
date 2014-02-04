@@ -13,7 +13,17 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('login');
+});
+
+Route::get('login', function()
+{
+	return View::make('login');
+});
+
+Route::get('editor', function()
+{
+	return View::make('editor');
 });
 
 Route::resource('user.project.file', 'FileController');
