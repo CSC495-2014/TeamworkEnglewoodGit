@@ -12,8 +12,7 @@
         {{ HTML::script('/js/bootstrap.js') }}
 		<body>
 			<div id="topLeft">
-				<img src="{{ URL::to('/css/images/logo.png') }}" class="img-responsive">
-				<!-- should make logo responsive to its parent container (topLeft)-->
+				<img src="{{ URL::to('/css/images/logo.png') }}">
 			</div>
 			<div id="header">
 				<h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
