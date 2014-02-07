@@ -10,6 +10,20 @@
         {{ HTML::script('/js/jquery.ui.position.js') }}
         {{ HTML::script('/js/jquery.contextMenu.js') }}
         {{ HTML::script('/js/bootstrap.js') }}
+		{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
+		{{ HTML::script('/js/ui/jquery.ui.position.js') }}
+		{{ HTML::script('/js/ui/jquery.ui.core.js') }}
+		{{ HTML::script('/js/ui/jquery.ui.widget.js') }}
+		{{ HTML::script('/js/ui/jquery.ui.button.js') }}
+		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
+		{{ HTML::script('/js/ui/jquery.ui.dialog.js') }}
+		{{ HTML::script('/js/mainTabbedInterface.js') }}
+		{{ HTML::script('/js/ace.js') }}
+		<style>
+		#tabs { margin-top: 1em; }
+		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+		#add_tab { cursor: pointer; }
+		</style>
 		<body>
 			<div id="topLeft">
 				<img src="{{ URL::to('/css/images/logo.png') }}">
@@ -29,7 +43,18 @@
 				<!-- Div Section for Mike's Code -->
 			</div>
 			<div id="editor">
-				<!-- Div Section for Xiao's Code -->
+				<div id="tabs">
+					<ul>
+						<li><a href="#tabs-1">Untitled</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
+					</ul>
+					<div id="tabs-1"></div>
+				</div>
+
+				<!--editable panel for tabs-1-->
+				<script>
+					var editor = ace.edit("tabs-1");
+					editor.getSession().setMode("mode/javascript");
+				</script>
 			</div>
 			<div id="optionSideBar">
 				<div class="panel panel-default">
