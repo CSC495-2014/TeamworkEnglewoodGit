@@ -44,6 +44,7 @@ body {
 	border: 1px solid black;
 	background-color: #FFFFFF;
 	float: left;
+	overflow: hidden;
 }
 #optionSideBar {
 	height: 650px;
