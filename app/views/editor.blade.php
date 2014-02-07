@@ -72,8 +72,13 @@
             {{ HTML::script('/js/filesystem.js') }}
             <script>
                 $(document).ready( function() {
-                    $('#filesystem').fileTree({ script: '{{URL::action('FileController@indexPost')}}' }, function(file) {
-                        alert(file);
+                    $('#filesystem').fileTree({ script: '{{URL::action('FileController@indexPost')}}' }, function(filepath) {
+                        var filename = filepath.substring(filepath.lastIndexOf("/") + 1);
+
+                    $.get("{{ URL::to('/user/username/project/projectname/file') }}" + filepath, function (data) {
+                        window.addTab(filename, data);
+                    });
+
                     });
                 })
 

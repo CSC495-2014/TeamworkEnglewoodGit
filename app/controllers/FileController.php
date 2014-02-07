@@ -2,6 +2,8 @@
 
 class FileController extends \BaseController {
 
+    const ROOT = '../../';
+
     private function getFileExtension($filename) {
 
         if (!$filename)
@@ -23,9 +25,8 @@ class FileController extends \BaseController {
 
     public function indexPost()
     {
-        $root = '../../';
         $dir = Input::get('dir');
-        $searchDir = $root . $dir;
+        $searchDir = FileController::ROOT . $dir;
         $listing = scandir($searchDir);
 
         $folders = [];
@@ -92,9 +93,9 @@ class FileController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($user, $project, $filepath)
 	{
-        return View::make('filesystem');
+        echo file_get_contents(FileController::ROOT . $filepath);
 	}
 
 	/**
