@@ -10,7 +10,6 @@
         {{ HTML::script('/js/jquery.ui.position.js') }}
         {{ HTML::script('/js/jquery.contextMenu.js') }}
         {{ HTML::script('/js/bootstrap.js') }}
-		{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
 		{{ HTML::script('/js/ui/jquery.ui.position.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.core.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.widget.js') }}
@@ -20,13 +19,12 @@
 		{{ HTML::script('/js/mainTabbedInterface.js') }}
 		{{ HTML::script('/js/ace.js') }}
 		<style>
-		#tabs { margin-top: 1em; }
+		#tabs { margin-top: 0em; }
 		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
 		#add_tab { cursor: pointer; }
 		</style>
-		<body>
+		<body background="{{ URL::asset('css/images/adjbackground.png') }}">
 			<div id="topLeft">
-				<img src="{{ URL::to('/css/images/logo.png') }}">
 			</div>
 			<div id="header">
 				<h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
@@ -34,15 +32,19 @@
 			</div>
 			<div id="topRight">
 					<ul class="nav nav-pills-square nav-stacked">
-						<li><a href="#">My Projects</a></li>
+						<!-- <li><a href="#">My Projects</a></li>
 						<li><a href="https://github.com/" target="blank">GitHub</a></li>
-						<li><a href="#">Logout</a></li>
+						<li><a href="#">Logout</a></li>-->
+						<button class="btn btn-lgr btn-account btn-block" type="button">My Projects</button>
+						<a href ="https://github.com/" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
+						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
 					</ul>
 			</div>
 			<div id="filesystem">
 				<!-- Div Section for Mike's Code -->
 			</div>
 			<div id="editor">
+			{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
 				<div id="tabs">
 					<ul>
 						<li><a href="#tabs-1">Untitled</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
