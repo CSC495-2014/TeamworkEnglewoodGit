@@ -2,9 +2,9 @@
 
 @section('content')
 	{{ HTML::style('css/login.css') }}
-	<body background="{{ URL::to('/css/images/background.png') }}">
+	<body background="{{ URL::asset('css/images/background.png') }}">
         <div class="container">
-		<BR/><BR/><BR/><BR/>
+		<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
 		<div class="panel panel-success">
 			<!-- <div class="panel-heading">Teamwork Englewood</div> -->
 			<div class="panel-body">
