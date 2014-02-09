@@ -40,12 +40,17 @@ body {
 	float: left;
 	overflow-x: scroll;
 }
+
+UL.jqueryFileTree A:hover {
+    background: #9eeac2;
+}
+
 /*CSS for Xiao's section*/
 #editor {
 	height: 650px;
 	width: 60%;
 	background-color: #FAFAFA;
-	padding-top: 0 px;
+	padding-top: 0px;
 	float: left;
 	overflow: hidden;
 }
@@ -192,7 +197,7 @@ body {
   margin: auto;
   margin-top:10px;
   background-color: #D8D8D8;
-  border: 1px solid #000000;
+  /*border: 1px solid #000000;*/
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
