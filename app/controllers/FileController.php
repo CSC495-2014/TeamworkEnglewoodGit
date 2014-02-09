@@ -95,7 +95,7 @@ class FileController extends \BaseController {
 	 */
 	public function show($user, $project, $filepath)
 	{
-        echo file_get_contents(FileController::ROOT . $filepath);
+        echo htmlentities(file_get_contents(FileController::ROOT . $filepath));
 	}
 
 	/**
