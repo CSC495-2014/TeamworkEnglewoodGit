@@ -52,7 +52,8 @@ body {
 #optionSideBar {
 	height: 650px;
 	width: 20%;
-	background-color: #139147;
+	/*background-color: #139147;*/
+    background-color: #085c2f;
 	float: left;
 }
 
@@ -60,7 +61,7 @@ body {
 .btn-project {
   color: #000000;
   background-color: #FFFFFF;
-  border-color: #000000;
+  /*border-color: #000000;*/
 }
 
 .btn-project:hover,
@@ -70,13 +71,13 @@ body {
 .open .dropdown-toggle.btn-project {
   color: #FFFFFF;
   background-color: #085c2f;
-  border-color: #FFFFFF;
+  /*border-color: #FFFFFF;*/
 }
 
 .btn-file {
   color: #FFFFFF;
   background-color: #151515;
-  border-color: #FFFFFF;
+  /*border-color: #FFFFFF;*/
 }
 
 .btn-file:hover,
@@ -86,13 +87,15 @@ body {
 .open .dropdown-toggle.btn-file {
   color: #FFFFFF;
   background-color: #085c2f;
-  border-color: #FFFFFF;
+  /*border-color: #FFFFFF;*/
 }
 
 .btn-account{
   color: #FFF;
-  background-color: #085c2f;
-  border-color: #FFF;
+  /*background-color: #085c2f;*/
+  /*background-color: #139147;*/
+    background-color: #1d703a;
+  /*border-color: #FFF;*/
 }
 
 .btn-account:hover,
@@ -102,7 +105,7 @@ body {
 .open .dropdown-toggle.btn-account {
   color: #FFFFFF;
   background-color: #151515;
-  border-color: #FFFFFF;
+  /*border-color: #FFFFFF;*/
 }
 
 .btn-lg {
