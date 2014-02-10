@@ -99,4 +99,3 @@ Route::delete('/user/{user}/project/{project}/git-remote', GitController@deleteR
 Custom Command Handling
 */
 Route::post('/user/{user}/project/{project}/git', GitController@customCmd);
-?>
