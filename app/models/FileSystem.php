@@ -125,7 +125,7 @@ class FileSystem {
 	function saveFile($filepath, $data)
 	{
 		$searchFile = ROOT . 'users/' . $userName . 'projects/' . $projectName . $filepath;
-		$handle = fopen($my_file, 'w') or die('Cannot open file:  '.$my_file);
+		$handle = fopen($searchFile, 'w') or die('Cannot open file:  '.$searchFile);
 		fwrite($handle, $data);
 		fclose(handle);
 	}
