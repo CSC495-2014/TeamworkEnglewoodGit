@@ -1,7 +1,8 @@
 body {
 	padding-top: 0px;
 	padding-bottom: 40px;
-    background: #085c2f no-repeat;
+    background-color: #085C2F;
+    background-repeat: no-repeat;
 }
 #topLeft {
 	height: 165px;
@@ -31,13 +32,13 @@ body {
 }
 /*CSS for Mike's section*/
 #filesystem {
-	height: 650px;
-	width: 20%;
-	padding-top: 5px;
-	padding-left: 5px;
-	background-color: #FAFAFA;
-	float: left;
-	overflow-x: scroll;
+  height: 650px;
+  width: 20%;
+  padding-top: 5px;
+  padding-left: 5px;
+  background-color: #FAFAFA;
+  float: left;
+  overflow-x: scroll;
 }
 
 UL.jqueryFileTree A:hover {
@@ -46,18 +47,18 @@ UL.jqueryFileTree A:hover {
 
 /*CSS for Xiao's section*/
 #editor {
-	height: 650px;
-	width: 60%;
-	background-color: #FAFAFA;
-	padding-top: 0px;
-	float: left;
-	overflow: hidden;
+  height: 650px;
+  width: 60%;
+  background-color: #FAFAFA;
+  padding-top: 0px;
+  float: left;
+  overflow: hidden;
 }
 #optionSideBar {
-	height: 650px;
-	width: 20%;
-    background-color: #085c2f;
-	float: left;
+  height: 650px;
+  width: 20%;
+  background-color: #085c2f;
+  float: left;
 }
 
 /*Buttons*/
@@ -192,8 +193,8 @@ UL.jqueryFileTree A:hover {
 }
 
 hr {
-    color: #111;
-    background-color: #111;
-	border-color: #111;
+  color: #111;
+  background-color: #111;
+  border-color: #111;
 }
 			
