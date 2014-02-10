@@ -97,20 +97,42 @@ class FileSystem {
 	function removeDir($dirpath)
 	{
 		$searchDir = ROOT . 'users/' . $userName . 'projects/' . $projectName . $dirpath;
-		$listings = scanDir()
+		if (is_dir($searchDir)) 
+		{ 
+     		$objects = scandir($searchDir); 
+     		foreach ($objects as $object)
+     		{ 
+       			if ($object != "." && $object != "..") 
+       			{ 
+         			if (filetype($searchDir."/".$object) == "dir") rrmdir($searchDir."/".$object); else unlink($searchDir."/".$object); 
+       			} 
+     		} 
+     		reset($objects); 
+     		rmdir($searchDir); 
+   		} 
 
 	}
 
-	// Will create a file with the given contents if the file does not exist, otherwise it
-	// will overwrite the currently existing file.
 	/** 
-	 *             removeFile
-	 * Will remove the passed file from the server's file system
+	 *             saveFile
+	 * Will save the file contents to the webserver's filesystem
 	 *
-	 *@PARAM file path from what?
-	 *@return list of subdirectories and files in current
-	 * user directory.
-	 */
+	 *@PARAM file path to users project
+	 *@PARAM cotents of file
+	 *@return 2xx response if succeeded 
+	 *@return 5xx response if failed
+	 */	
+	function saveFile($filepath, $data)
+	{
+		$searchFile = ROOT . 'users/' . $userName . 'projects/' . $projectName . $filepath;
+		$handle = fopen($my_file, 'w') or die('Cannot open file:  '.$my_file);
+		fwrite($handle, $data);
+		fclose(handle);
+	}
+	
+
+	/* Git commands */
+
 	function save($username, $project, $filepath, $contents)
 	{
 
