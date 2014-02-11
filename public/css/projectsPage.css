@@ -1,0 +1,217 @@
+body {
+	padding-top: 0px;
+	padding-bottom: 40px;
+    background-color: #085C2F;
+    background-repeat: no-repeat;
+}
+#topLeft {
+	height: 165px;
+	width: 20%;
+	background: transparent;
+	float: left;
+	overflow: hidden;
+	vertical-align: middle;
+	text-align: center;
+}
+#header{
+	height: 165px;
+	width: 60%;
+	background:  transparent;
+	float: left;
+}
+#topRight {
+	height: 165px;
+	width: 20%;
+	background-color: #085c2f;
+	padding-top: 8px;
+	float: left;
+	overflow: hidden;
+	overflow: hidden;
+	vertical-align: middle;
+	text-align: center;
+}
+/*CSS for Mike's section*/
+#filesystem {
+  height: 650px;
+  width: 20%;
+  padding-top: 5px;
+  padding-left: 5px;
+  background-color: #FAFAFA;
+  float: left;
+  overflow-x: scroll;
+}
+
+UL.jqueryFileTree A:hover {
+    background: #9eeac2;
+}
+
+/*CSS for Kyle's section*/
+#projectsPage {
+  height: 650px;
+  width: 80%;
+  background-color: #FAFAFA;
+  padding-top: 0px;
+  overflow: hidden;
+}
+
+.row0 {
+    background-color: #cdedbf;
+}
+
+.row1 {
+    background-color: #085c2f;
+}
+
+/*CSS for Xiao's section*/
+#editor {
+  height: 650px;
+  width: 60%;
+  background-color: #FAFAFA;
+  padding-top: 0px;
+  float: left;
+  overflow: hidden;
+}
+
+#optionSideBar {
+  height: 650px;
+  width: 20%;
+  background-color: #085c2f;
+  float: left;
+}
+
+/*Buttons*/
+.btn-project {
+  color: #000000;
+  background-color: #FFFFFF;
+}
+
+.btn-project:hover,
+.btn-project:focus,
+.btn-project:active,
+.btn-project.active,
+.open .dropdown-toggle.btn-project {
+  color: #FFFFFF;
+  background-color: #085c2f;
+}
+
+.btn-file {
+  color: #FFF;
+  background-color: #444;
+}
+
+.btn-file:hover,
+.btn-file:focus,
+.btn-file:active,
+.btn-file.active,
+.open .dropdown-toggle.btn-file {
+  color: #FFFFFF;
+  background-color: #151515;
+}
+
+.btn-account{
+  color: #FFF;
+  background-color: #1d703a;
+}
+
+.btn-account:hover,
+.btn-account:focus,
+.btn-account:active,
+.btn-account.active,
+.open .dropdown-toggle.btn-account {
+  color: #FFFFFF;
+  background-color: #151515;
+}
+
+.btn-lg {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+  margin: auto;
+  width: 80%;
+  overflow: hidden;
+}
+
+.btn-lgr {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+  margin: auto;
+  width: 90%;
+  overflow: hidden;
+}
+
+/*Top Right Sidebar Navigation CSS*/
+.nav > li {
+  position: relative;
+  display: block;
+  border-top: 1px solid #000000;
+  text-align: center;
+}
+
+.nav > li > a {
+  position: relative;
+  display: block;
+  color: #ffffff;
+  border: none;
+  padding-top: 15px;
+  background-color: #085c2f;
+  height: 54px;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: #000000;
+  color: #FFFFFF;
+  vertical-align: middle;
+}
+
+.nav > li.disabled > a {
+  color: #FFFFFF;
+  background-color: #085c2f;
+  vertical-align: middle;
+}
+
+.nav > li.disabled > a:hover,
+.nav > li.disabled > a:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: not-allowed;
+  background-color: #FFFFFF;
+  vertical-align: middle;
+}
+
+.nav-pills-square > li.active > a,
+.nav-pills-square > li.active > a:hover,
+.nav-pills-square > li.active > a:focus {
+  color: #FFFFFF;
+  background-color: #000000;
+  margin-top:0px;
+  vertical-align: middle;
+}
+
+.nav-stacked > li + li {
+  margin-top: 0px;
+  margin-left: 0;
+}
+
+/*Options Sidebar CSS*/
+.panel {
+  overflow: hidden;
+  color: #000000;
+  width: 90%;
+  text-align: center;
+  margin: auto;
+  background-color: #D8D8D8;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+hr {
+  color: #111;
+  background-color: #111;
+  border-color: #111;
+}
