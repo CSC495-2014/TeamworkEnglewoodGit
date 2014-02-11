@@ -23,14 +23,26 @@ class FileController extends \BaseController {
         }
     }
 
-    public function indexPost()
+    public function indexPost($user, $project)
     {
         $dir = Input::get('dir');
         $searchDir = FileController::ROOT . $dir;
         $listing = scandir($searchDir);
 
+        // If we want to see the base directory, only show the $project folder as the only top-level folder.
+        if ($dir == '/') {
+            return View::make(
+                'filesystem_list',
+                [
+                    'folders' => [['name' => $project, 'path' => $dir . $project . '/']],
+                    'files' => []
+                ]
+            );
+        }
+
         $folders = [];
         $files = [];
+
 
         foreach ($listing as $item)
         {
@@ -95,7 +107,7 @@ class FileController extends \BaseController {
 	 */
 	public function show($user, $project, $filepath)
 	{
-        echo file_get_contents(FileController::ROOT . $filepath);
+        echo htmlentities(file_get_contents(FileController::ROOT . $filepath));
 	}
 
 	/**

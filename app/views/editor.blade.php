@@ -36,7 +36,7 @@
 						<li><a href="https://github.com/" target="blank">GitHub</a></li>
 						<li><a href="#">Logout</a></li>-->
 						<button class="btn btn-lgr btn-account btn-block" type="button">My Projects</button>
-						<a href ="https://github.com/" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
+						<a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
 						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
 					</ul>
 			</div>
@@ -74,7 +74,7 @@
             {{ HTML::script('/js/filesystem.js') }}
             <script>
                 $(document).ready( function() {
-                    $('#filesystem').fileTree({ script: '{{URL::action('FileController@indexPost')}}' }, function(filepath) {
+                    $('#filesystem').fileTree({ script: "{{URL::action('FileController@indexPost', [$user, $project])}}" }, function(filepath) {
                         var filename = filepath.substring(filepath.lastIndexOf("/") + 1);
 
                     $.get("{{ URL::to('/user/username/project/projectname/file') }}" + filepath, function (data) {
