@@ -33,69 +33,69 @@ Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
 /*
 Branch Operations:Commit Operations
 */
-Route::post('/user/{user}/project/{project}/git-add', GitController@stageFiles);
+Route::post('/user/{user}/project/{project}/git-add', 'GitController@stageFiles');
 
-Route::post('/user/{user}/project/{project}/git-commit', GitController@commit);
+Route::post('/user/{user}/project/{project}/git-commit', 'GitController@commit');
 
 /*
 Branch Operations:Push
 */
-Route::post('/user/{user}/project/{project}/git-push', GitController@push);
+Route::post('/user/{user}/project/{project}/git-push', 'GitController@push');
 
 /*
 Branch Operations:Merge
 */
-Route::post('/user/{user}/project/{project}/git-merge', GitController@merge);
+Route::post('/user/{user}/project/{project}/git-merge', 'GitController@merge');
 
 /*
 Branch Operations:Pull Changes
 */
-Route::post('/user/{user}/project/{project}/git-pull', GitController@pull);
+Route::post('/user/{user}/project/{project}/git-pull', 'GitController@pull');
 
 /*
 Branch Operation:Retrieve List
 */
-Route::get('/user/{user}/project/{project}/git-branch', GitController@getBranch);
+Route::get('/user/{user}/project/{project}/git-branch', 'GitController@getBranch');
 
 /*
 Branch Operations:Create New
 */
-Route::post('/user/{user}/project/{project}/git-branch', GitController@createBranch);
+Route::post('/user/{user}/project/{project}/git-branch', 'GitController@createBranch');
 
 /*
 Branch Operations:Delete
 */
-Route::delete('/user/{user}/project/{project}/git-branch', GitController@deleteBranch);
+Route::delete('/user/{user}/project/{project}/git-branch', 'GitController@deleteBranch');
 
 /*
 Branch Operations:Checkout
 */
-Route::post('/user/{user}/project/{project}/git-checkout', GitController@checkoutBranch);
+Route::post('/user/{user}/project/{project}/git-checkout', 'GitController@checkoutBranch');
 
 /*
-Branch Operations:Retrieve Past Commits (Current Branch)
+Branch Operations:Retrieve Past Commits (Current Branch')
 */
-Route::get('/user/{user}/project/{project}/git-log', GitController@listBranchCommits);
+Route::get('/user/{user}/project/{project}/git-log', 'GitController@listBranchCommits');
 
 /*
 Repository Operations
 Repository Operations:Download Changes
 */
-Route::post('/user/{user}/project/{project}/git-fetch', GitController@downloadChanges);
+Route::post('/user/{user}/project/{project}/git-fetch', 'GitController@downloadChanges');
 
 /*
 Repository Operations:List Remote Repositories
 */
-Route::get('/user/{user}/project/{project}/git-remote', GitController@listRemoteRepos);
+Route::get('/user/{user}/project/{project}/git-remote', 'GitController@listRemoteRepos');
 
 /*
 Repository Operations:Edit
 */
-Route::post('/user/{user}/project/{project}/git-remote', GitController@createNewRemoteRepo);
+Route::post('/user/{user}/project/{project}/git-remote', 'GitController@createNewRemoteRepo');
 
-Route::delete('/user/{user}/project/{project}/git-remote', GitController@deleteRemoteRepo);
+Route::delete('/user/{user}/project/{project}/git-remote', 'GitController@deleteRemoteRepo');
 
 /*
 Custom Command Handling
 */
-Route::post('/user/{user}/project/{project}/git', GitController@customCmd);
+Route::post('/user/{user}/project/{project}/git', 'GitController@customCmd');
