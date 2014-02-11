@@ -16,9 +16,9 @@ Route::get('/', function()
 	return View::make('login');
 });
 
-Route::get('login', function()
+Route::get('projects', function()
 {
-	return View::make('login');
+	return View::make('projects');
 });
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
