@@ -26,6 +26,14 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
     return View::make('editor', ['user' => $user, 'project' => $project]);
 });
 
+Route::get('user/{user}/projects', function($user) {
+    $projects = glob('../../*', GLOB_ONLYDIR | GLOB_MARK);
+    foreach ($projects as &$project) {
+        $project = basename($project);
+    }
+    return View::make('projectPageHack', ['projects' => $projects, 'user' => $user]);
+});
+
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');
 Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
