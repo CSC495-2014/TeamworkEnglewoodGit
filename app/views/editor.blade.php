@@ -32,10 +32,7 @@
 			</div>
 			<div id="topRight">
 					<ul class="nav nav-pills-square nav-stacked">
-						<!-- <li><a href="#">My Projects</a></li>
-						<li><a href="https://github.com/" target="blank">GitHub</a></li>
-						<li><a href="#">Logout</a></li>-->
-						<button class="btn btn-lgr btn-account btn-block" type="button">My Projects</button>
+                        <a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
 						<a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
 						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
 					</ul>
