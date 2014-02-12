@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('login');
+	rkkkketurn View::make('login');
 });
 
 Route::get('login', function()
