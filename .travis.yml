@@ -1,0 +1,12 @@
+language: php
+
+php:
+  - 5.4
+
+before_script:
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+
+script:
+  - find -L app/ -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+  - phpunit -d memory_limit=1024M
