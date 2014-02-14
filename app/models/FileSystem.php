@@ -255,10 +255,7 @@ class FileSystem {
 	}
 
 	/* --- Testing of public interfaces --- */
-<<<<<<< HEAD
 
-=======
->>>>>>> 12df241fdc5ec4acd19fffa63e9226a6b52d69a4
 	/*
 	$testFile = "testFile.txt";
 	$test = new FileSystem('ZAM-','test-project');
@@ -267,9 +264,5 @@ class FileSystem {
 	$test->removeFile($testFile);
 	$listFiles = $test->listDir();
 	print_r($listFiles);
-<<<<<<< HEAD
 	*/	
-=======
-	*/
->>>>>>> 12df241fdc5ec4acd19fffa63e9226a6b52d69a4
 ?>
