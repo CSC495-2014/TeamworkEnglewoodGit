@@ -248,6 +248,7 @@ class FileSystem {
 	}
 
 	/* --- Testing of public interfaces --- */
+	/*
 	$testFile = "testFile.txt";
 	$test = new FileSystem('ZAM-','test-project');
 	$test->saveFile($testFile, "This is some data.\n And some other data.\n");
@@ -255,5 +256,5 @@ class FileSystem {
 	$test->removeFile($testFile);
 	$listFiles = $test->listDir();
 	print_r($listFiles);
-	
+	*/
 ?>
