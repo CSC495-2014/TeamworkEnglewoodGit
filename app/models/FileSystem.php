@@ -18,11 +18,21 @@ class FileSystem {
 		$this->projectName = $projectName;
 	}
 
+	/**
+	*			  getUserName
+	* This will return the user name. 
+	*
+	*/
 	public function getUserName()
 	{
 		return $this->userName;
 	}
 
+	/**
+	*			  getProjectName
+	* This will return the project name. 
+	*
+	*/
 	public function getProjectName()
 	{
 		return $this->projectName;
@@ -33,7 +43,7 @@ class FileSystem {
 	* This will create a full path to a given resource. 
 	* 
 	* @PARAM A path to a resource or file
-	* @return full path within the applications file system
+	* @return full path within the application's file system
 	*/
 	private function getPath($path)
 	{
@@ -45,6 +55,7 @@ class FileSystem {
 		$x = FileSystem::getPath($path);
 		echo $x;
 	}
+
 	/**
 	*			  getFileExtension
 	* returns file extension 
@@ -119,8 +130,7 @@ class FileSystem {
 	* Will remove the passed file from the server's file system
 	*
 	*@PARAM file path from what?
-	*@return 2xx response if succeeded 
-	*@return 5xx response if failed
+	*
 	*/
 	public function removeFile($filepath)
 	{
@@ -137,8 +147,7 @@ class FileSystem {
 	* supplied dirpath
 	*
 	*@PARAM file path from what?
-	*@return 2xx response if succeeded 
-	*@return 5xx response if failed
+	* 
 	*/	
 	public function removeDir($dirpath)
 	{
@@ -172,8 +181,6 @@ class FileSystem {
 	*
 	*@PARAM file path to users project
 	*@PARAM cotents of file
-	*@return 2xx response if succeeded 
-	*@return 5xx response if failed
 	*/	
 	public function saveFile($filepath, $data)
 	{
@@ -248,12 +255,14 @@ class FileSystem {
 	}
 
 	/* --- Testing of public interfaces --- */
+
+	/*
 	$testFile = "testFile.txt";
 	$test = new FileSystem('ZAM-','test-project');
 	$test->saveFile($testFile, "This is some data.\n And some other data.\n");
-	$test->removeDir("js");
+	$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
 	$test->removeFile($testFile);
 	$listFiles = $test->listDir();
 	print_r($listFiles);
-	
+	*/	
 ?>
