@@ -1,198 +1,259 @@
 <?php
 
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
-
 class FileSystem {
 
-	const $ROOT = '../data/';
-	var $userName;
-	var $projectName;
+	const ROOT = '../data/';
+	private $userName;
+	private $projectName;
 
 	/**
-	*			  FileSystem
-	 * This will set the userName and projectName so all  of the 
-	 * class method will be able to access them. 
-	 * 
-	 */
-	function FileSystem($user, $project)
+	*			  FileSystem Constructor
+	* This will set the userName and projectName so all  of the 
+	* class method will be able to access them. 
+	* 
+	*/
+	function __construct($userName, $projectName)
 	{
-
-		this->userName = $user;
-		this->projectName = $project;
+		$this->userName = $userName;
+		$this->projectName = $projectName;
 	}
 
-	/** 
-	 *             listDir
-	 * Passed current user directory $dirpath
-	 *
-	 *@PARAM current directory
-	 *@return list of subdirectories and files in current
-	 * user directory.
-	 */
-	function listDir($dirpath)
+	public function getUserName()
 	{
-
-		$searchDir = ROOT . 'users/' . $userName . 'projects/' . $projectName . $dirpath;
-        $listings = scandir($searchDir);
-
-        $folders = [];
-        $files = [];
-		
-		$fileSystemList = [];
-
-		foreach ($listing as $item)
-        {
-            $item = [
-                'name' => $item,
-                'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
-                'ext'  => $this->getFileExtension($item)
-            ];
-
-            if ($item['name'] == '.' or $item['name'] == '..')
-            {
-                continue;
-            }
-            else if (is_dir($searchDir . $item['name']))
-            {
-                $folders[] = $item;
-            }
-            else
-            {
-                $files[] = $item;
-            }
-        }
-
-        fileSystemList['folders' => $folders, 'files' => $files];
-
-        return fileSystemList;
+		return $this->userName;
 	}
 
-	/** 
-	 *             removeFile
-	 * Will remove the passed file from the server's file system
-	 *
-	 *@PARAM file path from what?
-	 *@return 2xx response if succeeded 
-	 *@return 5xx response if failed
-	 */
-	function removeFile($filepath)
+	public function getProjectName()
 	{
-		$searchPath = ROOT . 'users/' . $userName . 'projects/' . $projectName . $filepath;
-		if (file_exists($filepath))
+		return $this->projectName;
+	}
+
+	/**
+	*			  getPath
+	* This will create a full path to a given resource. 
+	* 
+	* @PARAM A path to a resource or file
+	* @return full path within the applications file system
+	*/
+	private function getPath($path)
+	{
+		return FileSystem::ROOT . 'users/' . $this->userName . '/projects/' . $this->projectName . '/' . $path;
+	}
+
+	public function echoPath($path)
+	{
+		$x = FileSystem::getPath($path);
+		echo $x;
+	}
+	/**
+	*			  getFileExtension
+	* returns file extension 
+	* Credit - Michael Holler 
+	*
+	* @PARAM filename
+	* @return file extension of file
+	*/
+	private function getFileExtension($filename) 
+	{
+		if (!$filename)
 		{
-			return unlink($filepath);
+			return null;
+		}
+
+		$pos = strrpos($filename, '.');
+
+		if ($pos !== false and substr($filename, -1) != '.')
+		{
+			return 'ext_' . substr($filename, $pos + 1);
+		}
+		else
+		{
+			return null;
 		}
 	}
 
 	/** 
-	 *             removeDir
-	 * Will recursively remove all files and subdirectories from the 
-	 * supplied dirpath
-	 *
-	 *@PARAM file path from what?
-	 *@return 2xx response if succeeded 
-	 *@return 5xx response if failed
-	 */	
-	function removeDir($dirpath)
+	*             listDir
+	* Passed current user directory $dirpath
+	* 
+	* Credit - Michael Holler  
+	*@PARAM current directory
+	*@return list of subdirectories and files in current
+	* user directory.
+	*/
+	public function listDir($dirpath = "")
 	{
-		$searchDir = ROOT . 'users/' . $userName . 'projects/' . $projectName . $dirpath;
+		// Creating path
+		$searchDir = FileSystem::getPath($dirpath);
+		$listing = scandir($searchDir);
+		$folders = [];
+		$files = [];
+
+		foreach ($listing as $item)
+		{
+			$item = [
+				'name' => $item,
+				'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
+			];
+
+			if ($item['name'] == '.' or $item['name'] == '..')
+			{
+				continue;
+			}
+			else if (is_dir($searchDir . $item['name']))
+			{
+				$folders[] = $item;
+			}
+			else
+			{
+				$item['ext'] = $this->getFileExtension($item['name']);
+				$files[] = $item;
+			}
+		}
+
+		return ['folders' => $folders, 'files' => $files];
+	}
+
+	/** 
+	*             removeFile
+	* Will remove the passed file from the server's file system
+	*
+	*@PARAM file path from what?
+	*@return 2xx response if succeeded 
+	*@return 5xx response if failed
+	*/
+	public function removeFile($filepath)
+	{
+		$searchFile = FileSystem::getPath($filepath);
+		if (file_exists($searchFile))
+		{
+			return unlink($searchFile);
+		}
+	}
+
+	/** 
+	*             removeDir
+	* Will recursively remove all files and subdirectories from the 
+	* supplied dirpath
+	*
+	*@PARAM file path from what?
+	*@return 2xx response if succeeded 
+	*@return 5xx response if failed
+	*/	
+	public function removeDir($dirpath)
+	{
+		$searchDir = FileSystem::getPath($dirpath);
 		if (is_dir($searchDir)) 
 		{ 
-     		$objects = scandir($searchDir); 
-     		foreach ($objects as $object)
-     		{ 
-       			if ($object != "." && $object != "..") 
-       			{ 
-         			if (filetype($searchDir."/".$object) == "dir") rrmdir($searchDir."/".$object); else unlink($searchDir."/".$object); 
-       			} 
-     		} 
-     		reset($objects); 
-     		rmdir($searchDir); 
-   		} 
+			$objects = scandir($searchDir); 
+			foreach ($objects as $object)
+			{ 
+				if ($object != "." && $object != "..") 
+				{ 
+					if (filetype($searchDir."/".$object) == "dir")
+					{
+						removeDir($searchDir."/".$object);	
+					}  
+					else
+					{
+						unlink($searchDir."/".$object);
+					} 
+				} 
+			} 
+			reset($objects); 
+			rmdir($searchDir); 
+		} 
 
 	}
 
 	/** 
-	 *             saveFile
-	 * Will save the file contents to the webserver's filesystem
-	 *
-	 *@PARAM file path to users project
-	 *@PARAM cotents of file
-	 *@return 2xx response if succeeded 
-	 *@return 5xx response if failed
-	 */	
-	function saveFile($filepath, $data)
+	*             saveFile
+	* Will save the file contents to the webserver's filesystem
+	*
+	*@PARAM file path to users project
+	*@PARAM cotents of file
+	*@return 2xx response if succeeded 
+	*@return 5xx response if failed
+	*/	
+	public function saveFile($filepath, $data)
 	{
-		$searchFile = ROOT . 'users/' . $userName . 'projects/' . $projectName . $filepath;
-		$handle = fopen($searchFile, 'w') or die('Cannot open file:  '.$searchFile);
+		$searchFile = FileSystem::getPath($filepath);
+		$handle = fopen($searchFile, 'w');
 		fwrite($handle, $data);
-		fclose(handle);
+		fclose($handle);
 	}
-	
+
+	public function save($filepath, $contents)
+	{
+
+	}
+
+	public function copy($sourcePath, $destPath)
+	{
+
+	}
+
+	public function move($sourcePath, $destPath)
+	{
+
+	}
 
 	/* Git commands */
 
-	function save($username, $project, $filepath, $contents)
+	public function gitStatus($username, $project)
 	{
 
 	}
 
-	function copy($username, $project, $sourcePath, $destPath)
+	public function gitAdd($username, $project, $path)
 	{
 
 	}
 
-	function move($username, $project, $sourcePath, $destPath)
+	public function gitRm($username, $project, $path)
 	{
 
 	}
 
-	function gitStatus($username, $project)
+	public function gitCommit($username, $project, $message)
 	{
 
 	}
 
-	function gitAdd($username, $project, $path)
+	public function gitRemoteAdd($username, $project, $alias, $link)
 	{
 
 	}
 
-	function gitRm($username, $project, $path)
-	{
-
-	}
-
-	function gitCommit($username, $project, $message)
-	{
-
-	}
-
-	function gitRemoteAdd($username, $project, $alias, $link)
-	{
-
-	}
-
-	function gitRemoteRm($username, $project, $alias)
+	public function gitRemoteRm($username, $project, $alias)
 	{
 
 	} // remove remote
 
-	function gitClone($username, $project)
+	public function gitClone($username, $project)
 	{
 
 	}
 
-	function gitPush($username, $project, $remoteAlias, $remoteBranch)
+	public function gitPush($username, $project, $remoteAlias, $remoteBranch)
 	{
 
 	}
 
-	function gitPull($username, $project, $remoteAlias, $remoteBranch)
+	public function gitPull($username, $project, $remoteAlias, $remoteBranch)
 	{
 
 	}
 
-}
+	}
 
-
+	/* --- Testing of public interfaces --- */
+	$testFile = "testFile.txt";
+	$test = new FileSystem('ZAM-','test-project');
+	$test->saveFile($testFile, "This is some data.\n And some other data.\n");
+	$test->removeDir("js");
+	$test->removeFile($testFile);
+	$listFiles = $test->listDir();
+	print_r($listFiles);
+	
+?>
