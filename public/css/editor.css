@@ -1,8 +1,8 @@
 body {
 	padding-top: 0px;
 	padding-bottom: 40px;
-	background-color: #085c2f;
-	background-repeat: no-repeat;
+    background-color: #085C2F;
+    background-repeat: no-repeat;
 }
 #topLeft {
 	height: 165px;
@@ -32,35 +32,39 @@ body {
 }
 /*CSS for Mike's section*/
 #filesystem {
-	height: 650px;
-	width: 20%;
-	padding-top: 5px;
-	padding-left: 5px;
-	background-color: #FAFAFA;
-	float: left;
-	overflow-x: scroll;
+  height: 650px;
+  width: 20%;
+  padding-top: 5px;
+  padding-left: 5px;
+  background-color: #FAFAFA;
+  float: left;
+  overflow-x: scroll;
 }
+
+UL.jqueryFileTree A:hover {
+    background: #9eeac2;
+}
+
 /*CSS for Xiao's section*/
 #editor {
-	height: 650px;
-	width: 60%;
-	background-color: #FAFAFA;
-	padding-top: 0 px;
-	float: left;
-	overflow: hidden;
+  height: 650px;
+  width: 60%;
+  background-color: #FAFAFA;
+  padding-top: 0px;
+  float: left;
+  overflow: hidden;
 }
 #optionSideBar {
-	height: 650px;
-	width: 20%;
-	background-color: #139147;
-	float: left;
+  height: 650px;
+  width: 20%;
+  background-color: #085c2f;
+  float: left;
 }
 
 /*Buttons*/
 .btn-project {
   color: #000000;
   background-color: #FFFFFF;
-  border-color: #000000;
 }
 
 .btn-project:hover,
@@ -70,13 +74,11 @@ body {
 .open .dropdown-toggle.btn-project {
   color: #FFFFFF;
   background-color: #085c2f;
-  border-color: #FFFFFF;
 }
 
 .btn-file {
-  color: #FFFFFF;
-  background-color: #151515;
-  border-color: #FFFFFF;
+  color: #FFF;
+  background-color: #444;
 }
 
 .btn-file:hover,
@@ -85,14 +87,12 @@ body {
 .btn-file.active,
 .open .dropdown-toggle.btn-file {
   color: #FFFFFF;
-  background-color: #085c2f;
-  border-color: #FFFFFF;
+  background-color: #151515;
 }
 
 .btn-account{
   color: #FFF;
-  background-color: #085c2f;
-  border-color: #FFF;
+  background-color: #1d703a;
 }
 
 .btn-account:hover,
@@ -102,7 +102,6 @@ body {
 .open .dropdown-toggle.btn-account {
   color: #FFFFFF;
   background-color: #151515;
-  border-color: #FFFFFF;
 }
 
 .btn-lg {
@@ -187,17 +186,14 @@ body {
   width: 90%;
   text-align: center;
   margin: auto;
-  margin-top:10px;
   background-color: #D8D8D8;
-  border: 1px solid #000000;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
-hr{
-    color: #000000;
-    background-color: #000000;
-	border-color: #000000;
+hr {
+  color: #111;
+  background-color: #111;
+  border-color: #111;
 }
-			
