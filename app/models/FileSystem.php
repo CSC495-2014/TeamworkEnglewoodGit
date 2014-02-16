@@ -1,5 +1,7 @@
 <?php
 
+use GitWrapper\GitWrapper;
+
 class FileSystem {
 
 	const ROOT = '../data/';
@@ -49,13 +51,6 @@ class FileSystem {
 	{
 		return FileSystem::ROOT . 'users/' . $this->userName . '/projects/' . $this->projectName . '/' . $path;
 	}
-
-	public function echoPath($path)
-	{
-		$x = FileSystem::getPath($path);
-		echo $x;
-	}
-
 	/**
 	*			  getFileExtension
 	* returns file extension 
@@ -129,16 +124,12 @@ class FileSystem {
 	*             removeFile
 	* Will remove the passed file from the server's file system
 	*
-	*@PARAM file path from what?
-	*
+	*@PARAM file path
+	*@return TRUE on success FALSE on failure 
 	*/
 	public function removeFile($filepath)
 	{
-		$searchFile = FileSystem::getPath($filepath);
-		if (file_exists($searchFile))
-		{
-			return unlink($searchFile);
-		}
+		return unlink(FileSystem::getPath($filepath));
 	}
 
 	/** 
@@ -146,7 +137,7 @@ class FileSystem {
 	* Will recursively remove all files and subdirectories from the 
 	* supplied dirpath
 	*
-	*@PARAM file path from what?
+	*@PARAM file path
 	* 
 	*/	
 	public function removeDir($dirpath)
@@ -157,42 +148,40 @@ class FileSystem {
 			$objects = scandir($searchDir); 
 			foreach ($objects as $object)
 			{ 
+				// Ignore hidden files 
 				if ($object != "." && $object != "..") 
 				{ 
-					if (filetype($searchDir."/".$object) == "dir")
+					// If it finds a directory, make the recursive call
+					if (filetype($searchDir . "/" . $object) == "dir")
 					{
-						removeDir($searchDir."/".$object);	
-					}  
+						removeDir($searchDir . "/" . $object);	
+					}
+					// If it's not a directory then it is a file. Remove file.  
 					else
 					{
-						unlink($searchDir."/".$object);
+						unlink($searchDir . "/" . $object);
 					} 
 				} 
 			} 
-			reset($objects); 
+			reset($objects); // Reset internal pointer of array
 			rmdir($searchDir); 
 		} 
 
 	}
 
 	/** 
-	*             saveFile
+	*             save
 	* Will save the file contents to the webserver's filesystem
 	*
 	*@PARAM file path to users project
 	*@PARAM cotents of file
 	*/	
-	public function saveFile($filepath, $data)
+	public function save($filepath, $contents)
 	{
 		$searchFile = FileSystem::getPath($filepath);
 		$handle = fopen($searchFile, 'w');
-		fwrite($handle, $data);
+		fwrite($handle, $contents);
 		fclose($handle);
-	}
-
-	public function save($filepath, $contents)
-	{
-
 	}
 
 	public function copy($sourcePath, $destPath)
@@ -206,7 +195,12 @@ class FileSystem {
 	}
 
 	/* Git commands */
-
+	public function gitClone($project)
+	{
+		$wrapper = new GitWrapper();
+		$wrapper->clone($project, "/tmp/");
+	}
+	
 	public function gitStatus($username, $project)
 	{
 
@@ -237,10 +231,6 @@ class FileSystem {
 
 	} // remove remote
 
-	public function gitClone($username, $project)
-	{
-
-	}
 
 	public function gitPush($username, $project, $remoteAlias, $remoteBranch)
 	{
@@ -251,18 +241,26 @@ class FileSystem {
 	{
 
 	}
+ 	public function isCloned($user, $project)
+ 	{
 
-	}
+ 	}
 
-	/* --- Testing of public interfaces --- */
+}
+
+	/* --- Testing of file manipulation public interfaces --- */
 
 	/*
 	$testFile = "testFile.txt";
 	$test = new FileSystem('ZAM-','test-project');
-	$test->saveFile($testFile, "This is some data.\n And some other data.\n");
+	$test->save($testFile, "This is some data.\n And some other data.\n");
 	$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
 	$test->removeFile($testFile);
 	$listFiles = $test->listDir();
 	print_r($listFiles);
-	*/	
+x	*/
+
+	/* --- Testing of Git Commands --- */
+	$test = new FileSystem('ZAM-','test-project');
+	$test->gitClone("git://github.com/ZAM-/TestRepo.git");
 ?>
