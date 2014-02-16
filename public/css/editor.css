@@ -1,11 +1,29 @@
-body {
+html, body {
 	padding-top: 0px;
-	padding-bottom: 40px;
     background-color: #085C2F;
     background-repeat: no-repeat;
+	height: 100%;
+	min-width: 900px;
 }
+
+#container {
+    height: 100%;
+	width: 100%;
+}
+
+#topContent {
+  min-height: 165px;
+  width: 100%;
+}
+
+#mainContent {
+   height: calc(100% - 165px);
+   min-height: 400px;
+}
+
 #topLeft {
-	height: 165px;
+	height: 100%;
+	min-height: 165px;
 	width: 20%;
 	background: transparent;
 	float: left;
@@ -14,15 +32,17 @@ body {
 	text-align: center;
 }
 #header{
-	height: 165px;
+	height: 100%;
 	width: 60%;
+	min-height: 165px;
 	background:  transparent;
 	float: left;
 }
 #topRight {
-	height: 165px;
+	height: 100%;
+	min-height: 165px;
 	width: 20%;
-	background-color: #085c2f;
+	background-color: #transparent;
 	padding-top: 8px;
 	float: left;
 	overflow: hidden;
@@ -30,35 +50,36 @@ body {
 	vertical-align: middle;
 	text-align: center;
 }
-/*CSS for Mike's section*/
+
 #filesystem {
-  height: 650px;
+  height: 100%;
   width: 20%;
   padding-top: 5px;
   padding-left: 5px;
   background-color: #FAFAFA;
   float: left;
-  overflow-x: scroll;
+  overflow: auto;
 }
 
 UL.jqueryFileTree A:hover {
     background: #9eeac2;
 }
 
-/*CSS for Xiao's section*/
 #editor {
-  height: 650px;
+  height: 100%;
   width: 60%;
   background-color: #FAFAFA;
   padding-top: 0px;
   float: left;
   overflow: hidden;
 }
+
 #optionSideBar {
-  height: 650px;
+  height: 100%;
   width: 20%;
   background-color: #085c2f;
   float: left;
+  overflow: hidden;
 }
 
 /*Buttons*/
@@ -122,61 +143,6 @@ UL.jqueryFileTree A:hover {
   margin: auto;
   width: 90%;
   overflow: hidden;
-}
-
-/*Top Right Sidebar Navigation CSS*/
-.nav > li {
-  position: relative;
-  display: block;
-  border-top: 1px solid #000000;
-  text-align: center;
-}
-
-.nav > li > a {
-  position: relative;
-  display: block;
-  color: #ffffff;
-  border: none;
-  padding-top: 15px;
-  background-color: #085c2f;
-  height: 54px;
-}
-
-.nav > li > a:hover,
-.nav > li > a:focus {
-  text-decoration: none;
-  background-color: #000000;
-  color: #FFFFFF;
-  vertical-align: middle;
-}
-
-.nav > li.disabled > a {
-  color: #FFFFFF;
-  background-color: #085c2f;
-  vertical-align: middle;
-}
-
-.nav > li.disabled > a:hover,
-.nav > li.disabled > a:focus {
-  color: #000000;
-  text-decoration: none;
-  cursor: not-allowed;
-  background-color: #FFFFFF;
-  vertical-align: middle;
-}
-
-.nav-pills-square > li.active > a,
-.nav-pills-square > li.active > a:hover,
-.nav-pills-square > li.active > a:focus {
-  color: #FFFFFF;
-  background-color: #000000;
-  margin-top:0px;
-  vertical-align: middle;
-}
-
-.nav-stacked > li + li {
-  margin-top: 0px;
-  margin-left: 0;
 }
 
 /*Options Sidebar CSS*/
