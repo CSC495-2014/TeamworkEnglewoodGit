@@ -4,6 +4,7 @@
         {{ HTML::style('/css/bootstrap.css') }}
         {{ HTML::style('/css/jqueryFileTree.css') }}
         {{ HTML::style('/css/jquery.contextMenu.css') }}
+        {{ HTML::style('/css/jquery.ui.all.css') }}
         {{ HTML::style('css/editor.css') }}
         {{ HTML::script('/js/jquery-1.10.2.js') }}
         {{ HTML::script('/js/jqueryFileTree.js') }}
@@ -44,19 +45,10 @@
 						
 					</div>
 					<div id="editor">
-					{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
 						<div id="tabs">
 							<ul>
-							<li><a href="#tabs-1">Untitled</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
 							</ul>
-							<div id="tabs-1"></div>
 						</div>
-
-						<!--editable panel for tabs-1-->
-						<script>
-							var editor = ace.edit("tabs-1");
-							editor.getSession().setMode("mode/javascript");
-						</script>
 					</div>
 					<div id="optionSideBar">
 						<div class="panel panel-default">
