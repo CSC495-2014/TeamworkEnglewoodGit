@@ -23,50 +23,55 @@
 		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
 		#add_tab { cursor: pointer; }
 		</style>
-		<body background="{{ URL::asset('css/images/adjbackground.png') }}">
-			<div id="topLeft">
-			</div>
-			<div id="header">
-				<h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
-				<h4 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h4>
-			</div>
-			<div id="topRight">
-					<ul class="nav nav-pills-square nav-stacked">
-                        <a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
+		<body background="{{ URL::asset('css/images/adjbackground.png') }} ">
+			<div id="container">
+				<div id="topContent">
+					<div id="topLeft">
+					
+					</div>
+					<div id="header">
+						<h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
+						<h4 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h4>
+					</div>
+					<div id="topRight">
+						<a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
 						<a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
 						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
-					</ul>
-			</div>
-			<div id="filesystem">
-				<!-- Div Section for Mike's Code -->
-			</div>
-			<div id="editor">
-			{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
-				<div id="tabs">
-					<ul>
-						<li><a href="#tabs-1">Untitled</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
-					</ul>
-					<div id="tabs-1"></div>
+					</div>
 				</div>
+				<div id="mainContent"> 		  
+					<div id="filesystem">
+						
+					</div>
+					<div id="editor">
+					{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
+						<div id="tabs">
+							<ul>
+							<li><a href="#tabs-1">Untitled</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
+							</ul>
+							<div id="tabs-1"></div>
+						</div>
 
-				<!--editable panel for tabs-1-->
-				<script>
-					var editor = ace.edit("tabs-1");
-					editor.getSession().setMode("mode/javascript");
-				</script>
-			</div>
-			<div id="optionSideBar">
-				<div class="panel panel-default">
-				  <div class="panel-body">
-					<h4>File Options</h4>
-					<button class="btn btn-lg btn-file btn-block" type="button">Save</button>
-					<hr/>
-					<h4>Project Options</h4>
-					<button class="btn btn-lg btn-project btn-block" type="button">Commit</button>
-					<button class="btn btn-lg btn-project btn-block" type="button">Push</button>
-				  </div>
-				</div>
-			</div>
+						<!--editable panel for tabs-1-->
+						<script>
+							var editor = ace.edit("tabs-1");
+							editor.getSession().setMode("mode/javascript");
+						</script>
+					</div>
+					<div id="optionSideBar">
+						<div class="panel panel-default">
+						  <div class="panel-body">
+							<h4>File Options</h4>
+							<button class="btn btn-lg btn-file btn-block" type="button">Save</button>
+							<hr/>
+							<h4>Project Options</h4>
+							<button class="btn btn-lg btn-project btn-block" type="button">Commit</button>
+							<button class="btn btn-lg btn-project btn-block" type="button">Push</button>
+						  </div>
+						</div>
+					</div>
+				</div>	
+			</div>	
             @include('modals')
             {{ HTML::script('/js/filesystem.js') }}
             <script>
