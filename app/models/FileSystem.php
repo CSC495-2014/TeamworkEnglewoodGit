@@ -1,7 +1,5 @@
 <?php
 
-use GitWrapper\GitWrapper;
-
 class FileSystem {
 
 	const ROOT = '../data/';
@@ -197,8 +195,7 @@ class FileSystem {
 	/* Git commands */
 	public function gitClone($project)
 	{
-		$wrapper = new GitWrapper();
-		$wrapper->clone($project, "/tmp/");
+
 	}
 	
 	public function gitStatus($username, $project)
@@ -258,9 +255,6 @@ class FileSystem {
 	$test->removeFile($testFile);
 	$listFiles = $test->listDir();
 	print_r($listFiles);
-x	*/
+	*/
 
-	/* --- Testing of Git Commands --- */
-	$test = new FileSystem('ZAM-','test-project');
-	$test->gitClone("git://github.com/ZAM-/TestRepo.git");
 ?>
