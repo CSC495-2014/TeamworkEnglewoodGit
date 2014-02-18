@@ -9,6 +9,7 @@
 			<!-- <div class="panel-heading">Teamwork Englewood</div> -->
 			<div class="panel-body">
 				<form class="form-signin" role="form">
+					LoginController::GitHubLogin;
 					<h3 class="form-signin-heading">Englewood Codes</h3>
 					<button class="btn btn-lg btn-signIn btn-block" type="submit">Login with GitHub</button>
 					<hr>
