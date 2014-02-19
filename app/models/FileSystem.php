@@ -97,7 +97,7 @@ class FileSystem {
 		{
 			$item = [
 				'name' => $item,
-				'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
+				'path' => $searchDir . $item . (is_dir($searchDir . $item) ? '/' : ''),
 			];
 
 			if ($item['name'] == '.' or $item['name'] == '..')
