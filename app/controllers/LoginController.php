@@ -6,7 +6,7 @@ class LoginController extends BaseController {
 	public static function GitHubLogin()
 	{
             //return View::make('login');
-		$provider = new league\oauth2-client\src\League\OAuth2\Client\Provider\Github.php(array(
+		$provider = new vendor\league\oauth2-client\src\League\OAuth2\Client\Provider\Github.php(array(
 			//Won't want to actually post this to GitHub, will be put in a config file for the app
 			'clientId' => 'fd0b49991778467ebe9d',
 			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
