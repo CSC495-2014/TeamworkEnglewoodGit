@@ -1,4 +1,4 @@
-<?php
+<?php namespace vendor;
 
 class LoginController extends BaseController {
 
