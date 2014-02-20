@@ -1,5 +1,5 @@
 <?php
-use vendor\league;
+
 class LoginController extends BaseController {
 
 //Process the login
