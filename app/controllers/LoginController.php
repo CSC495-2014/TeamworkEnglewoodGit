@@ -3,7 +3,7 @@
 class LoginController extends BaseController {
 
 //Process the login
-	public function GitHubLogin()
+	public static function GitHubLogin()
 	{
             //return View::make('login');
 		$provider = new League\OAuth2\Client\Provider\Github(array(
