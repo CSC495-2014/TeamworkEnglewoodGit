@@ -3,7 +3,9 @@
 @section('content')
 	{{ HTML::style('css/login.css') }}
 	<body background="{{ URL::asset('css/images/background.png') }}">
-	
+	<?php
+		LoginController::GitHubLogin
+	?>
         <div class="container">
 		<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
 		<div class="panel panel-success">
