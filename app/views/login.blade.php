@@ -4,7 +4,7 @@
 	{{ HTML::style('css/login.css') }}
 	<body background="{{ URL::asset('css/images/background.png') }}">
 	<?php include(app_path().'/controllers/LoginController.php');
-	LoginController::GitHubLogin();
+	public LoginController::GitHubLogin();
 	?>
 	
         <div class="container">
