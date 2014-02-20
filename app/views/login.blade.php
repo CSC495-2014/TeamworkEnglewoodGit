@@ -4,12 +4,6 @@
 	{{ HTML::style('css/login.css') }}
 	<body background="{{ URL::asset('css/images/background.png') }}">
 	
-	<script>
-		function loginCall() {
-			<?php LoginController:GitHubLogin(); ?>
-		}
-	</script>
-	
         <div class="container">
 		<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
 		<div class="panel panel-success">
@@ -25,4 +19,10 @@
 		</div>
 	
     </div> <!-- /container -->
+    
+    <script>
+		function loginCall() {
+			<?php LoginController:GitHubLogin(); ?>
+		}
+	</script>
 @endsection
