@@ -1,4 +1,6 @@
-<?php namespace vendor;
+<?php
+
+import("vendor/league");
 
 class LoginController extends BaseController {
 
