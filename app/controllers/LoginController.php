@@ -1,6 +1,6 @@
 <?php
 
-import("vendor/league");
+use Vendor\League;
 
 class LoginController extends BaseController {
 
