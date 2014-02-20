@@ -4,7 +4,7 @@
 	{{ HTML::style('css/login.css') }}
 	<body background="{{ URL::asset('css/images/background.png') }}">
 	<?php
-		LoginController::GitHubLogin()
+		LoginController::GitHubLogin();
 	?>
         <div class="container">
 		<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
