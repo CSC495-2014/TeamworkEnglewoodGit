@@ -19,10 +19,9 @@
 		</div>
 	
     </div> <!-- /container -->
-    
+@endsection
     <script>
 		function loginCall() {
 			<?php LoginController:GitHubLogin(); ?>
 		}
 	</script>
-@endsection
