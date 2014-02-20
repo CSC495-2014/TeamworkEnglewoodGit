@@ -2,267 +2,346 @@
 
 class FileSystem {
 
-	const ROOT = '../data/';
-	private $userName;
-	private $projectName;
+const ROOT = '../data/';
+private $userName;
+private $projectName;
 
-	/**
-	*			  FileSystem Constructor
-	* This will set the userName and projectName so all  of the 
-	* class method will be able to access them. 
-	* 
-	*/
-	function __construct($userName, $projectName)
-	{
-		$this->userName = $userName;
-		$this->projectName = $projectName;
-	}
+/**
+* FileSystem Constructor
+* This will set the userName and projectName so all of the
+* class method will be able to access them.
+*
+*/
+function __construct($userName, $projectName)
+{
+$this->userName = $userName;
+$this->projectName = $projectName;
+}
 
-	/**
-	*			  getUserName
-	* This will return the user name. 
-	*
-	*/
-	public function getUserName()
-	{
-		return $this->userName;
-	}
+/**
+* getUserName
+* This will return the user name.
+*
+*/
+public function getUserName()
+{
+return $this->userName;
+}
 
-	/**
-	*			  getProjectName
-	* This will return the project name. 
-	*
-	*/
-	public function getProjectName()
-	{
-		return $this->projectName;
-	}
+/**
+* getProjectName
+* This will return the project name.
+*
+*/
+public function getProjectName()
+{
+return $this->projectName;
+}
 
-	/**
-	*			  getPath
-	* This will create a full path to a given resource. 
-	* 
-	* @PARAM A path to a resource or file
-	* @return full path within the application's file system
-	*/
-	private function getPath($path)
-	{
-		return FileSystem::ROOT . 'users/' . $this->userName . '/projects/' . $this->projectName . '/' . $path;
-	}
+/**
+* getPath
+* This will create a full path to a given resource.
+*
+* @PARAM A path to a resource or file
+* @return full path within the application's file system
+*/
+private function getPath($path)
+{
+return FileSystem::ROOT . 'users/' . $this->userName . '/projects/' . $this->projectName . '/' . $path;
+}
+/**
+* getFileExtension
+* returns file extension
+* Credit - Michael Holler
+*
+* @PARAM filename
+* @return file extension of file
+*/
+private function getFileExtension($filename)
+{
+if (!$filename)
+{
+return null;
+}
 
-	public function echoPath($path)
-	{
-		$x = FileSystem::getPath($path);
-		echo $x;
-	}
+$pos = strrpos($filename, '.');
 
-	/**
-	*			  getFileExtension
-	* returns file extension 
-	* Credit - Michael Holler 
-	*
-	* @PARAM filename
-	* @return file extension of file
-	*/
-	private function getFileExtension($filename) 
-	{
-		if (!$filename)
+if ($pos !== false and substr($filename, -1) != '.')
+{
+return 'ext_' . substr($filename, $pos + 1);
+}
+else
+{
+return null;
+}
+}
+
+/**
+* listDir
+* Passed current user directory $dirpath
+*
+* Credit - Michael Holler
+*@PARAM current directory
+*@return list of subdirectories and files in current
+* user directory.
+*/
+public function listDir($dirpath = "")
+{
+// Creating path
+$searchDir = FileSystem::getPath($dirpath);
+$listing = scandir($searchDir);
+$folders = [];
+$files = [];
+
+foreach ($listing as $item)
+{
+$item = [
+'name' => $item,
+'path' => $searchDir . $item . (is_dir($searchDir . $item) ? '/' : ''),
+];
+
+if ($item['name'] == '.' or $item['name'] == '..')
+{
+continue;
+}
+else if (is_dir($searchDir . $item['name']))
+{
+$folders[] = $item;
+}
+else
+{
+$item['ext'] = $this->getFileExtension($item['name']);
+$files[] = $item;
+}
+}
+
+return ['folders' => $folders, 'files' => $files];
+}
+
+/**
+* removeFile
+* Will remove the passed file from the server's file system
+*
+*@PARAM file path
+*@return TRUE on success FALSE on failure
+*/
+public function removeFile($filepath)
+{
+return unlink(FileSystem::getPath($filepath));
+}
+
+/**
+* removeDir
+* Will recursively remove all files and subdirectories from the
+* supplied dirpath
+*
+*@PARAM file path
+*
+*/	
+public function removeDir($dirpath)
+{
+$searchDir = FileSystem::getPath($dirpath);
+if (is_dir($searchDir))
+{
+$objects = scandir($searchDir);
+foreach ($objects as $object)
+{
+// Ignore hidden files
+if ($object != "." && $object != "..")
+{
+// If it finds a directory, make the recursive call
+if (filetype($searchDir . "/" . $object) == "dir")
+{
+removeDir($searchDir . "/" . $object);	
+}
+// If it's not a directory then it is a file. Remove file.
+else
+{
+unlink($searchDir . "/" . $object);
+}
+}
+}
+reset($objects); // Reset internal pointer of array
+rmdir($searchDir);
+}
+
+}
+
+/**
+* save
+* Will save the file contents to the webserver's filesystem
+*
+*@PARAM file path to users project
+*@PARAM cotents of file
+*/	
+public function save($filepath, $contents)
+{
+$searchFile = FileSystem::getPath($filepath);
+$handle = fopen($searchFile, 'w');
+fwrite($handle, $contents);
+fclose($handle);
+}
+
+public function copy($sourcePath, $destPath)
+{
+		/*$searchDir = FileSystem::getPath($sourcePath);
+		if (is_dir($searchDir))
 		{
-			return null;
-		}
+		
+		$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
 
-		$pos = strrpos($filename, '.');
-
-		if ($pos !== false and substr($filename, -1) != '.')
-		{
-			return 'ext_' . substr($filename, $pos + 1);
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/** 
-	*             listDir
-	* Passed current user directory $dirpath
-	* 
-	* Credit - Michael Holler  
-	*@PARAM current directory
-	*@return list of subdirectories and files in current
-	* user directory.
-	*/
-	public function listDir($dirpath = "")
-	{
-		// Creating path
-		$searchDir = FileSystem::getPath($dirpath);
-		$listing = scandir($searchDir);
-		$folders = [];
-		$files = [];
-
-		foreach ($listing as $item)
-		{
-			$item = [
-				'name' => $item,
-				'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
-			];
-
-			if ($item['name'] == '.' or $item['name'] == '..')
+			$dir = opendir($searchDir); 
+			
+			if(!file_exists(dirname(FileSystem::getPath($destPath))))
 			{
-				continue;
+				mkdir(FileSystem::getPath($destPath));
+				mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
 			}
-			else if (is_dir($searchDir . $item['name']))
-			{
-				$folders[] = $item;
-			}
-			else
-			{
-				$item['ext'] = $this->getFileExtension($item['name']);
-				$files[] = $item;
-			}
-		}
-
-		return ['folders' => $folders, 'files' => $files];
-	}
-
-	/** 
-	*             removeFile
-	* Will remove the passed file from the server's file system
-	*
-	*@PARAM file path from what?
-	*
-	*/
-	public function removeFile($filepath)
-	{
-		$searchFile = FileSystem::getPath($filepath);
-		if (file_exists($searchFile))
-		{
-			return unlink($searchFile);
-		}
-	}
-
-	/** 
-	*             removeDir
-	* Will recursively remove all files and subdirectories from the 
-	* supplied dirpath
-	*
-	*@PARAM file path from what?
-	* 
-	*/	
-	public function removeDir($dirpath)
-	{
-		$searchDir = FileSystem::getPath($dirpath);
-		if (is_dir($searchDir)) 
-		{ 
-			$objects = scandir($searchDir); 
-			foreach ($objects as $object)
+		   echo FileSystem::getPath($destPath)."/".FileSystem::getPath($sourcePath);
+			while(false !== ($file = readdir($dir)))
 			{ 
-				if ($object != "." && $object != "..") 
+				if(($file != '.') && ($file != '..'))
 				{ 
-					if (filetype($searchDir."/".$object) == "dir")
-					{
-						removeDir($searchDir."/".$object);	
-					}  
-					else
-					{
-						unlink($searchDir."/".$object);
+					if(is_dir(FileSystem::getPath($sourcePath)."/".$file))
+					{ 
+						 
+						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
+					} 
+					else 
+					{ 
+						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
 					} 
 				} 
 			} 
-			reset($objects); 
-			rmdir($searchDir); 
-		} 
+			closedir($dir); 
+		}
+		else
+		{
+			copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+		}*/
+		copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+}
 
-	}
+public function move($sourcePath, $destPath)
+{
 
-	/** 
-	*             saveFile
-	* Will save the file contents to the webserver's filesystem
-	*
-	*@PARAM file path to users project
-	*@PARAM cotents of file
-	*/	
-	public function saveFile($filepath, $data)
-	{
-		$searchFile = FileSystem::getPath($filepath);
-		$handle = fopen($searchFile, 'w');
-		fwrite($handle, $data);
-		fclose($handle);
-	}
+			$searchDir = FileSystem::getPath($sourcePath);
+		if (is_dir($searchDir))
+		{
+		
+				$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
 
-	public function save($filepath, $contents)
-	{
+			$dir = opendir($searchDir); 
+			if(!file_exists(FileSystem::getPath($destPath)))
+			{
+				mkdir(FileSystem::getPath($destPath));
+				mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
+			}
+		   echo FileSystem::getPath($destPath)."/".FileSystem::getPath($sourcePath);
+			while(false !== ($file = readdir($dir)))
+			{ 
+				if(($file != '.') && ($file != '..'))
+				{ 
+					if(is_dir(FileSystem::getPath($sourcePath)."/".$file))
+					{ 
+						 
+						move(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
+					} 
+					else 
+					{ 
+					//ADDED
+						if(!file_exists($dest))
+						{
+							//mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
+							mkdir($dest);
+						}
+						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
+					} 
+				} 
+			} 
+			closedir($dir); 
+		}
+		else
+		{
+			if(!file_exists(dirname(FileSystem::getPath($destPath))))
+			{
+				mkdir(dirname(FileSystem::getPath($destPath)));
+			}
+			rename(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+		}
+		
+}
 
-	}
+/* Git commands */
+public function gitClone($project)
+{
 
-	public function copy($sourcePath, $destPath)
-	{
+}
 
-	}
+public function gitStatus($username, $project)
+{
 
-	public function move($sourcePath, $destPath)
-	{
+}
 
-	}
+public function gitAdd($username, $project, $path)
+{
 
-	/* Git commands */
+}
 
-	public function gitStatus($username, $project)
-	{
+public function gitRm($username, $project, $path)
+{
 
-	}
+}
 
-	public function gitAdd($username, $project, $path)
-	{
+public function gitCommit($username, $project, $message)
+{
 
-	}
+}
 
-	public function gitRm($username, $project, $path)
-	{
+public function gitRemoteAdd($username, $project, $alias, $link)
+{
 
-	}
+}
 
-	public function gitCommit($username, $project, $message)
-	{
+public function gitRemoteRm($username, $project, $alias)
+{
 
-	}
+} // remove remote
 
-	public function gitRemoteAdd($username, $project, $alias, $link)
-	{
 
-	}
+public function gitPush($username, $project, $remoteAlias, $remoteBranch)
+{
 
-	public function gitRemoteRm($username, $project, $alias)
-	{
+}
 
-	} // remove remote
+public function gitPull($username, $project, $remoteAlias, $remoteBranch)
+{
 
-	public function gitClone($username, $project)
-	{
+}
+  public function isCloned($user, $project)
+  {
 
-	}
+  }
 
-	public function gitPush($username, $project, $remoteAlias, $remoteBranch)
-	{
+}
 
-	}
+/* --- Testing of file manipulation public interfaces --- */
 
-	public function gitPull($username, $project, $remoteAlias, $remoteBranch)
-	{
 
-	}
+$testFile = "testFile.txt";
+$testFileCopy = "testFileCopy.txt";
+$js = "test/myjs.js";
+$test = new FileSystem('ZAM-','test-project');
+//$test->save($testFile, "This is some data.\n And some other data.\n");
+//$test->copy("js", "test");
+//$test->move($testFileCopy, "test/TestFileCopy.txt");
+$test->move("js/", "test"); //moves all files in directory
+//$test->removeDir("js"); //removes directory source after move
+//$test->move($js, "js/myjs.js");
+//$test->removeDir("test");
+//$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
+//$test->removeFile($testFile);
+$listFiles = $test->listDir();
+print_r($listFiles);
 
-	}
-
-	/* --- Testing of public interfaces --- */
-
-	/*
-	$testFile = "testFile.txt";
-	$test = new FileSystem('ZAM-','test-project');
-	$test->saveFile($testFile, "This is some data.\n And some other data.\n");
-	$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
-	$test->removeFile($testFile);
-	$listFiles = $test->listDir();
-	print_r($listFiles);
-	*/	
 ?>
