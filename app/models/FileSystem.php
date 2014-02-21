@@ -219,7 +219,52 @@ public function copy($sourcePath, $destPath)
 		{
 			copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
 		}*/
-		copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+		//copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+		
+					$searchDir = FileSystem::getPath($sourcePath);
+		if (is_dir($searchDir))
+		{
+		
+				$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
+
+			$dir = opendir($searchDir); 
+			if(!file_exists(FileSystem::getPath($destPath)))
+			{
+				mkdir(FileSystem::getPath($destPath));
+				mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
+			}
+		   echo FileSystem::getPath($destPath)."/".FileSystem::getPath($sourcePath);
+			while(false !== ($file = readdir($dir)))
+			{ 
+				if(($file != '.') && ($file != '..'))
+				{ 
+					if(is_dir(FileSystem::getPath($sourcePath)."/".$file))
+					{ 
+						 
+						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
+					} 
+					else 
+					{ 
+					//ADDED
+						if(!file_exists($dest))
+						{
+							//mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
+							mkdir($dest);
+						}
+						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
+					} 
+				} 
+			} 
+			closedir($dir); 
+		}
+		else
+		{
+			if(!file_exists(dirname(FileSystem::getPath($destPath))))
+			{
+				mkdir(dirname(FileSystem::getPath($destPath)));
+			}
+			copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+		}
 }
 
 public function move($sourcePath, $destPath)
@@ -256,6 +301,7 @@ public function move($sourcePath, $destPath)
 							mkdir($dest);
 						}
 						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
+						FileSystem::removeDir($sourcePath);
 					} 
 				} 
 			} 
@@ -268,6 +314,7 @@ public function move($sourcePath, $destPath)
 				mkdir(dirname(FileSystem::getPath($destPath)));
 			}
 			rename(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
+			FileSystem::removeDir(FileSystem::getPath($sourcePath));
 		}
 		
 }
@@ -333,7 +380,7 @@ $testFileCopy = "testFileCopy.txt";
 $js = "test/myjs.js";
 $test = new FileSystem('ZAM-','test-project');
 //$test->save($testFile, "This is some data.\n And some other data.\n");
-//$test->copy("js", "test");
+//$test->copy("js/", "test");
 //$test->move($testFileCopy, "test/TestFileCopy.txt");
 $test->move("js/", "test"); //moves all files in directory
 //$test->removeDir("js"); //removes directory source after move
