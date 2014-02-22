@@ -181,51 +181,21 @@ $handle = fopen($searchFile, 'w');
 fwrite($handle, $contents);
 fclose($handle);
 }
-
+/**
+*             copy
+*  Copies files and folders
+* 
+*  @PARAM string $sourcePath  
+*  @PARAM string $destPath  
+*/
 public function copy($sourcePath, $destPath)
 {
-		/*$searchDir = FileSystem::getPath($sourcePath);
+		
+		$searchDir = FileSystem::getPath($sourcePath);
 		if (is_dir($searchDir))
 		{
 		
-		$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
-
-			$dir = opendir($searchDir); 
-			
-			if(!file_exists(dirname(FileSystem::getPath($destPath))))
-			{
-				mkdir(FileSystem::getPath($destPath));
-				mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
-			}
-		   echo FileSystem::getPath($destPath)."/".FileSystem::getPath($sourcePath);
-			while(false !== ($file = readdir($dir)))
-			{ 
-				if(($file != '.') && ($file != '..'))
-				{ 
-					if(is_dir(FileSystem::getPath($sourcePath)."/".$file))
-					{ 
-						 
-						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
-					} 
-					else 
-					{ 
-						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
-					} 
-				} 
-			} 
-			closedir($dir); 
-		}
-		else
-		{
-			copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
-		}*/
-		//copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
-		
-					$searchDir = FileSystem::getPath($sourcePath);
-		if (is_dir($searchDir))
-		{
-		
-				$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
+			$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
 
 			$dir = opendir($searchDir); 
 			if(!file_exists(FileSystem::getPath($destPath)))
@@ -245,10 +215,9 @@ public function copy($sourcePath, $destPath)
 					} 
 					else 
 					{ 
-					//ADDED
 						if(!file_exists($dest))
 						{
-							//mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
+
 							mkdir($dest);
 						}
 						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
@@ -266,7 +235,12 @@ public function copy($sourcePath, $destPath)
 			copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
 		}
 }
-
+/*         move
+*   copies the file/folder to $destpath and removes original
+*
+*	@PARAM String $sourcePath
+*	@PARAM String $destPath
+*/
 public function move($sourcePath, $destPath)
 {
 
@@ -274,7 +248,7 @@ public function move($sourcePath, $destPath)
 		if (is_dir($searchDir))
 		{
 		
-				$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
+			$dest = FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath));
 
 			$dir = opendir($searchDir); 
 			if(!file_exists(FileSystem::getPath($destPath)))
@@ -294,10 +268,9 @@ public function move($sourcePath, $destPath)
 					} 
 					else 
 					{ 
-					//ADDED
 						if(!file_exists($dest))
 						{
-							//mkdir((FileSystem::getPath($destPath)."/".basename(FileSystem::getPath($sourcePath)))); 
+
 							mkdir($dest);
 						}
 						copy(FileSystem::getPath($sourcePath)."/".$file, $dest."/".$file); 
@@ -375,20 +348,20 @@ public function gitPull($username, $project, $remoteAlias, $remoteBranch)
 /* --- Testing of file manipulation public interfaces --- */
 
 
-$testFile = "testFile.txt";
-$testFileCopy = "testFileCopy.txt";
-$js = "test/myjs.js";
-$test = new FileSystem('ZAM-','test-project');
+//$testFile = "testFile.txt";
+//$testFileCopy = "testFileCopy.txt";
+//$js = "test/myjs.js";
+//$test = new FileSystem('ZAM-','test-project');
 //$test->save($testFile, "This is some data.\n And some other data.\n");
 //$test->copy("js/", "test");
 //$test->move($testFileCopy, "test/TestFileCopy.txt");
-$test->move("js/", "test"); //moves all files in directory
+//$test->move("js/", "test"); //moves all files in directory
 //$test->removeDir("js"); //removes directory source after move
 //$test->move($js, "js/myjs.js");
 //$test->removeDir("test");
 //$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
 //$test->removeFile($testFile);
-$listFiles = $test->listDir();
-print_r($listFiles);
+//$listFiles = $test->listDir();
+//print_r($listFiles);
 
 ?>
