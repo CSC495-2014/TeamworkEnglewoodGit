@@ -23,26 +23,11 @@ $(function()
 		tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
 		tabs.tabs( "refresh" );
 		tabCounter++;
-
-		//editor format
-		
-   		var editor = ace.edit(id);
-    	//editor.setTheme("theme-twilight");
-    	//editor.getSession().setMode("mode-json");
-		
-
+		var editor = ace.edit(id);   //editor format
 		document.getElementById(id).name = label;	//set the name of tabs
 	}
 
     window.addTab = addTab;
-
-	// addTab button: add a new tab
-	/**$( "#add_tab" )
-		.button()
-		.click(function() 
-		{
-			addTab("File1", "HelloWorld");
-		});*/
 
 	// close icon: removing the tab on click
 	tabs.delegate( "span.ui-icon-close", "click", function() 
