@@ -26,121 +26,106 @@ class FileController extends \BaseController {
     public function indexPost($user, $project)
     {
         $dir = Input::get('dir');
-        $searchDir = FileController::ROOT . $dir;
-        $listing = scandir($searchDir);
+//        $searchDir = FileController::ROOT . $dir;
+//        $listing = scandir($searchDir);
+//
+//        // If we want to see the base directory, only show the $project folder as the only top-level folder.
+//        if ($dir == '/') {
+//            return View::make(
+//                'filesystem_list',
+//                [
+//                    'folders' => [['name' => $project, 'path' => $dir . $project . '/']],
+//                    'files' => []
+//                ]
+//            );
+//        }
+//
+//        $folders = [];
+//        $files = [];
+//
+//
+//        foreach ($listing as $item)
+//        {
+//            $item = [
+//                'name' => $item,
+//                'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
+//                'ext'  => $this->getFileExtension($item)
+//            ];
+//
+//            if ($item['name'] == '.' or $item['name'] == '..')
+//            {
+//                continue;
+//            }
+//            else if (is_dir($searchDir . $item['name']))
+//            {
+//                $folders[] = $item;
+//            }
+//            else
+//            {
+//                $files[] = $item;
+//            }
+//        }
 
-        // If we want to see the base directory, only show the $project folder as the only top-level folder.
-        if ($dir == '/') {
-            return View::make(
-                'filesystem_list',
-                [
-                    'folders' => [['name' => $project, 'path' => $dir . $project . '/']],
-                    'files' => []
-                ]
-            );
-        }
-
-        $folders = [];
-        $files = [];
-
-
-        foreach ($listing as $item)
-        {
-            $item = [
-                'name' => $item,
-                'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
-                'ext'  => $this->getFileExtension($item)
-            ];
-
-            if ($item['name'] == '.' or $item['name'] == '..')
-            {
-                continue;
-            }
-            else if (is_dir($searchDir . $item['name']))
-            {
-                $folders[] = $item;
-            }
-            else
-            {
-                $files[] = $item;
-            }
-        }
-
-        return View::make('filesystem_list', ['folders' => $folders, 'files' => $files]);
+//        return View::make('filesystem_list', ['folders' => $folders, 'files' => $files]);
+        $fs = new FileSystem($user, $project);
+        return View::make('filesystem_list', $fs->listDir($dir));
     }
-
-	/**
-	 * Display a listing of the resource.
-     *
-	 * @return Response
-	 */
-	public function index()
-	{
-        //
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-        //
-	}
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+     * @param string $user
+     * @param string $project
+     * @param string $path
+     *
 	 * @return Response
 	 */
-	public function show($user, $project, $filepath)
+	public function show($user, $project, $path)
 	{
-        echo htmlentities(file_get_contents(FileController::ROOT . $filepath));
-	}
+        $contents = htmlentities(file_get_contents(FileController::ROOT . $path));
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
+        $response = Response::make($contents, 200);
+        $response->header('Content-Type', 'text/plain');
+
+        return $response;
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+     * @param string $user
+     * @param string $project
+     * @param string $path
+     *
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($user, $project, $path)
 	{
 		//
 	}
 
 	/**
-	 * Remove the specified resource from storage.
+	 * Delete the specified file or directory.
 	 *
-	 * @param  int  $id
+     * @param string $user
+     * @param string $project
+     * @param string $path
+     *
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($user, $project, $path)
 	{
-		//
-	}
+        $fs = new FileSystem($user, $project);
 
+        if ($fs->isDir($path))
+        {
+            $fs->removeDir($path);
+        }
+        else
+        {
+            $fs->removeFile($path);
+        }
+
+        return Response::make(null, 200);
+	}
 }
