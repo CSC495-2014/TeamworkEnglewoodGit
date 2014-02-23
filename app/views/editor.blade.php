@@ -5,20 +5,23 @@
         {{ HTML::style('/css/jqueryFileTree.css') }}
         {{ HTML::style('/css/jquery.contextMenu.css') }}
         {{ HTML::style('/css/jquery.ui.all.css') }}
+        {{ HTML::style('/css/demos.css')}}
         {{ HTML::style('css/editor.css') }}
+
         {{ HTML::script('/js/jquery-1.10.2.js') }}
         {{ HTML::script('/js/jqueryFileTree.js') }}
         {{ HTML::script('/js/jquery.ui.position.js') }}
         {{ HTML::script('/js/jquery.contextMenu.js') }}
         {{ HTML::script('/js/bootstrap.js') }}
+        {{ HTML::script('/js/mainTabbedInterface.js') }}
+        {{ HTML::script('/js/ace.js') }}
+
 		{{ HTML::script('/js/ui/jquery.ui.position.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.core.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.widget.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.button.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.dialog.js') }}
-		{{ HTML::script('/js/mainTabbedInterface.js') }}
-		{{ HTML::script('/js/ace.js') }}
+		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}		
+		
 		<style>
 		#tabs { margin-top: 0em; }
 		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
@@ -42,7 +45,8 @@
 				</div>
 				<div id="mainContent"> 		  
 					<div id="filesystem">
-						
+					
+                    <!--Tabbed Interface-->	
 					</div>
 					<div id="editor">
 						<div id="tabs">
@@ -50,6 +54,8 @@
 							</ul>
 						</div>
 					</div>
+                    <!--End of Tabbed Interface-->
+                    
 					<div id="optionSideBar">
 						<div class="panel panel-default">
 						  <div class="panel-body">

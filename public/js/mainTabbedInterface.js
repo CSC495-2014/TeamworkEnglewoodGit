@@ -25,8 +25,11 @@ $(function()
 		tabCounter++;
 
 		//editor format
-		var editor = ace.edit(id);
-		editor.getSession().setMode("mode/javascript");
+		
+   		var editor = ace.edit(id);
+    	//editor.setTheme("theme-twilight");
+    	//editor.getSession().setMode("mode-json");
+		
 
 		document.getElementById(id).name = label;	//set the name of tabs
 	}
