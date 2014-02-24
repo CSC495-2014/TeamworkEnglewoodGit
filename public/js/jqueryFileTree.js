@@ -49,47 +49,64 @@ if(jQuery) (function($){
             // Mike Holler addition
             if( o.onLoad == undefined ) o.onLoad = null;
 
-			$(this).each( function() {
-				
-				function showTree(c, t) {
-					$(c).addClass('wait');
-					$(".jqueryFileTree.start").remove();
-					$.post(o.script, { dir: t }, function(data) {
-						$(c).find('.start').html('');
-						$(c).removeClass('wait').append(data);
-						if( o.root == t ) $(c).find('UL:hidden').show(); else $(c).find('UL:hidden').slideDown({ duration: o.expandSpeed, easing: o.expandEasing });
-						bindTree(c);
+            window.jqueryFileTree = function () { };
 
-                        // Mike Holler addition, add a callback once folder load is completed
-                        o.onLoad();
-					});
-				}
-				
-				function bindTree(t) {
-					$(t).find('LI A').bind(o.folderEvent, function() {
-						if( $(this).parent().hasClass('directory') ) {
-							if( $(this).parent().hasClass('collapsed') ) {
-								// Expand
-								if( !o.multiFolder ) {
-									$(this).parent().parent().find('UL').slideUp({ duration: o.collapseSpeed, easing: o.collapseEasing });
-									$(this).parent().parent().find('LI.directory').removeClass('expanded').addClass('collapsed');
-								}
-								$(this).parent().find('UL').remove(); // cleanup
-								showTree( $(this).parent(), escape($(this).attr('rel').match( /.*\// )) );
-								$(this).parent().removeClass('collapsed').addClass('expanded');
-							} else {
-								// Collapse
-								$(this).parent().find('UL').slideUp({ duration: o.collapseSpeed, easing: o.collapseEasing });
-								$(this).parent().removeClass('expanded').addClass('collapsed');
-							}
-						} else {
-							h($(this).attr('rel'));
-						}
-						return false;
-					});
-					// Prevent A from triggering the # on non-click events
-					if( o.folderEvent.toLowerCase != 'click' ) $(t).find('LI A').bind('click', function() { return false; });
-				}
+            window.jqueryFileTree.fileHandler = function($file) {
+                console.log($(this));
+                console.log($file);
+                h($file.attr('rel'));
+            };
+
+            window.jqueryFileTree.directoryHandler = function($directory) {
+                if( $directory.parent().hasClass('collapsed') ) {
+                    // Expand
+                    if( !o.multiFolder ) {
+                        $directory.parent().parent().find('UL').slideUp({ duration: o.collapseSpeed, easing: o.collapseEasing });
+                        $directory.parent().parent().find('LI.directory').removeClass('expanded').addClass('collapsed');
+                    }
+                    $directory.parent().find('UL').remove(); // cleanup
+                    showTree( $directory.parent(), escape($directory.attr('rel').match( /.*\// )) );
+                    $directory.parent().removeClass('collapsed').addClass('expanded');
+                } else {
+                    // Collapse
+                    $directory.parent().find('UL').slideUp({ duration: o.collapseSpeed, easing: o.collapseEasing });
+                    $directory.parent().removeClass('expanded').addClass('collapsed');
+                }
+            };
+
+            function showTree(c, t) {
+                $(c).addClass('wait');
+                $(".jqueryFileTree.start").remove();
+                $.post(o.script, { dir: t }, function(data) {
+                    $(c).find('.start').html('');
+                    $(c).removeClass('wait').append(data);
+                    if( o.root == t ) $(c).find('UL:hidden').show(); else $(c).find('UL:hidden').slideDown({ duration: o.expandSpeed, easing: o.expandEasing });
+                    bindTree(c);
+
+                    // Mike Holler addition, add a callback once folder load is completed
+                    o.onLoad();
+                });
+            }
+
+            window.jqueryFileTree.handler = function() {
+                console.log('In window.jqueryFileTree.handler');
+                if( $(this).parent().hasClass('directory') ) {
+                    window.jqueryFileTree.directoryHandler($(this));
+                } else {
+                    window.jqueryFileTree.fileHandler($(this));
+                }
+                return false;
+            };
+
+            window.jqueryFileTree.folderEvent = o.folderEvent;
+
+            function bindTree(t) {
+                $(t).find('LI A').bind(o.folderEvent, window.jqueryFileTree.handler);
+                // Prevent A from triggering the # on non-click events
+                if( o.folderEvent.toLowerCase != 'click' ) $(t).find('LI A').bind('click', function() { return false; });
+            }
+
+			$(this).each( function() {
 				// Loading message
 				$(this).html('<ul class="jqueryFileTree start"><li class="wait">' + o.loadMessage + '<li></ul>');
 				// Get the initial file list
