@@ -111,8 +111,15 @@ $(function() {
 
             var selector = "a[rel='" + newPath + "']";
 
-            // if a file doesn't already exist with a the same name
-            if (newName == oldName || !$(selector).length) {
+            if (newName == '.' || newName == '..' || newName.indexOf('/') != -1) {
+
+                // ******************************************
+                // TODO: make this check server side too!!!!
+                // ******************************************
+
+                alert('File cannot be ".", "..", or contain a "/".');
+            } // if a file doesn't already exist with a the same name
+            else if (newName == oldName || !$(selector).length) {
                 console.log(newPath);
                 $_promptModal.modal('hide');
                 callback(oldPath, newPath);
