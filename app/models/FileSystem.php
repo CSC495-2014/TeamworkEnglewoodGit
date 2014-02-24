@@ -1,61 +1,13 @@
 <?php
 
-class FileSystem {
-
-	const ROOT = '../data/';
-	private $userName;
-	private $projectName;
-
+class FileSystem extends AbstractFileSystem
+{
 	/**
-	*			  FileSystem Constructor
-	* This will set the userName and projectName so all  of the 
-	* class method will be able to access them. 
-	* 
-	*/
-	function __construct($userName, $projectName)
-	{
-		$this->userName = $userName;
-		$this->projectName = $projectName;
-	}
-
-	/**
-	*			  getUserName
-	* This will return the user name. 
-	*
-	*/
-	public function getUserName()
-	{
-		return $this->userName;
-	}
-
-	/**
-	*			  getProjectName
-	* This will return the project name. 
-	*
-	*/
-	public function getProjectName()
-	{
-		return $this->projectName;
-	}
-
-	/**
-	*			  getPath
-	* This will create a full path to a given resource. 
-	* 
-	* @PARAM A path to a resource or file
-	* @return full path within the application's file system
-	*/
-	private function getPath($path)
-	{
-		return FileSystem::ROOT . 'users/' . $this->userName . '/projects/' . $this->projectName . '/' . $path;
-	}
-	/**
-	*			  getFileExtension
-	* returns file extension 
+	* returns file extension of specified file
 	* Credit - Michael Holler 
 	*
-	* @PARAM filename
-	* @return file extension of file
+	* @param string $filename
+	* @return file extentions
 	*/
 	private function getFileExtension($filename) 
 	{
@@ -77,7 +29,7 @@ class FileSystem {
 	}
 
 	/** 
-	*             listDir
+	*    
 	* Passed current user directory $dirpath
 	* 
 	* Credit - Michael Holler  
@@ -97,7 +49,7 @@ class FileSystem {
 		{
 			$item = [
 				'name' => $item,
-				'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
+				'path' => $searchDir . $item . (is_dir($searchDir . $item) ? '/' : ''),
 			];
 
 			if ($item['name'] == '.' or $item['name'] == '..')
@@ -192,69 +144,22 @@ class FileSystem {
 
 	}
 
-	/* Git commands */
-	public function gitClone($project)
-	{
-
-	}
-	
-	public function gitStatus($username, $project)
-	{
-
-	}
-
-	public function gitAdd($username, $project, $path)
-	{
-
-	}
-
-	public function gitRm($username, $project, $path)
-	{
-
-	}
-
-	public function gitCommit($username, $project, $message)
-	{
-
-	}
-
-	public function gitRemoteAdd($username, $project, $alias, $link)
-	{
-
-	}
-
-	public function gitRemoteRm($username, $project, $alias)
-	{
-
-	} // remove remote
-
-
-	public function gitPush($username, $project, $remoteAlias, $remoteBranch)
-	{
-
-	}
-
-	public function gitPull($username, $project, $remoteAlias, $remoteBranch)
-	{
-
-	}
- 	public function isCloned($user, $project)
- 	{
-
- 	}
-
 }
 
-	/* --- Testing of file manipulation public interfaces --- */
-
-	/*
+	/* 
+	$user = 'ZAM-';
+	$project = 'TestRepo';
 	$testFile = "testFile.txt";
-	$test = new FileSystem('ZAM-','test-project');
-	$test->save($testFile, "This is some data.\n And some other data.\n");
-	$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
-	$test->removeFile($testFile);
-	$listFiles = $test->listDir();
+
+	// To properly test the FileCommands class, I need to possibly create a dir before hand.
+	// Normally the initial clone would properly create the directory. 
+	$fileSystem = new FileCommands($user, $project);
+	$fileSystem->save($testFile, "This is some data.\n And some other data.\n");
+	//$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
+	//$test->removeFile($testFile);
+	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
 	*/
+
 
 ?>
