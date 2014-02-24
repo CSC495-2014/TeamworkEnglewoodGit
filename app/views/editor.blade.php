@@ -170,6 +170,7 @@
 //                        dataType: 'json',
                         success: function (result) {
                             console.log('Returned from server');
+                            alert('git status not yet implemented on server');
 
                             result = {
                                 "/artisan": " M",
@@ -238,6 +239,11 @@
                             src: source,
                             dest: destination
                         }),
+                        statusCode: {
+                            500: function() {
+                                alert('Not yet implemented on server.');
+                            }
+                        },
                         contentType: 'application/json; charset=utf-8',
                         failure: function(data) {
                             alert('Unable to rename file. Error: ' + data ? data : 1);
@@ -408,8 +414,6 @@
                         }
                     });
                 }
-
-
 
             </script>
 		</body>
