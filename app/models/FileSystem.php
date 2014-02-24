@@ -1,7 +1,105 @@
 <?php
 
-class FileSystem extends AbstractFileSystem
+class FileSystem
 {
+
+	/**
+	* Root directory where all users and their projects/repos will be stored.
+	*
+	* @var string 
+	*/
+	const ROOT = '../data/';
+	
+	/**
+	* User name of the instance of this class. 
+	* This will be used to create the user's directory path.
+	*
+	* This will be set in the constructor.
+	*
+	* @var string 
+	*/
+	private $userName;
+
+
+	/**
+	* Project name of the instance of this class. 
+	* This will be used to create the user's project path.
+	*
+	* This will be set in the constructor.
+	*
+	* @var string 
+	*/
+	private $projectName;
+
+	/**
+	* This instantiates a GitWrapper object. All of the local Git commands
+	* will be executed with methods of this object. 
+	* methods can use it.
+	*
+	* This will set the userName and projectName
+	*/
+	
+	function __construct($userName, $projectName)
+	{
+		$this->userName = $userName;
+		$this->projectName = $projectName;
+	}
+
+	/**
+	*			  
+	* This will return the user name. 
+	*
+	* @return string $userName
+	*/
+	public function getUserName()
+	{
+		return $this->userName;
+	}
+
+	/**
+	*			  
+	* This will set the user name. 
+	*
+	* @param string $username
+	*/
+	public function setUserName($userName)
+	{
+		$this->userName = $userName;
+	}
+
+	/**
+	*			  
+	* This will return the project name. 
+	*
+	* @return string $projectName
+	*/
+	public function getProjectName()
+	{
+		return $this->projectName;
+	}
+
+	/**
+	*			  
+	* This will set the project name. 
+	*
+	* @param string $projectName
+	*/
+	public function setProjectName($projectName)
+	{
+		$this->projectName = $projectName;
+	}
+
+	/**
+	* This will create a full path to a given resource within the user's project dir. 
+	* 
+	* @param string $path
+	* @return string full path within the application's file system
+	*/
+	public function getPath($path = "")
+	{
+		return FileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName() . '/' . $path;
+	}
+
 	/**
 	* returns file extension of specified file
 	* Credit - Michael Holler 
@@ -27,6 +125,7 @@ class FileSystem extends AbstractFileSystem
 			return null;
 		}
 	}
+
 
 	/** 
 	*    
@@ -146,20 +245,20 @@ class FileSystem extends AbstractFileSystem
 
 }
 
-	/* 
+	 
 	$user = 'ZAM-';
 	$project = 'TestRepo';
 	$testFile = "testFile.txt";
 
 	// To properly test the FileCommands class, I need to possibly create a dir before hand.
 	// Normally the initial clone would properly create the directory. 
-	$fileSystem = new FileCommands($user, $project);
+	$fileSystem = new FileSystem($user, $project);
+	
+	// This saves a test file in the app/data/users/ZAM-/projects/TestRepo directory
 	$fileSystem->save($testFile, "This is some data.\n And some other data.\n");
 	//$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
 	//$test->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
-	*/
-
-
+	
 ?>

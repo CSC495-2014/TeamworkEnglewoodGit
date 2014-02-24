@@ -2,32 +2,103 @@
 
 require_once '../../vendor/autoload.php';
 use GitWrapper\GitWrapper;
-require __DIR__ . '/GitCommands.php';
+require __DIR__ . '/AbstractFileSystem.php';
 
 class GitCommands extends AbstractFileSystem
 {
-
+/**
+	* Root directory where all users and their projects/repos will be stored.
+	*
+	* @var string 
+	*/
+	const ROOT = '../data/';
+	
+	/**
+	* GitWrapper object that will be used to execute Git commands to local file system. 
+	*
+	* @var GitWrapper
+	*/
 	private $wrapper;
-	private $git;
+	
+	/**
+	* User name of the instance of this class. 
+	* This will be used to create the user's directory path.
+	*
+	* This will be set in the constructor.
+	*
+	* @var string 
+	*/
+	private $userName;
+
 
 	/**
-	* This instantiatea a GitWrapper object. All of the local Git commands
+	* Project name of the instance of this class. 
+	* This will be used to create the user's project path.
+	*
+	* This will be set in the constructor.
+	*
+	* @var string 
+	*/
+	private $projectName;
+
+	/**
+	* This instantiates a GitWrapper object. All of the local Git commands
 	* will be executed with methods of this object. 
 	* methods can use it.
+	*
+	* This will set the userName and projectName
 	*/
-	function __construct()
+	
+	function __construct($userName, $projectName)
 	{
+		$this->userName = $userName;
+		$this->projectName = $projectName;
 		$this->gitWrapper = new GitWrapper();
+		// TODO Need to possibly make a WorkingCopy variable that will be set depending if the repo is cloned or not.
 	}
 
-	/** 
-	* Sets wrapper to a GitWrapper object.
+	/**
+	*			  
+	* This will return the user name. 
 	*
-	* @param GitWrapper $wrapper
+	* @return string $userName
 	*/
-	public function setWrapper($wrapper)
+	public function getUserName()
 	{
-		$this->wrapper = $wrapper;
+		return $this->userName;
+	}
+
+	/**
+	*			  
+	* This will set the user name. 
+	*
+	* @param string $username
+	*/
+	public function setUserName($userName)
+	{
+		$this->userName = $userName;
+	}
+
+	/**
+	*			  
+	* This will return the project name. 
+	*
+	* @return string $projectName
+	*/
+	public function getProjectName()
+	{
+		return $this->projectName;
+	}
+
+	/**
+	*			  
+	* This will set the project name. 
+	*
+	* @param string $projectName
+	*/
+	public function setProjectName($projectName)
+	{
+		$this->projectName = $projectName;
 	}
 
 	/** 
@@ -41,16 +112,36 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/** 
+	* Sets wrapper to a GitWrapper object.
+	*
+	* @param GitWrapper $wrapper
+	*/
+	public function setWrapper($wrapper)
+	{
+		$this->wrapper = $wrapper;
+	}
+
+	/**
+	* This will create a full path to a given resource within the user's project dir. 
+	* 
+	* @param string $path
+	* @return string full path within the application's file system
+	*/
+	public function getPath($path = "")
+	{
+		return GitCommands::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName() . '/' . $path;
+	}
+
+	/** 
 	* Will clone a repo into a new directory. 
 	* The directory name will be the same as the project name.   
 	*
 	*/
 	public function gitClone()
 	{
-		$repoURL = 'https://github.com/' . $this->userName . '/' . $this->projectName . '.git';
+		$repoURL = 'https://github.com/' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
 		$path = $this->getPath();
-		$git = $this->gitWrapper->clone($repoURL, $path);
-		//GitCommands::setGit($git);	
+		$this->gitWrapper->clone($repoURL, $path);
 	}
 
 	/** 
@@ -63,7 +154,6 @@ class GitCommands extends AbstractFileSystem
 		// #TODO: Doesn't support adding new directories along with files.
 		// this only supports adding a single file at a time.
 		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath()); // This 
-		touch($this->getPath() . $path);
 		return $WorkingCopy->add($path);
 	}
 	
@@ -92,13 +182,12 @@ class GitCommands extends AbstractFileSystem
 
 	public function gitRm($path)
 	{
-		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath());
-		return $WorkingCopy->rm($path);
+
 	}
 
 	public function gitStatus()
 	{
-		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath());
+
 	}
 
 	public function gitRemoteAdd($username, $project, $alias, $link)
@@ -109,7 +198,7 @@ class GitCommands extends AbstractFileSystem
 	public function gitRemoteRm($username, $project, $alias)
 	{
 
-	} // remove remote
+	}
 
 	public function gitPull($username, $project, $remoteAlias, $remoteBranch)
 	{
@@ -127,8 +216,11 @@ class GitCommands extends AbstractFileSystem
 	// Initial clone of repo
 	$user = 'ZAM-';
 	$project = 'TestRepo';
+	$testFile = 'MyFile.txt';
 	$git = new GitCommands($user, $project);
+
 	$git->gitClone(); // Test for if the project has already been cloned or not.
+	touch($git->getPath() . $testFile);
 	$git->gitAdd($testFile);
 	$git->gitCommit('Added my test file!');
 	$git->gitPush('origin', 'master');	

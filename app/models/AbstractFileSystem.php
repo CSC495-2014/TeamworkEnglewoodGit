@@ -80,9 +80,9 @@ abstract class AbstractFileSystem
 	* @PARAM A path to a resource or file
 	* @return full path within the application's file system
 	*/
-	public function getPath($path)
+	public function getPath($path = "")
 	{
-		return FileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName() . '/' . $path;
+		return AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName() . '/' . $path;
 	}
 }
 
