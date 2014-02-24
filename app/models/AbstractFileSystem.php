@@ -9,8 +9,7 @@ abstract class AbstractFileSystem
 	* @var string 
 	*/
 	const ROOT = '../data/';
-
-
+	
 	/**
 	* User name of the instance of this class. 
 	* This will be used to create the user's directory path.
@@ -19,8 +18,7 @@ abstract class AbstractFileSystem
 	*
 	* @var string 
 	*/
-	private $userName;
-
+	protected $userName;
 
 	/**
 	* Project name of the instance of this class. 
@@ -30,14 +28,18 @@ abstract class AbstractFileSystem
 	*
 	* @var string 
 	*/
-	private $projectName;
+	public $projectName;
 
 	/**
-	*			  FileSystem Constructor
-	* This will set the userName and projectName so all  of the 
-	* class method will be able to access them. 
-	* 
+	*
+	* instantiates a GitWrapper object. All of the local Git commands
+	* will be executed with methods of this object. 
+	* methods can use it.
+	*
+	* @param string @userName
+	* @param string @projectName
 	*/
+	
 	function __construct($userName, $projectName)
 	{
 		$this->userName = $userName;
@@ -45,40 +47,55 @@ abstract class AbstractFileSystem
 	}
 
 	/**
-	*			  getUserName
-	* This will return the user name. 
+	*			  
+	* return the user name. 
 	*
+	* @return string $userName
 	*/
 	public function getUserName()
 	{
 		return $this->userName;
 	}
 
+	/**
+	*			  
+	* set the user name. 
+	*
+	* @param string $username
+	*/
 	public function setUserName($userName)
 	{
 		$this->userName = $userName;
 	}
+
 	/**
-	*			  getProjectName
-	* This will return the project name. 
+	*			  
+	* return the project name. 
 	*
+	* @return string $projectName
 	*/
 	public function getProjectName()
 	{
 		return $this->projectName;
 	}
 
+	/**
+	*			  
+	* set the project name. 
+	*
+	* @param string $projectName
+	*/
 	public function setProjectName($projectName)
 	{
 		$this->projectName = $projectName;
 	}
 
 	/**
-	*			  getPath
-	* This will create a full path to a given resource within the user's project dir. 
+	*
+	* will create a full path to a given resource within the user's project dir. 
 	* 
-	* @PARAM A path to a resource or file
-	* @return full path within the application's file system
+	* @param string $path
+	* @return string full path within the application's file system
 	*/
 	public function getPath($path = "")
 	{

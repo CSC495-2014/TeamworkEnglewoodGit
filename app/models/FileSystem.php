@@ -1,104 +1,20 @@
 <?php
+require __DIR__ . '/AbstractFileSystem.php';
 
-class FileSystem
+class FileSystem extends AbstractFileSystem
 {
-
 	/**
-	* Root directory where all users and their projects/repos will be stored.
+	* In order for the parent's constructor to be called,
+	* need to pass user name and project name to AbstractFileSystem's constructor.
 	*
-	* @var string 
-	*/
-	const ROOT = '../data/';
-	
-	/**
-	* User name of the instance of this class. 
-	* This will be used to create the user's directory path.
-	*
-	* This will be set in the constructor.
-	*
-	* @var string 
-	*/
-	private $userName;
-
-
-	/**
-	* Project name of the instance of this class. 
-	* This will be used to create the user's project path.
-	*
-	* This will be set in the constructor.
-	*
-	* @var string 
-	*/
-	private $projectName;
-
-	/**
-	* This instantiates a GitWrapper object. All of the local Git commands
-	* will be executed with methods of this object. 
-	* methods can use it.
-	*
-	* This will set the userName and projectName
-	*/
-	
-	function __construct($userName, $projectName)
-	{
-		$this->userName = $userName;
-		$this->projectName = $projectName;
-	}
-
-	/**
-	*			  
-	* This will return the user name. 
-	*
-	* @return string $userName
-	*/
-	public function getUserName()
-	{
-		return $this->userName;
-	}
-
-	/**
-	*			  
-	* This will set the user name. 
-	*
-	* @param string $username
-	*/
-	public function setUserName($userName)
-	{
-		$this->userName = $userName;
-	}
-
-	/**
-	*			  
-	* This will return the project name. 
-	*
-	* @return string $projectName
-	*/
-	public function getProjectName()
-	{
-		return $this->projectName;
-	}
-
-	/**
-	*			  
-	* This will set the project name. 
-	*
+	* @param string $userName
 	* @param string $projectName
 	*/
-	public function setProjectName($projectName)
+	function __construct($userName, $projectName)
 	{
-		$this->projectName = $projectName;
+		parent::__construct($userName, $projectName); // calling AbstractFileSystem's constructor
 	}
 
-	/**
-	* This will create a full path to a given resource within the user's project dir. 
-	* 
-	* @param string $path
-	* @return string full path within the application's file system
-	*/
-	public function getPath($path = "")
-	{
-		return FileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName() . '/' . $path;
-	}
 
 	/**
 	* returns file extension of specified file
@@ -127,19 +43,17 @@ class FileSystem
 	}
 
 
-	/** 
-	*    
-	* Passed current user directory $dirpath
+	/**   
+	* Lists files and directories from $dirPath
 	* 
 	* Credit - Michael Holler  
-	*@PARAM current directory
+	*@param string $dirPath
 	*@return list of subdirectories and files in current
 	* user directory.
 	*/
-	public function listDir($dirpath = "")
+	public function listDir($dirPath = "")
 	{
-		// Creating path
-		$searchDir = FileSystem::getPath($dirpath);
+		$searchDir = FileSystem::getPath($dirPath);
 		$listing = scandir($searchDir);
 		$folders = [];
 		$files = [];
@@ -170,26 +84,25 @@ class FileSystem
 	}
 
 	/** 
-	*             removeFile
-	* Will remove the passed file from the server's file system
+	* remove a file from the server's file system
 	*
-	*@PARAM file path
+	*@param string $filePath
 	*@return TRUE on success FALSE on failure 
 	*/
-	public function removeFile($filepath)
+	public function removeFile($filePath)
 	{
-		return unlink(FileSystem::getPath($filepath));
+		return unlink(FileSystem::getPath($filePath));
 	}
 
 	/** 
-	*             removeDir
-	* Will recursively remove all files and subdirectories from the 
+	*        
+	* recursively remove all files and subdirectories from the 
 	* supplied dirpath
 	*
-	*@PARAM file path
+	*@param string $dirPath
 	* 
 	*/	
-	public function removeDir($dirpath)
+	public function removeDir($dirPath)
 	{
 		$searchDir = FileSystem::getPath($dirpath);
 		if (is_dir($searchDir)) 
@@ -219,15 +132,15 @@ class FileSystem
 	}
 
 	/** 
-	*             save
-	* Will save the file contents to the webserver's filesystem
+	*             
+	* save the file contents to the webserver's filesystem
 	*
-	*@PARAM file path to users project
-	*@PARAM cotents of file
+	*@param string $filePath
+	*@param string $contents
 	*/	
-	public function save($filepath, $contents)
+	public function save($filePath, $contents)
 	{
-		$searchFile = FileSystem::getPath($filepath);
+		$searchFile = FileSystem::getPath($filePath);
 		$handle = fopen($searchFile, 'w');
 		fwrite($handle, $contents);
 		fclose($handle);
@@ -245,7 +158,8 @@ class FileSystem
 
 }
 
-	 
+	/* --- Testing of FileSystem public interfaces --- */
+	/*
 	$user = 'ZAM-';
 	$project = 'TestRepo';
 	$testFile = "testFile.txt";
@@ -260,5 +174,5 @@ class FileSystem
 	//$test->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
-	
+	*/
 ?>
