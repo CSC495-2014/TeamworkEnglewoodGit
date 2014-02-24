@@ -7,6 +7,17 @@ $(function() {
         'paste': {name: 'Paste', icon: 'paste', fscallback: onClickFsPaste},
         'gitAdd': {name: 'Git Add', icon: 'git-add', fscallback: onClickFsItemGitAdd},
         'delete': {name: 'Delete...', icon: 'delete', fscallback: onClickFsDirDelete},
+        'refresh': {name: 'Refresh', icon: 'refresh', fscallback: onClickRefresh},
+        'sep1': '------------',
+        'quit': {name: 'Quit', icon: 'quit'}
+    };
+
+    var collapsedDirectoryItems = {
+        'rename': {name: 'Rename...', icon: 'edit', fscallback: onClickFsRename},
+        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
+        'paste': {name: 'Paste', icon: 'paste', fscallback: onClickFsPaste},
+        'gitAdd': {name: 'Git Add', icon: 'git-add', fscallback: onClickFsItemGitAdd},
+        'delete': {name: 'Delete...', icon: 'delete', fscallback: onClickFsDirDelete},
         'sep1': '------------',
         'quit': {name: 'Quit', icon: 'quit'}
     };
@@ -37,14 +48,15 @@ $(function() {
     /* ********************************
      * Filesystem context menu events.
      **********************************/
-    function onClickFsRename(name, path, options) { fsRenameItemPrompt(name, path, fsMv); }
+    function onClickFsRename(name, path, options) { fsRenameItemPrompt(name, path, fsRename); }
     function onClickFsCopy(name, path, options) { _clipboard = path; console.log('Clipboard: ' + path); }
     function onClickFsPaste(name, path, options) { fsCp(_clipboard, path); }
     function onClickFsDirNewDir(name, path, options) { fsNewItemPrompt(path, 'Directory', 'ExampleDirectory', fsMkdir); }
     function onClickFsDirNewFile(name, path, options) { fsNewItemPrompt(path, 'File', 'ExampleFile.html', fsTouch); }
     function onClickFsDirDelete(name, path, options) { fsConfirmDelete(path, fsRmdir); }
     function onClickFsFileDelete(name, path, options) { fsConfirmDelete(path, fsRm); }
-    function onClickFsItemGitAdd(name, path, options) { /* git add item */ }
+    function onClickFsItemGitAdd(name, path, options) { fsGitAdd(path); }
+    function onClickRefresh(name, path, options) { fsRefresh(path); }
 
     /**
      * Callback for all context menu events.
@@ -69,9 +81,16 @@ $(function() {
 
     // Directory context menu.
     $.contextMenu({
-        selector: '.directory',
+        selector: '.directory.expanded',
         callback: contextMenuCallback,
         items: directoryItems
+    });
+
+    // Directory context menu.
+    $.contextMenu({
+        selector: '.directory.collapsed',
+        callback: contextMenuCallback,
+        items: collapsedDirectoryItems
     });
 
     // File context menu.
@@ -106,10 +125,25 @@ $(function() {
             parent = oldPath.substr(0, parent.lastIndexOf('/') + 1);
 
             var newPath = parent + newName + (isDir ? '/' : '');
-            console.log(newPath);
 
-            $_promptModal.modal('hide');
-            callback(oldPath, newPath);
+            var selector = "a[rel='" + newPath + "']";
+
+            if (newName == '.' || newName == '..' || newName.indexOf('/') != -1) {
+
+                // ******************************************
+                // TODO: make this check server side too!!!!
+                // ******************************************
+
+                alert('File cannot be ".", "..", or contain a "/".');
+            } // if a file doesn't already exist with a the same name
+            else if (newName == oldName || !$(selector).length) {
+                console.log(newPath);
+                $_promptModal.modal('hide');
+                callback(oldPath, newPath);
+            } else {
+                alert('A file with this name already exists, choose another name.');
+            }
+
         });
 
         $_promptModal.modal();
@@ -132,7 +166,15 @@ $(function() {
         $positiveButton.text('Create');
         $positiveButton.on('click', function() {
             var name = $_promptModal.find('#promptModalInput').val();
-            if (isDir) { name = name + '/'; }
+
+            if (name == '.' || name == '..' || name.indexOf('/') != -1) {
+                alert('File cannot be ".", "..", or contain a "/".');
+                return;
+            }
+
+            if (isDir) {
+                name = name + '/';
+            }
 
             $_promptModal.modal('hide');
             callback(parent + name);

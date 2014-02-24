@@ -37,6 +37,8 @@ Route::get('user/{user}/projects', function($user) {
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');
 Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
+Route::post('user/{user}/project/{project}/move', 'FileController@movePost');
+Route::post('user/{user}/project/{project}/copy', 'FileController@copyPost');
 
 /*
 Branch Operations:Commit Operations
