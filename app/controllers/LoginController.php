@@ -1,5 +1,5 @@
 <?php
-
+namespace League\OAuth2\Client\Provider;
 class LoginController extends BaseController {
 
 //Process the login
