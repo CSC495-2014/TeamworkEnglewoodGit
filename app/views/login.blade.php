@@ -12,6 +12,7 @@
 	?>
 	
         <div class="container">
+<<<<<<< HEAD
 		<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
 		<div class="panel panel-success">
 			<!-- <div class="panel-heading">Teamwork Englewood</div> -->
@@ -23,8 +24,6 @@
 					<a href ="https://github.com/" class="btn btn-med btn-GitHub btn-block" type="button">Create GitHub Account</a>
 				</form>
 			</div>
-		</div>
-	
-    </div> <!-- /container -->
+		</div> <!-- /container -->
 @endsection
     

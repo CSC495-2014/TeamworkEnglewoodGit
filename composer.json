@@ -6,7 +6,7 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"league/oauth2-client": "dev-master",
-		"madewithlove/laravel-oauth2": "0.4.*"
+		"cpliakas/git-wrapper": "1.1.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -33,5 +33,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }
