@@ -68,17 +68,6 @@
             {{ HTML::script('/js/filesystem.js') }}
             <script>
                 $(document).ready( function() {
-
-//                    var gitUntracked = "??",
-//                        gitModified = " M",
-//                        gitAdded = "A ";
-//
-//                    var gitStatus = {
-//                        "/artisan": " M",
-//                        "/composer.json": "??",
-//                        "/readme.md": "A "
-//                    };
-
                     $('#filesystem').fileTree({ script: "{{URL::action('FileController@indexPost', [$user, $project])}}", onLoad: applyGitStatus }, function(filepath) {
                         var filename = filepath.substring(filepath.lastIndexOf("/") + 1);
 
