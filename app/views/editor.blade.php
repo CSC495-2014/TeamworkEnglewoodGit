@@ -236,9 +236,17 @@
                     var $container = $file.parent();
 
                     // Remove old extension and add new one.
-                    $container.removeClass(function(i, c) {
-                        return c.match(/ext_\w+/g).join(" ");
-                    }).addClass(getFileExtension(filename));
+                    if ($container.hasClass('file')) {
+                        $container.removeClass(function(i, c) {
+                            var matches = c.match(/ext_\w+/g);
+
+                            if (matches) {
+                                return matches.join(" ");
+                            } else {
+                                return '';
+                            }
+                        }).addClass(getFileExtension(filename));
+                    }
 
                     $.ajax({
                         url: '{{ URL::to("/user/$user/project/$project/move") }}',
