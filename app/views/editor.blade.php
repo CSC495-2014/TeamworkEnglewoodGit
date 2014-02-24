@@ -226,11 +226,19 @@
                  */
                 function fsRename(source, destination) {
                     // If renaming directory, make sure to refresh directory.
+                    // TODO: CHANGE EXTENSION.
 
                     var $file = $("a[rel='" + source + "']");
 
-                    $file.text(basename(destination));
+                    var filename = basename(destination);
+                    $file.text(filename);
                     $file.attr('rel', destination);
+                    var $container = $file.parent();
+
+                    // Remove old extension and add new one.
+                    $container.removeClass(function(i, c) {
+                        return c.match(/ext_\w+/g).join(" ");
+                    }).addClass(getFileExtension(filename));
 
                     $.ajax({
                         url: '{{ URL::to("/user/$user/project/$project/move") }}',
