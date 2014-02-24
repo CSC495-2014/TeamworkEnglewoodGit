@@ -1,5 +1,5 @@
 <?php
-use vendor;
+
 class LoginController extends BaseController {
 
 //Process the login

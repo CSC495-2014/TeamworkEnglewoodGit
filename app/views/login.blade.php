@@ -5,10 +5,10 @@
 	<body background="{{ URL::asset('css/images/background.png') }}">
 	
 	<?php include(app_path().'/controllers/LoginController.php');
-	function loginCall()
-	{
+	//function loginCall()
+	//{
 		LoginController::GitHubLogin();
-	}
+	//}
 	?>
 	
         <div class="container">
