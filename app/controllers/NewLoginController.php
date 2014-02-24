@@ -1,46 +1,44 @@
 <?php
 //use League\OAuth2\Client\Provider;
-class LoginController extends BaseController {
-use OAuth\OAuth2\Service\GitHub;
-use OAuth\Common\Storage\Session;
-use OAuth\Common\Consumer\Credentials;
-//Process the login
-        public static function GitHubLogin()
+use OAuth2\OAuth2;
+use OAuth2\Token_Access;
+use OAuth2\Exception as OAuth2_Exception;
+class NewLoginController extends BaseController{
+
+public static function gitHubLogin($provider)
+{
+    $provider = OAuth2::provider($provider, array(
+        'id' => 'fd0b49991778467ebe9d',
+        'secret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
+    ));
+
+    if ( ! isset($_GET['code']))
+    {
+        // By sending no options it'll come back here
+        return $provider->authorize();
+    }
+    else
+    {
+        // Howzit?
+        try
         {
-            /**
-            * Bootstrap the example
-            */
-            require_once __DIR__ . '/bootstrap.php';
-            
-            // Session storage
-            $storage = new Session();
-            
-            // Setup the credentials for the requests
-            $credentials = new Credentials(
-                $servicesCredentials['github']['key'],
-                $servicesCredentials['github']['secret'],
-                $currentUri->getAbsoluteUri()
-            );
-            
-            // Instantiate the GitHub service using the credentials, http client and storage mechanism for the token
-            /** @var $gitHub GitHub */
-            $gitHub = $serviceFactory->createService('GitHub', $credentials, $storage, array('user'));
-            
-            if (!empty($_GET['code'])) {
-                // This was a callback request from github, get the token
-                $gitHub->requestAccessToken($_GET['code']);
-            
-                $result = json_decode($gitHub->request('user/emails'), true);
-            
-                echo 'The first email on your github account is ' . $result[0];
-            
-            } elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
-                $url = $gitHub->getAuthorizationUri();
-                header('Location: ' . $url);
-            
-            } else {
-                $url = $currentUri->getRelativeUri() . '?go=go';
-                echo "<a href='$url'>Login with Github!</a>";
-            }
-        } //End function GitHubLogin
+            $params = $provider->access($_GET['code']);
+
+                $token = new Token_Access(array(
+                    'access_token' => $params->access_token
+                ));
+                $user = $provider->get_user_info($token);
+
+            // Here you should use this information to A) look for a user B) help a new user sign up with existing data.
+            // If you store it all in a cookie and redirect to a registration page this is crazy-simple.
+            echo "<pre>";
+            var_dump($user);
+        }
+
+        catch (OAuth2_Exception $e)
+        {
+            show_error('That didnt work: '.$e);
+        }
+    }
+}
 } //End LoginController
