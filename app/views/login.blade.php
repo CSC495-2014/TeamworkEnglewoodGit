@@ -7,7 +7,7 @@
 	<?php include(app_path().'/controllers/LoginController.php');
 	//function loginCall()
 	//{
-		LoginController::GitHubLogin();
+		NewLoginController::GitHubLogin();
 	//}
 	?>
 	

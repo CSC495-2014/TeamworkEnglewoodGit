@@ -5,7 +5,9 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"league/oauth2-client": "dev-master"
+		"league/oauth2-client": "dev-master",
+		"lusitanian/oauth": "~0.2",
+		"artdarek/oauth-4-laravel": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

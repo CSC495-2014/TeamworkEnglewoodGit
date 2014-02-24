@@ -1,0 +1,46 @@
+<?php
+//use League\OAuth2\Client\Provider;
+class LoginController extends BaseController {
+use OAuth\OAuth2\Service\GitHub;
+use OAuth\Common\Storage\Session;
+use OAuth\Common\Consumer\Credentials;
+//Process the login
+        public static function GitHubLogin()
+        {
+            /**
+            * Bootstrap the example
+            */
+            require_once __DIR__ . '/bootstrap.php';
+            
+            // Session storage
+            $storage = new Session();
+            
+            // Setup the credentials for the requests
+            $credentials = new Credentials(
+                $servicesCredentials['github']['key'],
+                $servicesCredentials['github']['secret'],
+                $currentUri->getAbsoluteUri()
+            );
+            
+            // Instantiate the GitHub service using the credentials, http client and storage mechanism for the token
+            /** @var $gitHub GitHub */
+            $gitHub = $serviceFactory->createService('GitHub', $credentials, $storage, array('user'));
+            
+            if (!empty($_GET['code'])) {
+                // This was a callback request from github, get the token
+                $gitHub->requestAccessToken($_GET['code']);
+            
+                $result = json_decode($gitHub->request('user/emails'), true);
+            
+                echo 'The first email on your github account is ' . $result[0];
+            
+            } elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
+                $url = $gitHub->getAuthorizationUri();
+                header('Location: ' . $url);
+            
+            } else {
+                $url = $currentUri->getRelativeUri() . '?go=go';
+                echo "<a href='$url'>Login with Github!</a>";
+            }
+        } //End function GitHubLogin
+} //End LoginController
