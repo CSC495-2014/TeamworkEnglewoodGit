@@ -4,71 +4,28 @@ class FileController extends \BaseController {
 
     const ROOT = '../../';
 
-    private function getFileExtension($filename) {
-
-        if (!$filename)
-        {
-            return null;
-        }
-
-        $pos = strrpos($filename, '.');
-
-        if ($pos !== false and substr($filename, -1) != '.')
-        {
-            return 'ext_' . substr($filename, $pos + 1);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public function indexPost($user, $project)
     {
         $dir = Input::get('dir');
-//        $searchDir = FileController::ROOT . $dir;
-//        $listing = scandir($searchDir);
-//
-//        // If we want to see the base directory, only show the $project folder as the only top-level folder.
-//        if ($dir == '/') {
-//            return View::make(
-//                'filesystem_list',
-//                [
-//                    'folders' => [['name' => $project, 'path' => $dir . $project . '/']],
-//                    'files' => []
-//                ]
-//            );
-//        }
-//
-//        $folders = [];
-//        $files = [];
-//
-//
-//        foreach ($listing as $item)
-//        {
-//            $item = [
-//                'name' => $item,
-//                'path' => $dir . $item . (is_dir($searchDir . $item) ? '/' : ''),
-//                'ext'  => $this->getFileExtension($item)
-//            ];
-//
-//            if ($item['name'] == '.' or $item['name'] == '..')
-//            {
-//                continue;
-//            }
-//            else if (is_dir($searchDir . $item['name']))
-//            {
-//                $folders[] = $item;
-//            }
-//            else
-//            {
-//                $files[] = $item;
-//            }
-//        }
 
-//        return View::make('filesystem_list', ['folders' => $folders, 'files' => $files]);
+        if (FileController::containsParentDirectoryReference($dir)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
         $fs = new FileSystem($user, $project);
-        return View::make('filesystem_list', $fs->listDir($dir));
+
+        $listing = null;
+
+        try
+        {
+            $listing = $fs->listDir($dir);
+        }
+        catch (Exception $e)
+        {
+            return Response::make(null, 404);
+        }
+
+        return View::make('filesystem_list', $listing);
     }
 
 	/**
@@ -82,7 +39,13 @@ class FileController extends \BaseController {
 	 */
 	public function show($user, $project, $path)
 	{
-        $contents = htmlentities(file_get_contents(FileController::ROOT . $path));
+        if (FileController::containsParentDirectoryReference($path)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
+        $fs = new FileSystem($user, $project);
+
+        $contents = htmlentities($fs->read($path));
 
         $response = Response::make($contents, 200);
         $response->header('Content-Type', 'text/plain');
@@ -101,7 +64,9 @@ class FileController extends \BaseController {
 	 */
 	public function update($user, $project, $path)
 	{
-		//
+        if (FileController::containsParentDirectoryReference($path)) {
+            return FileController::makeParentDirectoryResponse();
+        }
 	}
 
 	/**
@@ -115,6 +80,10 @@ class FileController extends \BaseController {
 	 */
 	public function destroy($user, $project, $path)
 	{
+        if (FileController::containsParentDirectoryReference($path)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
         $fs = new FileSystem($user, $project);
 
         if ($fs->isDir($path))
@@ -128,4 +97,56 @@ class FileController extends \BaseController {
 
         return Response::make(null, 200);
 	}
+
+    /**
+     * Move file or folder from src to dest.
+     *
+     * @param string $user
+     * @param string $project
+     */
+    public function movePost($user, $project) {
+        $src = Input::get('src');
+        $dest = Input::get('dest');
+
+        if (FileController::containsParentDirectoryReference($src)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
+        if (FileController::containsParentDirectoryReference($dest)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
+        $fs = new FileSystem($user, $project);
+
+        $fs->move($src, $dest);
+
+        return Response::make(null, 200);
+    }
+
+    public function copyPost($user, $project) {
+        $src = Input::get('src');
+        $dest = Input::get('dest');
+
+        if (FileController::containsParentDirectoryReference($src)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
+        if (FileController::containsParentDirectoryReference($dest)) {
+            return FileController::makeParentDirectoryResponse();
+        }
+
+        $fs = new FileSystem($user, $project);
+
+        $fs->copy($src, $dest);
+
+        return Response::make(null, 200);
+    }
+
+    public static function containsParentDirectoryReference($path) {
+        return preg_match('/\.\./', $path);
+    }
+
+    public static function makeParentDirectoryResponse() {
+        return Response::make('Cannot reference previous directory.', 400);
+    }
 }

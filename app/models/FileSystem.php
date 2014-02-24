@@ -97,7 +97,7 @@ class FileSystem {
 		{
 			$item = [
 				'name' => $item,
-				'path' => $dirpath. $item . (is_dir($searchDir . $item) ? '/' : ''),
+				'path' => $dirpath . $item . (is_dir($searchDir . $item) ? '/' : ''),
 			];
 
 			if ($item['name'] == '.' or $item['name'] == '..')
@@ -190,6 +190,11 @@ class FileSystem {
 		fwrite($handle, $contents);
 		fclose($handle);
 	}
+
+    public function read($path)
+    {
+        return file_get_contents(FileSystem::getPath($path));
+    }
 
 	public function copy($sourcePath, $destPath)
 	{

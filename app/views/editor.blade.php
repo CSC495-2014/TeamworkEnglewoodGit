@@ -68,19 +68,122 @@
             {{ HTML::script('/js/filesystem.js') }}
             <script>
                 $(document).ready( function() {
-                    $('#filesystem').fileTree({ script: "{{URL::action('FileController@indexPost', [$user, $project])}}" }, function(filepath) {
+
+//                    var gitUntracked = "??",
+//                        gitModified = " M",
+//                        gitAdded = "A ";
+//
+//                    var gitStatus = {
+//                        "/artisan": " M",
+//                        "/composer.json": "??",
+//                        "/readme.md": "A "
+//                    };
+
+                    $('#filesystem').fileTree({ script: "{{URL::action('FileController@indexPost', [$user, $project])}}", onLoad: applyGitStatus }, function(filepath) {
                         var filename = filepath.substring(filepath.lastIndexOf("/") + 1);
 
-                    $.get("{{ URL::to('/user/username/project/projectname/file') }}" + filepath, function (data) {
-                        window.addTab(filename, data);
-                    });
+                        $.get('{{ URL::to("/user/$user/project/$project/file") }}' + filepath, function (data) {
+                            window.addTab(filename, data);
+                        });
 
                     });
-                })
+                });
+
+                RegExp.escape = function(s) {
+                    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                };
+
+                function basename(path) {
+
+                    if (path.charAt(path.length - 1) == '/') {
+                        path = path.substring(0, path.length - 1);
+                    }
+
+                    return path.replace(/^.*[\/\\]/g, '');
+                }
+
+                function dirname(path) {
+                    return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+                }
+
+                /**
+                 * Given jqueryFileTree a element, sort the folder.
+                 * @param $folder
+                 */
+                function sortFolder($folder) {
+                    console.log('In sortFolder');
+                    var $contents = $folder.children('li').get();
+
+                    $contents.sort(function (a, b) {
+                        var $a = $(a), $b = $(b);
+
+                        if ($a.hasClass('directory') && $b.hasClass('file')) {
+                            return -1;
+                        } else if ($a.hasClass('file') && $b.hasClass('directory')) {
+                            return 1;
+                        } else {
+                            return $a.children('a').first().text().localeCompare($b.children('a').first().text());
+                        }
+                    });
+
+                    $.each($contents, function(index, item) {
+                        $folder.append(item);
+                    });
+                }
 
                 /* ********************
                  * Filesystem actions.
                  **********************/
+
+                function applyGitStatus() {
+                    console.log('Entering applyGitStatus()');
+
+                    // remove git formatting from all git elements
+                    var $files = $('.git');
+                    $files.attr('class', 'git');
+
+                    $.ajax({
+                        // TODO: fix this
+                        url: '{{ URL::to("/user/$user/projects") }}',
+                        type: 'GET',
+//                        dataType: 'json',
+                        success: function (result) {
+                            console.log('Returned from server');
+
+                            result = {
+                                "/artisan": " M",
+                                "/composer.json": "??",
+                                "/readme.md": "A ",
+                                "/bootstrap/": "A ",
+                                "/app/filters.php": " M",
+                                "/app/start/": " M"
+                            };
+
+                            var rel = null;
+
+                            $files.each(function(idx) {
+                                rel = $(this).attr('rel');
+
+                                if (result.hasOwnProperty(rel)) {
+
+                                    switch (result[rel]) {
+                                        case 'A ':
+                                            console.log('git-added: ' + rel);
+                                            $(this).addClass('git-added'); break;
+                                        case ' M':
+                                            console.log('git-modified: ' + rel);
+                                            $(this).addClass('git-modified'); break;
+                                        case '??':
+                                            console.log('git-untracked: ' + rel);
+                                            $(this).addClass('git-untracked'); break;
+                                    }
+
+                                }
+                            });
+
+                        }
+                    });
+                }
 
                 /**
                  * Move a file/directory to a target directory.
@@ -91,6 +194,50 @@
                 function fsMv(source, destination) {
                     if (source == destination) { return; }
                     console.log('Moving ' + source + ' to ' + destination);
+                }
+
+                /**
+                 * Rename a file/directory to a target file/directory.
+                 *
+                 * @param source
+                 * @param destination
+                 */
+                function fsRename(source, destination) {
+                    // If renaming directory, make sure to refresh directory.
+
+                    var $file = $("a[rel='" + source + "']");
+
+                    $file.text(basename(destination));
+                    $file.attr('rel', destination);
+
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/move") }}',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            src: source,
+                            dest: destination
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        failure: function(data) {
+                            alert('Unable to rename file.');
+                        }
+                    });
+
+                    var $item = $file.parent();
+                    var $containingFolder = $file.parent().parent();
+
+                    // If we just renamed a directory we need to fix the links of all expanded subitems.
+                    if ($item.hasClass('directory')) {
+                        var $subitems = $item.find('a');
+                        var $regex = new RegExp('^' + RegExp.escape(source));
+                        $.each($subitems, function() {
+                            $(this).attr('rel', $(this).attr('rel').replace($regex, destination));
+                        });
+                    }
+
+                    // After renaming, we don't know whether the containing folder is in alpha order,
+                    // so we sort it.
+                    sortFolder($containingFolder);
                 }
 
                 /**
@@ -129,6 +276,13 @@
                  */
                 function fsRm(path) {
                     console.log('Removing ' + path);
+
+                    $("li[rel='" + path + "']").remove();
+
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/file") }}' + path,
+                        type: 'DELETE'
+                    })
                 }
 
                 /**
@@ -138,7 +292,22 @@
                  */
                 function fsRmdir(path) {
                     console.log('Removing ' + path);
+                    $("li[rel='" + path + "']").remove();
                 }
+
+                function fsRefresh(path) {
+                    console.log('In fsRefresh(' + path + ')');
+
+                    $dir = $("a[rel='" + path + "']");
+                    $parent = $dir.parent();
+
+                    if ($parent.hasClass('directory') && $parent.hasClass('expanded')) {
+                        console.log('Expanded directory found');
+                        $dir.click();
+                        $dir.click();
+                    }
+                }
+
 
 
             </script>
