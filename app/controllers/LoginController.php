@@ -35,8 +35,7 @@ class LoginController extends BaseController {
 				{
 					echo "<script type='text/javascript'>alert('Successful Login!');</script>";
 					//If we get an access token, now attempt to get the user's details
-					$userDetails = $provider->getUserDetails($t);
-					
+					$userDetails = $provider->userDetails($t);
 					echo "<script type='text/javascript'>alert('User: ' + $userDetails);</script>";
 					//Are they a user in our user table?
 					$userExists = laraveldb::table('users')->where('username',$userName)->find();
