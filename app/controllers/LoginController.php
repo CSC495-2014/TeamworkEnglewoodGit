@@ -30,12 +30,13 @@ class LoginController extends BaseController {
 			    echo "<script type='text/javascript'>alert('trying to get token');</script>";
 				//Try to get an access token (using the authorization code grant)
 				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
-				echo "<script type='text/javascript'>alert('Got Token');</script>";
+				echo "<script type='text/javascript'>alert('Got Token: ' + $t);</script>";
 				try
 				{
-					echo "<script type='text/javascript'>alert('Successful Login!');</script>";
+					
 					//If we get an access token, now attempt to get the user's details
 					$userDetails = $provider->userDetails($t);
+					echo "<script type='text/javascript'>alert('Successful Login!');</script>";
 					echo "<script type='text/javascript'>alert('User: ' + $userDetails);</script>";
 					//Are they a user in our user table?
 					$userExists = laraveldb::table('users')->where('username',$userName)->find();
@@ -91,7 +92,7 @@ class LoginController extends BaseController {
 				} catch (Exception $e)
 				{
 				    //We failed to get the user details. Go back to initial login page.
-				    echo "<script type='text/javascript'>alert($e);</script>";
+				    echo "<script type='text/javascript'>alert('Failed to Get User Details');</script>";
 				    return Redirect::to('login');
 				    
 				}
