@@ -1,6 +1,6 @@
 <?php
 
-use League\OAuth2\Client\Provider\Github;
+//use League\OAuth2\Client\Provider\Github;
 class LoginController extends BaseController {
 
 //Process the login
