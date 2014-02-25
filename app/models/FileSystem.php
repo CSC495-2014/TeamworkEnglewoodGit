@@ -115,11 +115,7 @@ class FileSystem extends AbstractFileSystem
 	*@param string $dirPath
 	* 
 	*/	
-<<<<<<< HEAD
-	public function removeDir($dirPath)
-=======
 	protected function _removeDir($dirpath)
->>>>>>> a3937f9b4c0275e0cc0052be18b2f0b1612b2b16
 	{
         $objects = scandir($dirpath);
         foreach ($objects as $object)
