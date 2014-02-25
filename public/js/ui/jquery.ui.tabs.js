@@ -50,7 +50,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_create: function() {
-		//alert("_create");
 		var that = this,
 			options = this.options;
 
@@ -105,7 +104,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_initialActive: function() {
-		//alert("_initialActive");
 		var active = this.options.active,
 			collapsible = this.options.collapsible,
 			locationHash = location.hash.substring( 1 );
@@ -148,8 +146,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_getCreateEventData: function() {
-		//alert("_getCreateEventData");
-
 		return {
 			tab: this.active,
 			panel: !this.active.length ? $() : this._getPanelForTab( this.active )
@@ -157,7 +153,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_tabKeydown: function( event ) {
-		//alert("_tabKeydown");
 		var focusedTab = $( this.document[0].activeElement ).closest( "li" ),
 			selectedIndex = this.tabs.index( focusedTab ),
 			goingForward = true;
@@ -221,7 +216,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_panelKeydown: function( event ) {
-		//alert("_panelKeydown");
 		if ( this._handlePageNav( event ) ) {
 			return;
 		}
@@ -247,7 +241,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_findNextTab: function( index, goingForward ) {
-		//alert("_findNextTab");
 		var lastTabIndex = this.tabs.length - 1;
 
 		function constrain() {
@@ -268,14 +261,12 @@ $.widget( "ui.tabs", {
 	},
 
 	_focusNextTab: function( index, goingForward ) {
-		//alert("_focusNextTab");
 		index = this._findNextTab( index, goingForward );
 		this.tabs.eq( index ).focus();
 		return index;
 	},
 
 	_setOption: function( key, value ) {
-		//alert("_setOption");
 		if ( key === "active" ) {
 			// _activate() will handle invalid values and update this.options
 			this._activate( value );
@@ -308,17 +299,14 @@ $.widget( "ui.tabs", {
 	},
 
 	_tabId: function( tab ) {
-		//alert("_tabld");
 		return tab.attr( "aria-controls" ) || "ui-tabs-" + getNextTabId();
 	},
 
 	_sanitizeSelector: function( hash ) {
-		//alert("_sanitizeSelector");
 		return hash ? hash.replace( /[!"$%&'()*+,.\/:;<=>?@\[\]\^`{|}~]/g, "\\$&" ) : "";
 	},
 
 	refresh: function() {
-		//alert("refresh_1st function");
 		var options = this.options,
 			lis = this.tablist.children( ":has(a[href])" );
 
@@ -354,7 +342,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_refresh: function() {
-		//alert("_refresh");
 		this._setupDisabled( this.options.disabled );
 		this._setupEvents( this.options.event );
 		this._setupHeightStyle( this.options.heightStyle );
@@ -390,7 +377,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_processTabs: function() {
-		//alert("_processTabs");
 		var that = this;
 
 		this.tablist = this._getList()
@@ -457,12 +443,10 @@ $.widget( "ui.tabs", {
 
 	// allow overriding how to find the list for rare usage scenarios (#7715)
 	_getList: function() {
-		//alert("_getList");
 		return this.tablist || this.element.find( "ol,ul" ).eq( 0 );
 	},
 
 	_createPanel: function( id ) {
-		//alert("_createPanel");
 		return $( "<div>" )
 			.attr( "id", id )
 			.addClass( "ui-tabs-panel ui-widget-content ui-corner-bottom" )
@@ -470,7 +454,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_setupDisabled: function( disabled ) {
-		//alert("_setupDisabled");
 		if ( $.isArray( disabled ) ) {
 			if ( !disabled.length ) {
 				disabled = false;
@@ -496,7 +479,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_setupEvents: function( event ) {
-		//alert("_setupEvents");
 		var events = {
 			click: function( event ) {
 				event.preventDefault();
@@ -518,7 +500,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_setupHeightStyle: function( heightStyle ) {
-		//alert("_setupHeightStyle");
 		var maxHeight,
 			parent = this.element.parent();
 
@@ -554,7 +535,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_eventHandler: function( event ) {
-		//alert("_eventHandler");
 		var options = this.options,
 			active = this.active,
 			anchor = $( event.currentTarget ),
@@ -603,7 +583,6 @@ $.widget( "ui.tabs", {
 
 	// handles show/hide for selecting tabs
 	_toggle: function( event, eventData ) {
-		//alert("_toggle");
 		var that = this,
 			toShow = eventData.newPanel,
 			toHide = eventData.oldPanel;
@@ -666,7 +645,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_activate: function( index ) {
-		//alert("_activate");
 		var anchor,
 			active = this._findActive( index );
 
@@ -689,12 +667,10 @@ $.widget( "ui.tabs", {
 	},
 
 	_findActive: function( index ) {
-		//alert("_findActive");
 		return index === false ? $() : this.tabs.eq( index );
 	},
 
 	_getIndex: function( index ) {
-		//alert("_getIndex");
 		// meta-function to give users option to provide a href string instead of a numerical index.
 		if ( typeof index === "string" ) {
 			index = this.anchors.index( this.anchors.filter( "[href$='" + index + "']" ) );
@@ -704,7 +680,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_destroy: function() {
-		//alert("_destroy");
 		if ( this.xhr ) {
 			this.xhr.abort();
 		}
@@ -759,7 +734,6 @@ $.widget( "ui.tabs", {
 	},
 
 	enable: function( index ) {
-		//alert("enable");
 		var disabled = this.options.disabled;
 		if ( disabled === false ) {
 			return;
@@ -783,7 +757,6 @@ $.widget( "ui.tabs", {
 	},
 
 	disable: function( index ) {
-		//alert("disable");
 		var disabled = this.options.disabled;
 		if ( disabled === true ) {
 			return;
@@ -806,7 +779,6 @@ $.widget( "ui.tabs", {
 	},
 
 	load: function( index, event ) {
-		//alert("load");
 		index = this._getIndex( index );
 		var that = this,
 			tab = this.tabs.eq( index ),
@@ -860,7 +832,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_ajaxSettings: function( anchor, event, eventData ) {
-		//alert("_ajaxSettings");
 		var that = this;
 		return {
 			url: anchor.attr( "href" ),
@@ -872,7 +843,6 @@ $.widget( "ui.tabs", {
 	},
 
 	_getPanelForTab: function( tab ) {
-		//alert("_getPanelForTab");
 		var id = $( tab ).attr( "aria-controls" );
 		return this.element.find( this._sanitizeSelector( "#" + id ) );
 	}
