@@ -1,6 +1,7 @@
 /conf/
 /bootstrap/compiled.php
 /vendor/
+composer.lock
 composer.phar
 .DS_Store
 Thumbs.db
