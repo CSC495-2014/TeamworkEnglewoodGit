@@ -1,61 +1,27 @@
 <?php
+require __DIR__ . '/AbstractFileSystem.php';
 
-class FileSystem {
-
-	const ROOT = '../data/';
-	private $userName;
-	private $projectName;
-
+class FileSystem extends AbstractFileSystem
+{
 	/**
-	*			  FileSystem Constructor
-	* This will set the userName and projectName so all  of the 
-	* class method will be able to access them. 
-	* 
+	* In order for the parent's constructor to be called,
+	* need to pass user name and project name to AbstractFileSystem's constructor.
+	*
+	* @param string $userName
+	* @param string $projectName
 	*/
 	function __construct($userName, $projectName)
 	{
-		$this->userName = $userName;
-		$this->projectName = $projectName;
+		parent::__construct($userName, $projectName); // calling AbstractFileSystem's constructor
 	}
 
-	/**
-	*			  getUserName
-	* This will return the user name. 
-	*
-	*/
-	public function getUserName()
-	{
-		return $this->userName;
-	}
 
 	/**
-	*			  getProjectName
-	* This will return the project name. 
-	*
-	*/
-	public function getProjectName()
-	{
-		return $this->projectName;
-	}
-
-	/**
-	*			  getPath
-	* This will create a full path to a given resource. 
-	* 
-	* @PARAM A path to a resource or file
-	* @return full path within the application's file system
-	*/
-	private function getPath($path)
-	{
-		return FileSystem::ROOT . 'users/' . $this->userName . '/projects/' . $this->projectName . '/' . $path;
-	}
-	/**
-	*			  getFileExtension
-	* returns file extension 
+	* returns file extension of specified file
 	* Credit - Michael Holler 
 	*
-	* @PARAM filename
-	* @return file extension of file
+	* @param string $filename
+	* @return file extentions
 	*/
 	private function getFileExtension($filename) 
 	{
@@ -76,19 +42,18 @@ class FileSystem {
 		}
 	}
 
-	/** 
-	*             listDir
-	* Passed current user directory $dirpath
+
+	/**   
+	* Lists files and directories from $dirPath
 	* 
 	* Credit - Michael Holler  
-	*@PARAM current directory
+	*@param string $dirPath
 	*@return list of subdirectories and files in current
 	* user directory.
 	*/
-	public function listDir($dirpath = "")
+	public function listDir($dirPath = "")
 	{
-		// Creating path
-		$searchDir = FileSystem::getPath($dirpath);
+		$searchDir = FileSystem::getPath($dirPath);
 		$listing = scandir($searchDir);
 		$folders = [];
 		$files = [];
@@ -119,15 +84,14 @@ class FileSystem {
 	}
 
 	/** 
-	*             removeFile
-	* Will remove the passed file from the server's file system
+	* remove a file from the server's file system
 	*
-	*@PARAM file path
+	*@param string $filePath
 	*@return TRUE on success FALSE on failure 
 	*/
-	public function removeFile($filepath)
+	public function removeFile($filePath)
 	{
-		return unlink(FileSystem::getPath($filepath));
+		return unlink(FileSystem::getPath($filePath));
 	}
 
     /**
@@ -144,14 +108,15 @@ class FileSystem {
     }
 
 	/** 
-	*             removeDir
-	* Will recursively remove all files and subdirectories from the 
+	*        
+	* recursively remove all files and subdirectories from the 
 	* supplied dirpath
 	*
-	*@PARAM file path
+	*@param string $dirPath
 	* 
 	*/	
-	protected function _removeDir($dirpath)
+
+	public function removeDir($dirPath)
 	{
         $objects = scandir($dirpath);
         foreach ($objects as $object)
@@ -177,15 +142,15 @@ class FileSystem {
 	}
 
 	/** 
-	*             save
-	* Will save the file contents to the webserver's filesystem
+	*             
+	* save the file contents to the webserver's filesystem
 	*
-	*@PARAM file path to users project
-	*@PARAM cotents of file
+	*@param string $filePath
+	*@param string $contents
 	*/	
-	public function save($filepath, $contents)
+	public function save($filePath, $contents)
 	{
-		$searchFile = FileSystem::getPath($filepath);
+		$searchFile = FileSystem::getPath($filePath);
 		$handle = fopen($searchFile, 'w');
 		fwrite($handle, $contents);
 		fclose($handle);
@@ -206,69 +171,23 @@ class FileSystem {
 
 	}
 
-	/* Git commands */
-	public function gitClone($project)
-	{
-
-	}
-	
-	public function gitStatus($username, $project)
-	{
-
-	}
-
-	public function gitAdd($username, $project, $path)
-	{
-
-	}
-
-	public function gitRm($username, $project, $path)
-	{
-
-	}
-
-	public function gitCommit($username, $project, $message)
-	{
-
-	}
-
-	public function gitRemoteAdd($username, $project, $alias, $link)
-	{
-
-	}
-
-	public function gitRemoteRm($username, $project, $alias)
-	{
-
-	} // remove remote
-
-
-	public function gitPush($username, $project, $remoteAlias, $remoteBranch)
-	{
-
-	}
-
-	public function gitPull($username, $project, $remoteAlias, $remoteBranch)
-	{
-
-	}
- 	public function isCloned($user, $project)
- 	{
-
- 	}
-
 }
 
-	/* --- Testing of file manipulation public interfaces --- */
-
+	/* --- Testing of FileSystem public interfaces --- */
 	/*
+	$user = 'ZAM-';
+	$project = 'TestRepo';
 	$testFile = "testFile.txt";
-	$test = new FileSystem('ZAM-','test-project');
-	$test->save($testFile, "This is some data.\n And some other data.\n");
-	$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
-	$test->removeFile($testFile);
-	$listFiles = $test->listDir();
+
+	// To properly test the FileCommands class, I need to possibly create a dir before hand.
+	// Normally the initial clone would properly create the directory. 
+	$fileSystem = new FileSystem($user, $project);
+	
+	// This saves a test file in the app/data/users/ZAM-/projects/TestRepo directory
+	$fileSystem->save($testFile, "This is some data.\n And some other data.\n");
+	//$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
+	//$test->removeFile($testFile);
+	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
 	*/
-
 ?>
