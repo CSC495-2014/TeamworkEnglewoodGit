@@ -1,13 +1,13 @@
 <?php
 
-use League\OAuth2\Client\Provider\Github;
+//use league\oauth2-client\src\League\OAuth2\Client\Provider\Github;
 class LoginController extends BaseController {
 
 //Process the login
 	public static function GitHubLogin()
 	{
             //return View::make('login');
-		$provider = new League\OAuth2\Client\Provider\Github(array(
+		$provider = new league\oauth2-client\src\League\OAuth2\Client\Provider\Github(array(
 			//Won't want to actually post this to GitHub, will be put in a config file for the app
 			'clientId' => 'fd0b49991778467ebe9d',
 			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
