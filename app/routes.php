@@ -31,7 +31,7 @@ Route::get('user/{user}/projects', function($user) {
     foreach ($projects as &$project) {
         $project = basename($project);
     }
-    return View::make('projectPageHack', ['projects' => $projects, 'user' => $user]);
+    return View::make('projectsPage', ['user' => $user]);
 });
 
 Route::pattern('file', '.*');

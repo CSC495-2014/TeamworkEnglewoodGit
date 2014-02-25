@@ -30,39 +30,31 @@ body {
 	vertical-align: middle;
 	text-align: center;
 }
-/*CSS for Mike's section*/
-#filesystem {
-  height: 650px;
-  width: 20%;
-  padding-top: 5px;
-  padding-left: 5px;
-  background-color: #FAFAFA;
-  float: left;
-  overflow-x: scroll;
-}
-
-UL.jqueryFileTree A:hover {
-    background: #9eeac2;
-}
-
-/*CSS for Kyle's section*/
 #projectsPage {
   height: 650px;
-  width: 80%;
+  width: 75%;
   background-color: #FAFAFA;
-  padding-top: 0px;
+  padding-top: 50px;
+/*  padding-left: 50px;   use only if projectPage1 is used with white background*/
   overflow: hidden;
+  
 }
-
+.th {
+  background-color: #085c2f;
+  border-color: #D8D8D8;
+  color: #000000;
+  text-align: center;
+}
 .row0 {
-    background-color: #cdedbf;
+  text-align: center;
+  background-color: #D8D8D8;
+  color: #ffffff;
 }
-
 .row1 {
-    background-color: #085c2f;
+  text-align: center;
+  background-color: #28AB41;
+  color: #ffffff;
 }
-
-/*CSS for Xiao's section*/
 #editor {
   height: 650px;
   width: 60%;
@@ -71,7 +63,6 @@ UL.jqueryFileTree A:hover {
   float: left;
   overflow: hidden;
 }
-
 #optionSideBar {
   height: 650px;
   width: 20%;
