@@ -20,7 +20,7 @@ class LoginController extends BaseController {
 		{
 		    echo "<script type='text/javascript'>alert('Getting Code');</script>";
 			//If we do not have an authorization code, then get one
-			$provider->authorize(array($provider=>clientId, $provider=>redirectUri));
+			$provider->authorize();
 		}
 		else
 		{
