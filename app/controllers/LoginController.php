@@ -28,6 +28,7 @@ class LoginController extends BaseController {
 		    echo "<script type='text/javascript'>alert('Got Code, Moving on');</script>";
 			try
 			{
+			    echo "<script type='text/javascript'>alert('trying to get token');</script>";
 				//Try to get an access token (using the authorization code grant)
 				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 				echo "<script type='text/javascript'>alert('Got Token');</script>";
