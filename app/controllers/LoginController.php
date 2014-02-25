@@ -8,7 +8,7 @@ class LoginController extends BaseController {
 	{
 	    echo "<script type='text/javascript'>alert('Began Function');</script>";
             //return View::make('login');
-		$provider = new League\OAuth2\Client\Provider\Github(array(
+		$provider = new OAuth2\Client\Provider\Github(array(
 			'clientId' => 'fd0b49991778467ebe9d',
 			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
 			'redirectUri' => 'http://54.200.185.101/login'
