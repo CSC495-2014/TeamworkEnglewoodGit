@@ -4,6 +4,7 @@
         {{ HTML::style('/css/bootstrap.css') }}
         {{ HTML::style('/css/jqueryFileTree.css') }}
         {{ HTML::style('/css/jquery.contextMenu.css') }}
+        {{ HTML::style('/css/jquery.ui.all.css') }}
         {{ HTML::style('css/editor.css') }}
         {{ HTML::script('/js/jquery-1.10.2.js') }}
         {{ HTML::script('/js/jqueryFileTree.js') }}
@@ -44,19 +45,10 @@
 						
 					</div>
 					<div id="editor">
-					{{ HTML::style('/js/themes/base/jquery.ui.all.css') }}
 						<div id="tabs">
 							<ul>
-							<li><a href="#tabs-1">Untitled</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
 							</ul>
-							<div id="tabs-1"></div>
 						</div>
-
-						<!--editable panel for tabs-1-->
-						<script>
-							var editor = ace.edit("tabs-1");
-							editor.getSession().setMode("mode/javascript");
-						</script>
 					</div>
 					<div id="optionSideBar">
 						<div class="panel panel-default">
@@ -76,19 +68,133 @@
             {{ HTML::script('/js/filesystem.js') }}
             <script>
                 $(document).ready( function() {
-                    $('#filesystem').fileTree({ script: "{{URL::action('FileController@indexPost', [$user, $project])}}" }, function(filepath) {
+                    $('#filesystem').fileTree({ script: "{{URL::action('FileController@indexPost', [$user, $project])}}", onLoad: applyGitStatus }, function(filepath) {
                         var filename = filepath.substring(filepath.lastIndexOf("/") + 1);
 
-                    $.get("{{ URL::to('/user/username/project/projectname/file') }}" + filepath, function (data) {
-                        window.addTab(filename, data);
-                    });
+                        $.get('{{ URL::to("/user/$user/project/$project/file") }}' + filepath, function (data) {
+                            window.addTab(filename, data);
+                        });
 
                     });
-                })
+                });
+
+                /**
+                 * Get the extension for a given file.
+                 * @param filename
+                 * @returns {*}
+                 */
+                function getFileExtension(filename)
+                {
+                    if (!filename)
+                    {
+                        return null;
+                    }
+
+                    var pos = filename.lastIndexOf('.');
+
+                    if (pos >= 0 && filename.substring(-1) != '.') {
+                        return 'ext_' + filename.substr(pos + 1);
+                    } else {
+                        return '';
+                    }
+                }
+
+                RegExp.escape = function(s) {
+                    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                };
+
+                function basename(path) {
+
+                    if (path.charAt(path.length - 1) == '/') {
+                        path = path.substring(0, path.length - 1);
+                    }
+
+                    return path.replace(/^.*[\/\\]/g, '');
+                }
+
+                function dirname(path) {
+                    return path.substring(0, path.lastIndexOf(basename(path)));
+                }
+
+                /**
+                 * Given ul.jqueryFileTree element, sort the folder.
+                 * @param $folder
+                 */
+                function sortFolder($folder) {
+                    console.log('In sortFolder');
+                    var $contents = $folder.children('li').get();
+
+                    $contents.sort(function (a, b) {
+                        var $a = $(a), $b = $(b);
+
+                        if ($a.hasClass('directory') && $b.hasClass('file')) {
+                            return -1;
+                        } else if ($a.hasClass('file') && $b.hasClass('directory')) {
+                            return 1;
+                        } else {
+                            return $a.children('a').first().text().localeCompare($b.children('a').first().text());
+                        }
+                    });
+
+                    $.each($contents, function(index, item) {
+                        $folder.append(item);
+                    });
+                }
 
                 /* ********************
                  * Filesystem actions.
                  **********************/
+
+                function applyGitStatus() {
+                    console.log('Entering applyGitStatus()');
+
+                    // remove git formatting from all git elements
+                    var $files = $('.git');
+                    $files.attr('class', 'git');
+
+                    $.ajax({
+                        // TODO: fix this
+                        url: '{{ URL::to("/user/$user/projects") }}',
+                        type: 'GET',
+//                        dataType: 'json',
+                        success: function (result) {
+                            console.log('Returned from server');
+                            alert('git status not yet implemented on server');
+
+                            result = {
+                                "/artisan": " M",
+                                "/composer.json": "??",
+                                "/readme.md": "A ",
+                                "/bootstrap/": "A ",
+                                "/app/filters.php": " M",
+                                "/app/start/": " M"
+                            };
+
+                            var rel = null;
+
+                            $files.each(function(idx) {
+                                rel = $(this).attr('rel');
+
+                                if (result.hasOwnProperty(rel)) {
+
+                                    switch (result[rel]) {
+                                        case 'A ':
+                                            console.log('git-added: ' + rel);
+                                            $(this).addClass('git-added'); break;
+                                        case ' M':
+                                            console.log('git-modified: ' + rel);
+                                            $(this).addClass('git-modified'); break;
+                                        case '??':
+                                            console.log('git-untracked: ' + rel);
+                                            $(this).addClass('git-untracked'); break;
+                                    }
+
+                                }
+                            });
+
+                        }
+                    });
+                }
 
                 /**
                  * Move a file/directory to a target directory.
@@ -99,6 +205,71 @@
                 function fsMv(source, destination) {
                     if (source == destination) { return; }
                     console.log('Moving ' + source + ' to ' + destination);
+                }
+
+                /**
+                 * Rename a file/directory to a target file/directory.
+                 *
+                 * @param source
+                 * @param destination
+                 */
+                function fsRename(source, destination) {
+                    // If renaming directory, make sure to refresh directory.
+                    // TODO: CHANGE EXTENSION.
+
+                    var $file = $("a[rel='" + source + "']");
+
+                    var filename = basename(destination);
+                    $file.text(filename);
+                    $file.attr('rel', destination);
+                    var $container = $file.parent();
+
+                    // Remove old extension and add new one.
+                    if ($container.hasClass('file')) {
+                        $container.removeClass(function(i, c) {
+                            var matches = c.match(/ext_\w+/g);
+
+                            if (matches) {
+                                return matches.join(" ");
+                            } else {
+                                return '';
+                            }
+                        }).addClass(getFileExtension(filename));
+                    }
+
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/move") }}',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            src: source,
+                            dest: destination
+                        }),
+                        statusCode: {
+                            500: function() {
+                                alert('Not yet implemented on server.');
+                            }
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        failure: function(data) {
+                            alert('Unable to rename file. Error: ' + data ? data : 1);
+                        }
+                    });
+
+                    var $item = $file.parent();
+                    var $containingFolder = $file.parent().parent();
+
+                    // If we just renamed a directory we need to fix the links of all expanded subitems.
+                    if ($item.hasClass('directory')) {
+                        var $subitems = $item.find('a');
+                        var $regex = new RegExp('^' + RegExp.escape(source));
+                        $.each($subitems, function() {
+                            $(this).attr('rel', $(this).attr('rel').replace($regex, destination));
+                        });
+                    }
+
+                    // After renaming, we don't know whether the containing folder is in alpha order,
+                    // so we sort it.
+                    sortFolder($containingFolder);
                 }
 
                 /**
@@ -119,6 +290,24 @@
                  */
                 function fsMkdir(path) {
                     console.log('Creating ' + path);
+                    var parentPath = dirname(path);
+                    var filename = basename(path);
+
+                    var html = $.parseHTML('<li class="directory collapsed"><a href="#" class="git" rel="' + path + '">' + filename + '</a></li>')[0];
+
+                    var $parent = $("a[rel='" + parentPath + "']");
+                    var $parentLi = $parent.parent();
+                    var $parentJqueryFileTree = $parentLi.children('ul.jqueryFileTree');
+
+                    alert('Not implemented on server.');
+
+                    $parentJqueryFileTree.append(html);
+                    $(html).children().bind(window.jqueryFileTree.folderEvent, window.jqueryFileTree.handler);
+
+                    sortFolder($parentJqueryFileTree);
+                    applyGitStatus();
+
+                    console.log('Created: ' + path);
                 }
 
                 /**
@@ -127,7 +316,28 @@
                  * @param {string} path Path of file to create.
                  */
                 function fsTouch(path) {
-                    console.log('Creating ' + path);
+                    console.log('Creating: ' + path);
+
+                    var parentPath = dirname(path);
+                    var filename = basename(path);
+                    var ext = getFileExtension(filename);
+                    var html = $.parseHTML('<li class="file ' + ext + '"><a href="#" class="git" rel="' + path + '">' + filename + '</a></li>')[0];
+
+
+                    var $parent = $("a[rel='" + parentPath + "']");
+                    var $parentLi = $parent.parent();
+                    var $parentJqueryFileTree = $parentLi.children('ul.jqueryFileTree');
+
+                    alert('Not implemented on server.');
+
+                    $parentJqueryFileTree.append(html);
+                    $(html).children().bind(window.jqueryFileTree.folderEvent, window.jqueryFileTree.handler);
+
+                    sortFolder($parentJqueryFileTree);
+                    applyGitStatus();
+                    window.addTab(filename, '');
+
+                    console.log('Created: ' + path);
                 }
 
                 /**
@@ -137,6 +347,13 @@
                  */
                 function fsRm(path) {
                     console.log('Removing ' + path);
+
+                    $("a[rel='" + path + "']").parent().remove();
+
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/file") }}' + path,
+                        type: 'DELETE'
+                    });
                 }
 
                 /**
@@ -145,9 +362,63 @@
                  * @param {string} path Path of directory to delete.
                  */
                 function fsRmdir(path) {
+                    console.log('In fsRmdir');
                     console.log('Removing ' + path);
+
+                    $("a[rel='" + path + "']").parent().remove();
+
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/file") }}' + path,
+                        type: 'DELETE'
+                    });
                 }
 
+                function fsRefresh(path) {
+                    console.log('In fsRefresh(' + path + ')');
+
+                    var $dir = $("a[rel='" + path + "']");
+                    var $parent = $dir.parent();
+
+                    if ($parent.hasClass('directory') && $parent.hasClass('expanded')) {
+                        console.log('Expanded directory found');
+                        $dir.click();
+                        $dir.click();
+                    }
+                }
+
+                function fsGitAdd(path) {
+                    console.log('In fsGitAdd(' + path + ')');
+
+                    var $item = $("a[rel='" + path + "']");
+
+                    if (!$item.hasClass('git-modified') && !$item.hasClass('git-untracked')) {
+                        console.log("Won't change color if added.");
+                    } else {
+                        $item.attr('class', 'git');
+                        $item.addClass('git-added');
+                    }
+
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/git-add") }}',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            item: path
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        statusCode: {
+                            500: function() {
+                                alert('Not yet implemented on server.');
+                            }
+                        },
+                        success: function(data) {
+                            console.log('git-added: ' + path);
+//                            $("a[rel='" + path + "]'").addClass('git-added');
+                        },
+                        failure: function(data) {
+                            alert('Unable to rename file. Error: ' + data ? data : 1);
+                        }
+                    });
+                }
 
             </script>
 		</body>
