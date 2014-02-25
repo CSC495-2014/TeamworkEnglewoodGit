@@ -20,21 +20,21 @@ class FileSystem extends AbstractFileSystem
 	* returns file extension of specified file
 	* Credit - Michael Holler 
 	*
-	* @param string $filename
+	* @param string $fileName
 	* @return file extentions
 	*/
-	private function getFileExtension($filename) 
+	private function getFileExtension($fileName) 
 	{
-		if (!$filename)
+		if (!$fileName)
 		{
 			return null;
 		}
 
-		$pos = strrpos($filename, '.');
+		$pos = strrpos($fileName, '.');
 
-		if ($pos !== false and substr($filename, -1) != '.')
+		if ($pos !== false and substr($fileName, -1) != '.')
 		{
-			return 'ext_' . substr($filename, $pos + 1);
+			return 'ext_' . substr($fileName, $pos + 1);
 		}
 		else
 		{
@@ -103,8 +103,8 @@ class FileSystem extends AbstractFileSystem
         return is_dir(FileSystem::getPath($path));
     }
 
-    public function removeDir($dirpath) {
-        $this->_removeDir(FileSystem::getPath($dirpath));
+    public function removeDir($dirPath) {
+        $this->_removeDir(FileSystem::getPath($dirPath));
     }
 
 	/** 
@@ -115,29 +115,29 @@ class FileSystem extends AbstractFileSystem
 	*@param string $dirPath
 	* 
 	*/	
-	protected function _removeDir($dirpath)
+	protected function _removeDir($dirPath)
 	{
-        $objects = scandir($dirpath);
+        $objects = scandir($dirPath);
         foreach ($objects as $object)
         {
             // Ignore hidden files
             if ($object != "." && $object != "..")
             {
                 // If it finds a directory, make the recursive call
-                if (is_dir($dirpath. "/" . $object))
+                if (is_dir($dirPath. "/" . $object))
                 {
-                    $this->_removeDir($dirpath. "/" . $object);
+                    $this->_removeDir($dirPath. "/" . $object);
                 }
                 // If it's not a directory then it is a file. Remove file.
                 else
                 {
-                    unlink($dirpath . "/" . $object);
+                    unlink($dirPath . "/" . $object);
                 }
             }
         }
 
         reset($objects); // Reset internal pointer of array
-        rmdir($dirpath);
+        rmdir($dirPath);
 	}
 
 	/** 
