@@ -92,8 +92,8 @@ class LoginController extends BaseController {
 				} catch (Exception $e)
 				{
 				    //We failed to get the user details. Go back to initial login page.
-				    //echo "<script type='text/javascript'>alert('Failed to Get User Details: $e');</script>";
-				    //return Redirect::to('login');
+				    echo "<script type='text/javascript'>alert('Failed to Get User Details');</script>";
+				    return Redirect::to('login');
 				    
 				}
 			} catch (Exception $e)
