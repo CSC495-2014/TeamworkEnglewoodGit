@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"league/oauth2-client": "dev-master",
+		"league/oauth2-client": "0.1",
 		"cpliakas/git-wrapper": "1.1.*"
 	},
 	"autoload": {
