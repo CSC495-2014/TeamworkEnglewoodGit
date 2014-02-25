@@ -9,7 +9,6 @@ class LoginController extends BaseController {
 	    echo "<script type='text/javascript'>alert('Began Function');</script>";
             //return View::make('login');
 		$provider = new League\OAuth2\Client\Provider\Github(array(
-			//Won't want to actually post this to GitHub, will be put in a config file for the app
 			'clientId' => 'fd0b49991778467ebe9d',
 			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
 			'redirectUri' => 'http://54.200.185.101/login'
@@ -21,7 +20,7 @@ class LoginController extends BaseController {
 		{
 		    echo "<script type='text/javascript'>alert('Getting Code');</script>";
 			//If we do not have an authorization code, then get one
-			$provider->authorize();
+			$provider->authorize(array($provider=>clientId, $provider=>redirectUri));
 		}
 		else
 		{
