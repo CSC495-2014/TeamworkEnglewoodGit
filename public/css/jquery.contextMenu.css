@@ -96,6 +96,7 @@
 .context-menu-item.icon-add-dir { background-image: url(images/glyphicons_149_folder_new.png); }
 .context-menu-item.icon-delete { background-image: url(images/glyphicons_192_circle_remove.png); }
 .context-menu-item.icon-add-file { background-image: url(images/glyphicons_190_circle_plus.png); }
+.context-menu-item.icon-refresh { background-image: url(images/glyphicons_081_refresh.png); }
 .context-menu-item.icon-git-add { background-image: url(images/glyphicons_423_git_create.png); }
 .context-menu-item.icon-git-delete { background-image: url(images/glyphicons_425_git_delete.png); }
 .context-menu-item.icon-quit { background-image: url(images/glyphicons_388_exit.png); }

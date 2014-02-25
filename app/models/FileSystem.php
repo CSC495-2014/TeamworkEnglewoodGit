@@ -62,7 +62,7 @@ class FileSystem extends AbstractFileSystem
 		{
 			$item = [
 				'name' => $item,
-				'path' => $searchDir . $item . (is_dir($searchDir . $item) ? '/' : ''),
+				'path' => $dirpath . $item . (is_dir($searchDir . $item) ? '/' : ''),
 			];
 
 			if ($item['name'] == '.' or $item['name'] == '..')
@@ -94,6 +94,19 @@ class FileSystem extends AbstractFileSystem
 		return unlink(FileSystem::getPath($filePath));
 	}
 
+    /**
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function isDir($path) {
+        return is_dir(FileSystem::getPath($path));
+    }
+
+    public function removeDir($dirpath) {
+        $this->_removeDir(FileSystem::getPath($dirpath));
+    }
+
 	/** 
 	*        
 	* recursively remove all files and subdirectories from the 
@@ -102,33 +115,33 @@ class FileSystem extends AbstractFileSystem
 	*@param string $dirPath
 	* 
 	*/	
+<<<<<<< HEAD
 	public function removeDir($dirPath)
+=======
+	protected function _removeDir($dirpath)
+>>>>>>> a3937f9b4c0275e0cc0052be18b2f0b1612b2b16
 	{
-		$searchDir = FileSystem::getPath($dirpath);
-		if (is_dir($searchDir)) 
-		{ 
-			$objects = scandir($searchDir); 
-			foreach ($objects as $object)
-			{ 
-				// Ignore hidden files 
-				if ($object != "." && $object != "..") 
-				{ 
-					// If it finds a directory, make the recursive call
-					if (filetype($searchDir . "/" . $object) == "dir")
-					{
-						removeDir($searchDir . "/" . $object);	
-					}
-					// If it's not a directory then it is a file. Remove file.  
-					else
-					{
-						unlink($searchDir . "/" . $object);
-					} 
-				} 
-			} 
-			reset($objects); // Reset internal pointer of array
-			rmdir($searchDir); 
-		} 
+        $objects = scandir($dirpath);
+        foreach ($objects as $object)
+        {
+            // Ignore hidden files
+            if ($object != "." && $object != "..")
+            {
+                // If it finds a directory, make the recursive call
+                if (is_dir($dirpath. "/" . $object))
+                {
+                    $this->_removeDir($dirpath. "/" . $object);
+                }
+                // If it's not a directory then it is a file. Remove file.
+                else
+                {
+                    unlink($dirpath . "/" . $object);
+                }
+            }
+        }
 
+        reset($objects); // Reset internal pointer of array
+        rmdir($dirpath);
 	}
 
 	/** 
@@ -145,6 +158,11 @@ class FileSystem extends AbstractFileSystem
 		fwrite($handle, $contents);
 		fclose($handle);
 	}
+
+    public function read($path)
+    {
+        return file_get_contents(FileSystem::getPath($path));
+    }
 
 	public function copy($sourcePath, $destPath)
 	{
