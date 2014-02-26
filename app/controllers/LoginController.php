@@ -29,6 +29,7 @@ class LoginController extends BaseController {
 			{
 			    echo "<script type='text/javascript'>alert('trying to get token');</script>";
 				//Try to get an access token (using the authorization code grant)
+				$tokenTest = 'ee4cfc6f2b3103ec7ee4b7527937bccf7ce50e03';
 				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 				echo "<script type='text/javascript'>alert('Got Token: $t');</script>";
 				$type = gettype($t);
@@ -36,10 +37,7 @@ class LoginController extends BaseController {
 				try
 				{
 					//If we get an access token, now attempt to get the user's details
-					$getUserDetails = $provider->userDetails($t);
-					foreach ($userDetails as $attribute => $value) {
-					    var_dump($attribute, $value) . PHP_EOL . PHP_EOL;
-					}
+					$getUserDetails = $provider->userDetails($tokenTest);
 					echo "<script type='text/javascript'>alert('Successful Login!');</script>";
 					echo "<script type='text/javascript'>alert('User: ' + $userDetails);</script>";
 					//Are they a user in our user table?
