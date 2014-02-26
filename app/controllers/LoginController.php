@@ -11,7 +11,7 @@ class LoginController extends BaseController {
 			'clientId' => 'fd0b49991778467ebe9d',
 			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
 			'redirectUri' => 'http://54.200.185.101/login',
-			'scopes' => array('user','repo')
+			'scopes' => array('user','repo', 'admin:public_key', 'read:org')
 		));
 		$organization = "EnglewoodCodes";
 		
@@ -31,10 +31,13 @@ class LoginController extends BaseController {
 				{
 					//If we get an access token, now attempt to get the user's details
 					$userDetails = $provider->getUserDetails($t);
+					$userName = $userDetails->nickname;
+					/*
 					foreach ($userDetails as $attribute => $value) {
 						var_dump($attribute, $value) . PHP_EOL . PHP_EOL;
 					}
-					echo "<script type='text/javascript'>alert('Successful Login!');</script>";
+					*/
+					echo "<script type='text/javascript'>alert('Successful Login for User: $userName');</script>";
 					//Are they a user in our user table?
 					//$userExists = laraveldb::table('users')->where('username',$userName)->find();
 					
