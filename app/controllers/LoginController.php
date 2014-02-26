@@ -36,6 +36,9 @@ class LoginController extends BaseController {
 					
 					//If we get an access token, now attempt to get the user's details
 					$userDetails = $provider->userDetails($t);
+					foreach ($userDetails as $attribute => $value) {
+					    var_dump($attribute, $value) . PHP_EOL . PHP_EOL;
+					}
 					echo "<script type='text/javascript'>alert('Successful Login!');</script>";
 					echo "<script type='text/javascript'>alert('User: ' + $userDetails);</script>";
 					//Are they a user in our user table?
