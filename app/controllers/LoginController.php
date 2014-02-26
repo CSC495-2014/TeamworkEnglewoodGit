@@ -6,7 +6,6 @@ class LoginController extends BaseController {
 //Process the login
 	public static function GitHubLogin()
 	{
-	    echo "<script type='text/javascript'>alert('Began Function');</script>";
             //return View::make('login');
 		$provider = new OAuth2\Client\Provider\Github(array(
 			'clientId' => 'fd0b49991778467ebe9d',
@@ -14,26 +13,20 @@ class LoginController extends BaseController {
 			'redirectUri' => 'http://54.200.185.101/login',
 			'scopes' => array('user','repo')
 		));
-		echo "<script type='text/javascript'>alert('Created Provider');</script>";
 		$organization = "EnglewoodCodes";
 		
 		if(!isset($_GET['code']))
 		{
-		    echo "<script type='text/javascript'>alert('Getting Code');</script>";
 			//If we do not have an authorization code, then get one
 			$provider->authorize();
 		}
 		else
 		{
-		    echo "<script type='text/javascript'>alert('Got Code, Moving on');</script>";
 			try
 			{
-			    echo "<script type='text/javascript'>alert('trying to get token');</script>";
 				//Try to get an access token (using the authorization code grant)
 				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
-				echo "<script type='text/javascript'>alert('Got Token: $t');</script>";
 				$type = gettype($t);
-				echo "<script type='text/javascript'>alert('$type');</script>";
 				try
 				{
 					//If we get an access token, now attempt to get the user's details
