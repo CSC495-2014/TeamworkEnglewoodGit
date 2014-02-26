@@ -11,7 +11,8 @@ class LoginController extends BaseController {
 		$provider = new OAuth2\Client\Provider\Github(array(
 			'clientId' => 'fd0b49991778467ebe9d',
 			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
-			'redirectUri' => 'http://54.200.185.101/login'
+			'redirectUri' => 'http://54.200.185.101/login',
+			'scopes' => array('user','repo')
 		));
 		echo "<script type='text/javascript'>alert('Created Provider');</script>";
 		$organization = "EnglewoodCodes";
