@@ -142,7 +142,6 @@ $.widget( "ui.tabs", {
 		if ( !collapsible && active === false && this.anchors.length ) {
 			active = 0;
 		}
-
 		return active;
 	},
 
@@ -190,6 +189,7 @@ $.widget( "ui.tabs", {
 				clearTimeout( this.activating );
 				// Determine if we should collapse or activate
 				this._activate( selectedIndex === this.options.active ? false : selectedIndex );
+				
 				return;
 			default:
 				return;
@@ -212,6 +212,7 @@ $.widget( "ui.tabs", {
 				this.option( "active", selectedIndex );
 			}, this.delay );
 		}
+		
 	},
 
 	_panelKeydown: function( event ) {
@@ -228,6 +229,7 @@ $.widget( "ui.tabs", {
 
 	// Alt+page up/down moves focus to the previous/next tab (and activates)
 	_handlePageNav: function( event ) {
+		//alert("_handlePageNav");
 		if ( event.altKey && event.keyCode === $.ui.keyCode.PAGE_UP ) {
 			this._activate( this._focusNextTab( this.options.active - 1, false ) );
 			return true;
