@@ -33,7 +33,7 @@ class LoginController extends BaseController {
 				echo "<script type='text/javascript'>alert('Got Token: $t');</script>";
 				try
 				{
-					
+					$userDetails = new User;
 					//If we get an access token, now attempt to get the user's details
 					$userDetails = $provider->userDetails($t);
 					foreach ($userDetails as $attribute => $value) {
