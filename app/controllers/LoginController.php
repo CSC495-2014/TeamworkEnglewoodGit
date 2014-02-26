@@ -1,7 +1,6 @@
 <?php
 
 //use League\OAuth2\Client\Provider\Github;
-use \OAuth2\Client\Token\AccessToken;
 class LoginController extends BaseController {
 
 //Process the login
@@ -30,9 +29,9 @@ class LoginController extends BaseController {
 			{
 			    echo "<script type='text/javascript'>alert('trying to get token');</script>";
 				//Try to get an access token (using the authorization code grant)
-				$t = new AccessToken;
 				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 				echo "<script type='text/javascript'>alert('Got Token: $t');</script>";
+				echo "<script type='text/javascript'>alert('gettype($t)');</script>";
 				try
 				{
 					//If we get an access token, now attempt to get the user's details
