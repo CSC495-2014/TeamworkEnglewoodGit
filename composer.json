@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"cpliakas/git-wrapper": "1.1.*"
+		"cpliakas/git-wrapper": "1.1.*",
 		"rmccue/requests": "dev-master"
 	},
 	"autoload": {
