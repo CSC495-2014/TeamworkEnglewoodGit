@@ -29,13 +29,13 @@ class LoginController extends BaseController {
 			{
 			    echo "<script type='text/javascript'>alert('trying to get token');</script>";
 				//Try to get an access token (using the authorization code grant)
+				$t = new AccessToken;
 				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 				echo "<script type='text/javascript'>alert('Got Token: $t');</script>";
 				try
 				{
-					$userDetails = new User;
 					//If we get an access token, now attempt to get the user's details
-					$userDetails = $provider->userDetails($t);
+					$getUserDetails = $provider->userDetails($t);
 					foreach ($userDetails as $attribute => $value) {
 					    var_dump($attribute, $value) . PHP_EOL . PHP_EOL;
 					}
