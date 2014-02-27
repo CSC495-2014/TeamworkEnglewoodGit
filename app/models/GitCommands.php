@@ -1,8 +1,6 @@
 <?php
 
-require_once '../../vendor/autoload.php';
 use GitWrapper\GitWrapper;
-require __DIR__ . '/AbstractFileSystem.php';
 
 class GitCommands extends AbstractFileSystem
 {
@@ -141,7 +139,6 @@ class GitCommands extends AbstractFileSystem
 }
 	/* --- Testing of GitCommands public interfaces --- */
 
-	/*
 	$user = 'ZAM-';
 	$project = 'TestRepo';
 	$testFile = 'MyFile.txt';
@@ -152,5 +149,5 @@ class GitCommands extends AbstractFileSystem
 	$git->gitAdd($testFile);
 	$git->gitCommit('Added my test file!');
 	$git->gitPush('origin', 'master');
-	*/
+
 ?>

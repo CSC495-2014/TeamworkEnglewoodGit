@@ -61,7 +61,7 @@ abstract class AbstractFileSystem
 	*			  
 	* set the user name. 
 	*
-	* @param string $username
+	* @param string $userName
 	*/
 	public function setUserName($userName)
 	{
