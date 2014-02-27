@@ -21,6 +21,7 @@ class LoginController extends BaseController
 	{
 	    try
 	    {
+		echo "<script type='text/javascript'>alert('Calling Token Class');</script>";
 		LoginController::getToken($provider);
 	    }
 	    catch (Exception $e)
@@ -32,9 +33,11 @@ class LoginController extends BaseController
     
     public function getToken($provider)
     {
+	echo "<script type='text/javascript'>alert('Token Class Called');</script>";
 	$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 	try
 	{
+	    echo "<script type='text/javascript'>alert('Calling getUser');</script>";
 	    LoginController::getUser($provider, $t);
 	}
 	catch (Exception $e)
@@ -94,8 +97,10 @@ class LoginController extends BaseController
     
     public function getUser($provider, $t)
     {
+	echo "<script type='text/javascript'>alert('Called getUser');</script>";
 	try
 	{
+	    echo "<script type='text/javascript'>alert('Fetching User Details');</script>";
 	    $userDetails = $provider->getUserDetails($t);
 	    echo "<script type='text/javascript'>alert('Obtained details for User: $userDetails->nickname');</script>";
 	    LoginController::processUser($t, $userDetails);
