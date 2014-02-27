@@ -22,6 +22,7 @@ $(function()
 		tabs.find( ".ui-tabs-nav" ).append( li );
 		tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
 		tabs.tabs( "refresh" );
+		tabs.tabs( "option", "active", -1 );
 		tabCounter++;
 		var editor = ace.edit(id);   //editor format
 		document.getElementById(id).name = label;	//set the name of tabs
