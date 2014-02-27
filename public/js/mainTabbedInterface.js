@@ -22,24 +22,13 @@ $(function()
 		tabs.find( ".ui-tabs-nav" ).append( li );
 		tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
 		tabs.tabs( "refresh" );
+		tabs.tabs( "option", "active", -1 );
 		tabCounter++;
-
-		//editor format
-		var editor = ace.edit(id);
-		editor.getSession().setMode("mode/javascript");
-
+		var editor = ace.edit(id);   //editor format
 		document.getElementById(id).name = label;	//set the name of tabs
 	}
 
     window.addTab = addTab;
-
-	// addTab button: add a new tab
-	/**$( "#add_tab" )
-		.button()
-		.click(function() 
-		{
-			addTab("File1", "HelloWorld");
-		});*/
 
 	// close icon: removing the tab on click
 	tabs.delegate( "span.ui-icon-close", "click", function() 

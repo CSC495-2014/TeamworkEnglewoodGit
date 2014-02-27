@@ -13,7 +13,8 @@
 	padding: .2em;
 }
 .ui-tabs .ui-tabs-nav {
-	margin: 0;
+	margin-right: 2px;
+	margin-bottom: 2px;
 	padding: .2em .2em 0;
 }
 .ui-tabs .ui-tabs-nav li {
@@ -21,14 +22,15 @@
 	float: left;
 	position: relative;
 	top: 0;
-	margin: 1px .2em 0 0;
+	margin: 0px 0 0 0;
 	border-bottom-width: 0;
 	padding: 0;
-	white-space: nowrap;
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
 	float: left;
-	padding: .5em 1em;
+	padding: .05em .1em;
+	font-size: 12px;
+	outline-width: 0;
 	text-decoration: none;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
@@ -46,6 +48,6 @@
 .ui-tabs .ui-tabs-panel {
 	display: block;
 	border-width: 0;
-	padding: 100em 100em;
-	background: none;
+	padding: 22em 28em;
 }
+

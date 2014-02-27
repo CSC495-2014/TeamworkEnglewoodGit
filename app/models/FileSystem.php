@@ -1,5 +1,4 @@
 <?php
-require __DIR__ . '/AbstractFileSystem.php';
 
 class FileSystem extends AbstractFileSystem
 {
@@ -62,7 +61,7 @@ class FileSystem extends AbstractFileSystem
 		{
 			$item = [
 				'name' => $item,
-				'path' => $dirpath . $item . (is_dir($searchDir . $item) ? '/' : ''),
+				'path' => $dirPath . $item . (is_dir($searchDir . $item) ? '/' : ''),
 			];
 
 			if ($item['name'] == '.' or $item['name'] == '..')
@@ -174,6 +173,7 @@ class FileSystem extends AbstractFileSystem
 }
 
 	/* --- Testing of FileSystem public interfaces --- */
+	
 	/*
 	$user = 'ZAM-';
 	$project = 'TestRepo';
@@ -190,4 +190,5 @@ class FileSystem extends AbstractFileSystem
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
 	*/
+	
 ?>
