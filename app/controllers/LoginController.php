@@ -1,110 +1,137 @@
 <?php
 
-//use League\OAuth2\Client\Provider\Github;
-class LoginController extends BaseController {
-
+class LoginController extends BaseController
+{
 //Process the login
-	public static function GitHubLogin()
+    public static function GitHubLogin()
+    {
+	$provider = new OAuth2\Client\Provider\Github(array(
+	    'clientId' => 'fd0b49991778467ebe9d',
+	    'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
+	    'redirectUri' => 'http://54.200.185.101/login',
+	    'scopes' => array('user','repo', 'admin:public_key', 'read:org')
+	));
+	
+	if(!isset($_GET['code']))
 	{
-            //return View::make('login');
-		$provider = new OAuth2\Client\Provider\Github(array(
-			'clientId' => 'fd0b49991778467ebe9d',
-			'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
-			'redirectUri' => 'http://54.200.185.101/login',
-			'scopes' => array('user','repo', 'admin:public_key', 'read:org')
-		));
-		$organization = "EnglewoodCodes";
-		
-		if(!isset($_GET['code']))
-		{
-			//If we do not have an authorization code, then get one
-			$provider->authorize();
-		}
-		else
-		{
-			try
-			{
-				//Try to get an access token (using the authorization code grant)
-				$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
-				$type = gettype($t);
-				try
-				{
-					//If we get an access token, now attempt to get the user's details
-					$userDetails = $provider->getUserDetails($t);
-					$userName = $userDetails->nickname;
-					/*
-					foreach ($userDetails as $attribute => $value) {
-						var_dump($attribute, $value) . PHP_EOL . PHP_EOL;
-					}
-					*/
-					echo "<script type='text/javascript'>alert('Successful Login for User: $userName');</script>";
-					//Are they a user in our user table?
-					//$userExists = laraveldb::table('users')->where('username',$userName)->find();
-					
-					
-					/*
-					if($userExists) //In Table
-					{
-                                            //Check The specified group on GitHub to see if they are in it. If not, delete from table.
-                                            //IF they are, continue login
-					    $user = laraveldb::table('users')->where('username', $userName)->get();
-					    $tableId = $user->$user_id;
-					    
-					    if()//In Table, Member of Group
-						{
-							//They are logged in. Put Userid and tableId into session.
-							Session::put('uid', 'userName');
-							Session::put('tableId', 'tableId');
-						}
-						else//In Table, Not a Member of Group
-						{
-							//Delete them from the table
-							DB::table('users')->where('user_id', $tableId)->delete();
-							//Go back to initial login page.
-							return Redirect::to('login');
-						}
-					    
-					    //They are logged in. Store cookie with userID matching their entry.
-					}
-					else //Not in Table 
-					{
-						//Check to see if they are a member of the specified group on GitHub
-						if()//Not in Table, Member of Group
-						{
-							//Make new entry in the login table
-							$id = DB::table('users')->insertGetId(
-							    array('username' => $userName, 'oauth' => $t)
-							);
-							$user = laraveldb::table('users')->where('username', $userName)->get();
-							$tableId = $user->$user_id;
-							//They are logged in. Put Userid and tableId into session.
-							Session::put('uid', 'userName');
-							Session::put('tableId', 'tableId');
-						}
-						else//Not in Table, Not a Member of Group
-						{
-							//Go back to initial login page.
-							return Redirect::to('login');
-						}
-					}
-					*/
-					
-				} catch (Exception $e)
-				{
-				    //We failed to get the user details. Go back to initial login page.
-				    echo "<script type='text/javascript'>alert('Failed to Get User Details');</script>";
-				    return Redirect::to('login');
-				    
-				}
-			} catch (Exception $e)
-			{
-			    //We failed to get the access token. Go back to initial login page.
-			    echo "<script type='text/javascript'>alert('Failed to get Access Token');</script>";
-			    return Redirect::to('login');
-			    
-			}
-		} //End else
-	} //End function GitHubLogin
+	    $provider->authorize();
+	}
+	else
+	{
+	    try
+	    {
+		getToken($provider);
+	    }
+	    catch (Exception $e)
+	    {
+		echo "<script type='text/javascript'>alert('Failed to get Token');</script>";
+	    }
+	}
+    } //End function GitHubLogin
+    
+    public function getToken($provider)
+    {
+	$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
+	try
+	{
+	    getUser($provider, $t);
+	}
+	catch (Exception $e)
+	{
+	    echo "<script type='text/javascript'>alert('Failed to obtain User');</script>";
+	}
+    }
+    
+    public function processUser($t, $userDetails)
+    {
+	$userName = $userDetails->nickname;
+	$organization = '';
+	$userExists = userExists($userName);
+	$userInGroup = checkUserGroup($userName, $organization);
+	
+	if($userInGroup)
+	{
+	    if($userExists)
+	    {
+		echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
+		$tableId = getTableId($userName);
+	    }
+	    else
+	    {
+		echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
+		$tableId = addUser($userName);
+	    }
+	    beginSession($userName, $tableId);
+	}
+	else
+	{
+	    if($userExists)
+	    {
+		$tableId = getTableId($userName);
+		deleteUser($tableId);
+		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
+	    }
+	    else
+	    {
+		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
+	    }
+	}
+    }
+    
+    public function beginSession($userName, $tableId, $t)
+    {
+	echo "<script type='text/javascript'>alert('Beginning Session');</script>";
+	Session::put('uid', 'userName');
+	Session::put('tableId', 'tableId');
+	Session::put('token', 't');
+    }
+    
+    public function checkUserGroup()
+    {
+	return true;
+    }
+    
+    public function getUser($provider, $t)
+    {
+	try
+	{
+	    $userDetails = $provider->getUserDetails($t);
+	    echo "<script type='text/javascript'>alert('Obtained details for User: $userDetails->nickname');</script>";
+	    processUser($t, $userDetails);
+	}
+	catch (Exception $e)
+	{
+	    echo "<script type='text/javascript'>alert('Failed to obtain user details');</script>";
+	}
+    }
+    
+    public function userExists($userName)
+    {
+	echo "<script type='text/javascript'>alert('Checking Table');</script>";
+	$userExists = laraveldb::table('users')->where('username',$userName)->find();
+	return $userExists;
+    }
+    public function deleteUser($tableId)
+    {
+	echo "<script type='text/javascript'>alert('Deleting User');</script>";
+	DB::table('users')->where('user_id', $tableId)->delete();
+    }
+    
+    public function addUser($userName)
+    {
+	echo "<script type='text/javascript'>alert('Adding User');</script>";
+	$id = DB::table('users')->insertGetId(array('username' => $userName, 'oauth' => $t));
+	return $id;
+    }
+    
+    public function getTableId($userName)
+    {
+	echo "<script type='text/javascript'>alert('Getting Table ID');</script>";
+	$user = laraveldb::table('users')->where('username', $userName)->get();
+	$tableId = $user->$user_id;
+	return $tableId;
+    }
+    
 } //End LoginController
 
 //If present

@@ -12,7 +12,6 @@
 	?>
 	
         <div class="container">
-<<<<<<< HEAD
 		<BR/><BR/><BR/><BR/><BR/><BR/><BR/>
 		<div class="panel panel-success">
 			<!-- <div class="panel-heading">Teamwork Englewood</div> -->
