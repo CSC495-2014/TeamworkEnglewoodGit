@@ -142,7 +142,6 @@ $.widget( "ui.tabs", {
 		if ( !collapsible && active === false && this.anchors.length ) {
 			active = 0;
 		}
-
 		return active;
 	},
 
@@ -190,6 +189,7 @@ $.widget( "ui.tabs", {
 				clearTimeout( this.activating );
 				// Determine if we should collapse or activate
 				this._activate( selectedIndex === this.options.active ? false : selectedIndex );
+				
 				return;
 			default:
 				return;
@@ -212,6 +212,7 @@ $.widget( "ui.tabs", {
 				this.option( "active", selectedIndex );
 			}, this.delay );
 		}
+		
 	},
 
 	_panelKeydown: function( event ) {
@@ -226,13 +227,13 @@ $.widget( "ui.tabs", {
 		}
 	},
 
-	// Alt+page up/down moves focus to the previous/next tab (and activates)
+	// Alt+page right/left moves focus to the previous/next tab (and activates)
 	_handlePageNav: function( event ) {
-		if ( event.altKey && event.keyCode === $.ui.keyCode.PAGE_UP ) {
+		if ( event.altKey && event.keyCode === $.ui.keyCode.PAGE_LEFT ) {
 			this._activate( this._focusNextTab( this.options.active - 1, false ) );
 			return true;
 		}
-		if ( event.altKey && event.keyCode === $.ui.keyCode.PAGE_DOWN ) {
+		if ( event.altKey && event.keyCode === $.ui.keyCode.PAGE_RIGHT ) {
 			this._activate( this._focusNextTab( this.options.active + 1, true ) );
 			return true;
 		}
