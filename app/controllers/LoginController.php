@@ -4,19 +4,6 @@ class LoginController extends BaseController
 {
 //Process the login
 
-    public function getToken($provider)
-    {
-	$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
-	try
-	{
-	    getUser($provider, $t);
-	}
-	catch (Exception $e)
-	{
-	    echo "<script type='text/javascript'>alert('Failed to obtain User');</script>";
-	}
-    }
-
     public static function GitHubLogin()
     {
 	$provider = new OAuth2\Client\Provider\Github(array(
@@ -34,7 +21,7 @@ class LoginController extends BaseController
 	{
 	    try
 	    {
-		getToken($provider);
+		$this->getToken($provider);
 	    }
 	    catch (Exception $e)
 	    {
@@ -43,7 +30,18 @@ class LoginController extends BaseController
 	}
     } //End function GitHubLogin
     
-    
+    public function getToken($provider)
+    {
+	$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
+	try
+	{
+	    $this->getUser($provider, $t);
+	}
+	catch (Exception $e)
+	{
+	    echo "<script type='text/javascript'>alert('Failed to obtain User');</script>";
+	}
+    }
     
     public function processUser($t, $userDetails)
     {
