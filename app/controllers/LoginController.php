@@ -35,7 +35,7 @@ class LoginController extends BaseController
 	$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 	try
 	{
-	    getUser($provider, $t);
+	    LoginController::getUser($provider, $t);
 	}
 	catch (Exception $e)
 	{
@@ -47,20 +47,20 @@ class LoginController extends BaseController
     {
 	$userName = $userDetails->nickname;
 	$organization = '';
-	$userExists = userExists($userName);
-	$userInGroup = checkUserGroup($userName, $organization);
+	$userExists = LoginController::userExists($userName);
+	$userInGroup = LoginController::checkUserGroup($userName, $organization);
 	
 	if($userInGroup)
 	{
 	    if($userExists)
 	    {
 		echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
-		$tableId = getTableId($userName);
+		$tableId = LoginController::getTableId($userName);
 	    }
 	    else
 	    {
 		echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-		$tableId = addUser($userName);
+		$tableId = LoginController::addUser($userName);
 	    }
 	    beginSession($userName, $tableId);
 	}
@@ -68,8 +68,8 @@ class LoginController extends BaseController
 	{
 	    if($userExists)
 	    {
-		$tableId = getTableId($userName);
-		deleteUser($tableId);
+		$tableId = LoginController::getTableId($userName);
+		LoginController::deleteUser($tableId);
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
 	    }
 	    else
@@ -98,7 +98,7 @@ class LoginController extends BaseController
 	{
 	    $userDetails = $provider->getUserDetails($t);
 	    echo "<script type='text/javascript'>alert('Obtained details for User: $userDetails->nickname');</script>";
-	    processUser($t, $userDetails);
+	    LoginController::processUser($t, $userDetails);
 	}
 	catch (Exception $e)
 	{
