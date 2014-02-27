@@ -173,7 +173,7 @@ class FileSystem extends AbstractFileSystem
 
 	/* --- Testing of FileSystem public interfaces --- */
 	
-	
+	/*
 	$user = 'ZAM-';
 	$project = 'TestRepo';
 	$testFile = "testFile.txt";
@@ -188,5 +188,6 @@ class FileSystem extends AbstractFileSystem
 	//$test->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
+	*/
 	
 ?>

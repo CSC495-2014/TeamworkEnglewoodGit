@@ -138,7 +138,7 @@ class GitCommands extends AbstractFileSystem
 
 }
 	/* --- Testing of GitCommands public interfaces --- */
-
+	/*
 	$user = 'ZAM-';
 	$project = 'TestRepo';
 	$testFile = 'MyFile.txt';
@@ -149,5 +149,6 @@ class GitCommands extends AbstractFileSystem
 	$git->gitAdd($testFile);
 	$git->gitCommit('Added my test file!');
 	$git->gitPush('origin', 'master');
+	*/
 
 ?>
