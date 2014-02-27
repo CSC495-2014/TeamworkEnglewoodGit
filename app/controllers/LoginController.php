@@ -21,7 +21,7 @@ class LoginController extends BaseController
 	{
 	    try
 	    {
-		$this->getToken($provider);
+		LoginController::getToken($provider);
 	    }
 	    catch (Exception $e)
 	    {
@@ -35,7 +35,7 @@ class LoginController extends BaseController
 	$t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
 	try
 	{
-	    $this->getUser($provider, $t);
+	    getUser($provider, $t);
 	}
 	catch (Exception $e)
 	{
