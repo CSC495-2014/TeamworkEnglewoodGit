@@ -189,12 +189,12 @@ class FileSystem extends AbstractFileSystem
 			//If the folders does not exist create them
 			if(!file_exists($destPath))
 			{
-				mkdir($destPath, 0777, true);
+				mkdir($destPath, 0600, true);
 			}
 			if(!file_exists(dirname($destPath)))
 			{
 			
-				mkdir(dirname($destPath), 0777, true);
+				mkdir(dirname($destPath), 0600, true);
 			}
 			
 			$srcfile = rtrim($sourcePath, '/') .'/'. $file;
@@ -219,7 +219,7 @@ class FileSystem extends AbstractFileSystem
 					if(!file_exists(dirname($destPath)))
 					{
 					
-						mkdir(dirname($destPath), 0777, true);
+						mkdir(dirname($destPath), 0600, true);
 					}
 					//recursively call copy to handle all sub-directories
 					$this->_copy($srcfile, $destfile);
@@ -243,7 +243,7 @@ class FileSystem extends AbstractFileSystem
 	public function move($sourcePath, $destPath)
 	{
 		$this->copy($sourcePath,$destPath);
-		FileSystem::removeDir($sourcePath);
+		$this->removeDir($sourcePath);
 	}
 	/*
 	*	Creates a directory at $dirPath
