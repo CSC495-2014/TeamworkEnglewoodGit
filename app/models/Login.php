@@ -52,9 +52,9 @@ class Login
     {
         echo "<script type='text/javascript'>alert('Beginning Session');</script>";
         echo "<script type='text/javascript'>alert('Testing beginSession: $this->userName');</script>";
-	Session::put('uid','$this->userName');
+	Session::put('uid',$this->userName);
 	//Session::put('tableId', '$tableId');
-	Session::put('token', '$this->token');
+	Session::put('token', $this->token);
     }
     
     public function testSession()
