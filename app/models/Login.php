@@ -31,8 +31,6 @@ class Login
                     $this->userDetails = $this->getDetails();
 		    $this->userName = $this->userDetails->nickname;
                     echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
-                    $this->beginSession();
-                    $this->testSession();
                 }
                 catch(Exception $e)
                 {

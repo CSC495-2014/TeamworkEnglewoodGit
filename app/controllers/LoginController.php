@@ -12,6 +12,7 @@ class LoginController extends BaseController {
 	if(Config::get('oauth.online'))
 	{
 	    $gitHubLogin = new Login();
+	    $this->beginSession();
 	}
 	else
 	{
