@@ -29,10 +29,10 @@ class Login
         {
             try
             {
-                $this->token = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
+                $this->token = $this->provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
                 try
                 {
-                    $this->userDetails = $provider->getUserDetails($this->token);
+                    $this->userDetails = $this->provider->getUserDetails($this->token);
 		    $this->userName = $this->userDetails->nickname;
                     echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
                 }
