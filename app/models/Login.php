@@ -51,6 +51,7 @@ class Login
     public function beginSession()
     {
         echo "<script type='text/javascript'>alert('Beginning Session');</script>";
+        echo "<script type='text/javascript'>alert('Testing beginSession: $userName');</script>";
 	Session::put('uid','$userName');
 	//Session::put('tableId', '$tableId');
 	Session::put('token', '$t');
