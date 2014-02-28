@@ -34,6 +34,7 @@ class Login
                 {
                     $userDetails = $provider->getUserDetails($token);
 		    $userName = $userDetails->nickname;
+                    echo "<script type='text/javascript'>alert('Login for $userName');</script>";
                 }
                 catch(Exception $e)
                 {
@@ -49,7 +50,6 @@ class Login
     
     public function beginSession()
     {
-        $user = $userName;
         echo "<script type='text/javascript'>alert('Beginning Session');</script>";
 	Session::put('uid', $userName);
 	//Session::put('tableId', '$tableId');
