@@ -245,6 +245,17 @@ class FileSystem extends AbstractFileSystem
 		$this->copy($sourcePath,$destPath);
 		FileSystem::removeDir($sourcePath);
 	}
+	/*
+	*	Creates a directory at $dirPath
+	*
+	*	@param String $dirPath
+	*
+	*/
+	public function makeDir($dirPath)
+	{
+		mkdir(FileSystem::getPath($dirPath));
+	}
+	
 
 }
 
@@ -265,6 +276,19 @@ class FileSystem extends AbstractFileSystem
 	//$test->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
+	
+	//This will copy the files/folders in in the app/data/users/ZAM-/projects/TestRepo/js directory
+	//to app/data/users/ZAM-/projects/TestRepo/test directory
+	$test->copy("js/", "test");
+	
+	//This will copy the testFile.txt
+	$test->copy($testFile, "TestFileCopy.txt");
+	
+	//This moves $testFileCopy to ../test
+	$test->move($testFileCopy, "test/TestFileCopy.txt");
+	
+	//This moves all folders and files in ../js to ../test
+	$test->move("js/", "test");
 	*/
 	
 ?>
