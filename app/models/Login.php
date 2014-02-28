@@ -15,7 +15,7 @@ class Login
     
     function __construct()
     {
-	$this->provider = getProvider();
+	$this->provider = $this->getProvider();
         
         if(!isset($_GET['code']))
 	{
