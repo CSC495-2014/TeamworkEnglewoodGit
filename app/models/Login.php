@@ -18,10 +18,10 @@ class Login
         echo "<script type='text/javascript'>alert('Testing Config File');</script>";
         //Config::get('login.variable_name');
 	$this->provider = new OAuth2\Client\Provider\Github(array(
-	    'clientId' => Config::get(oauth.clientId),
-	    'clientSecret' => Config::get(oauth.clientSecret),
-	    'redirectUri' => Config::get(oauth.redirectUri),
-	    'scopes' => Config::get(oauth.scopes)
+	    'clientId' => Config::get('oauth.clientId'),
+	    'clientSecret' => Config::get('oauth.clientSecret'),
+	    'redirectUri' => Config::get('oauth.redirectUri'),
+	    'scopes' => Config::get('oauth.scopes')
 	));
         if(!isset($_GET['code']))
 	{
