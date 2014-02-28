@@ -11,14 +11,12 @@ class LoginController extends BaseController {
     {
 	if(Config::get('oauth.online'))
 	{
-	    echo "<script type='text/javascript'>alert('Online');</script>";
 	    $gitHubLogin = new Login();
 	    $gitHubLogin->beginSession();
 	    $gitHubLogin->testSession();
 	}
 	else
 	{
-	    echo "<script type='text/javascript'>alert('Offline');</script>";
 	    $userName = Config::get('oauth.offlineUserName');
 	    $userId = Config::get('oauth.offlineTableId');
 	    $token = Config::get('oauth.offlineToken');
