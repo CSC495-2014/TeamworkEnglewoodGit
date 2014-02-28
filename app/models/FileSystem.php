@@ -162,12 +162,88 @@ class FileSystem extends AbstractFileSystem
 
 	public function copy($sourcePath, $destPath)
 	{
+		//Copies First directory then calls recursive copy function
+		if(!file_exists(FileSystem::getPath($destPath)))
+		{
+			mkdir(FileSystem::getPath($destPath));
+		}
+		if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
+		{
+			mkdir(FileSystem::getPath($destPath)."/".$sourcePath);
+		}
+		$this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
 
 	}
+	/**
+	*             
+	*  Copies files | folder and subdirectories/files recursively 
+	*
+	* 
+	*  @param string $sourcePath  
+	*  @param string $destPath  
+	*/ 
+	protected function _copy($sourcePath, $destPath)
+	 {
+		foreach(scandir($sourcePath) as $file)
+		{
+			//If the folders does not exist create them
+			if(!file_exists($destPath))
+			{
+				mkdir($destPath, 0777, true);
+			}
+			if(!file_exists(dirname($destPath)))
+			{
+			
+				mkdir(dirname($destPath), 0777, true);
+			}
+			
+			$srcfile = rtrim($sourcePath, '/') .'/'. $file;
+			$destfile = rtrim($destPath, '/') .'/'. $file;
 
+			if (!is_readable($srcfile))
+			{ 
+				continue;
+			} 
+			if ($file != '.' && $file != '..')
+			{
+				//IS a Directory
+				if (is_dir($srcfile))
+				{ 
+					//If folder does not exist in destination create
+					if (!file_exists($destfile))
+					{ 
+
+						mkdir($destfile);
+						
+					} 
+					if(!file_exists(dirname($destPath)))
+					{
+					
+						mkdir(dirname($destPath), 0777, true);
+					}
+					//recursively call copy to handle all sub-directories
+					$this->_copy($srcfile, $destfile);
+				} 
+				//Else it is a file, copy
+				else
+				{
+					copy($srcfile, $destfile); 
+				}
+			} 
+		} 
+		
+	} 	
+		
+	/*         
+	*   Moves files | folders and subdirectories/files removing original
+	*
+	*	@param String $sourcePath
+	*	@param String $destPath
+	*/
 	public function move($sourcePath, $destPath)
 	{
-
+		$this->copy($sourcePath,$destPath);
+		FileSystem::removeDir($sourcePath);
 	}
 
 }
