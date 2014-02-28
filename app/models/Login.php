@@ -49,6 +49,7 @@ class Login
     
     public function beginSession()
     {
+        $user = $userName;
         echo "<script type='text/javascript'>alert('Beginning Session');</script>";
 	Session::put('uid', $userName);
 	//Session::put('tableId', '$tableId');
