@@ -12,8 +12,6 @@ class LoginController extends BaseController {
 	if(Config::get('oauth.online'))
 	{
 	    $gitHubLogin = new Login();
-	    $gitHubLogin->beginSession();
-	    $gitHubLogin->testSession();
 	}
 	else
 	{
@@ -23,7 +21,7 @@ class LoginController extends BaseController {
 	    Session::put('uid', $userName);
 	    Session::put('tableId', $userId);
 	    Session::put('token', $token);
-	    //Put redirect to Projects Page Here
+	    
 	}
     }
 }
