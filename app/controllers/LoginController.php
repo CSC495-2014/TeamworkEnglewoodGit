@@ -2,11 +2,31 @@
 
 class LoginController extends BaseController {
 
-//Process the login
+    /**
+    *
+    * Drive the Login Process
+    *
+    */
     public static function GitHubLogin()
     {
-	$gitHubLogin = new Login();
-	$gitHubLogin->beginSession();
-	$gitHubLogin->testSession();
+	if(Config::get('oauth.online'))
+	{
+	    echo "<script type='text/javascript'>alert('Online');</script>";
+	    $gitHubLogin = new Login();
+	    $gitHubLogin->beginSession();
+	    $gitHubLogin->testSession();
+	}
+	else
+	{
+	    echo "<script type='text/javascript'>alert('Offline');</script>";
+	    $userName = Config::get('oauth.offlineUserName');
+	    $userId = Config::get('oauth.offlineTableId');
+	    $token = Config::get('oauth.offlineToken');
+	    Session::put('uid', $userName);
+	    Session::put('tableId', $userId);
+	    Session::put('token', $token);
+	    
+	    return View::make('login');
+	}
     }
 }

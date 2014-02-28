@@ -15,14 +15,8 @@ class Login
     
     function __construct()
     {
-        echo "<script type='text/javascript'>alert('Testing Config File');</script>";
-        //Config::get('login.variable_name');
-	$this->provider = new OAuth2\Client\Provider\Github(array(
-	    'clientId' => Config::get('oauth.clientId'),
-	    'clientSecret' => Config::get('oauth.clientSecret'),
-	    'redirectUri' => Config::get('oauth.redirectUri'),
-	    'scopes' => Config::get('oauth.scopes')
-	));
+	$this->provider = getProvider();
+        
         if(!isset($_GET['code']))
 	{
 	    $this->provider->authorize();
@@ -31,10 +25,10 @@ class Login
         {
             try
             {
-                $this->token = $this->provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
+                $this->token = $this->getToken();
                 try
                 {
-                    $this->userDetails = $this->provider->getUserDetails($this->token);
+                    $this->userDetails = getDetails();
 		    $this->userName = $this->userDetails->nickname;
                     echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
                 }
@@ -50,22 +44,53 @@ class Login
         }
     }
     
+    /**
+    *
+    * Create a new GitHub Provider
+    *
+    *@return Github $provider
+    */
+    private function getProvider()
+    {
+        return new OAuth2\Client\Provider\Github(array(
+	    'clientId' => Config::get('oauth.clientId'),
+	    'clientSecret' => Config::get('oauth.clientSecret'),
+	    'redirectUri' => Config::get('oauth.redirectUri'),
+	    'scopes' => Config::get('oauth.scopes')
+	));
+    }
+    
+    /**
+    *
+    * Using the user authorization, make a request to GitHub to provide access token
+    *
+    *@return AccessToken $token
+    */
+    private function getToken()
+    {
+        return $this->provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
+    }
+    
+    /**
+    *
+    * Using the token, make a request to GitHub to provide array of user details
+    *
+    *@return array $userDetails
+    */
+    private function getDetails()
+    {
+        return $this->provider->getUserDetails($this->token);
+    }
+    
+    /**
+    *
+    * Begins the Laravel Session, Storing userName, userId, and token within the session
+    *
+    */
     public function beginSession()
     {
-        echo "<script type='text/javascript'>alert('Beginning Session');</script>";
-        echo "<script type='text/javascript'>alert('Testing beginSession: $this->userName');</script>";
 	Session::put('uid',$this->userName);
 	//Session::put('tableId', '$tableId');
 	Session::put('token', $this->token);
     }
-    
-    public function testSession()
-    {
-        $user = Session::get('uid');
-        //$id = Session::get('tableId');
-        $t = Session::get('token');
-        echo "<script type='text/javascript'>alert('Testing Session:');</script>";
-        echo "<script type='text/javascript'>alert('$user');</script>";
-    }
-    
 }
