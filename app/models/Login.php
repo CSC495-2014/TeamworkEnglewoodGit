@@ -32,8 +32,8 @@ class Login
                 $token = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
                 try
                 {
-                    $userDetails = $provider->getUserDetails($t);
-		    //$userName = $userDetails->nickname;
+                    $userDetails = $provider->getUserDetails($token);
+		    $userName = $userDetails->nickname;
                 }
                 catch(Exception $e)
                 {
