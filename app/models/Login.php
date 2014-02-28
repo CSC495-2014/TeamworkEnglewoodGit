@@ -33,7 +33,7 @@ class Login
                 try
                 {
                     $userDetails = $provider->getUserDetails($t);
-		    $userName = $userDetails->nickname;
+		    //$userName = $userDetails->nickname;
                 }
                 catch(Exception $e)
                 {
