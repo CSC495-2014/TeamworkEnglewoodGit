@@ -3,19 +3,19 @@
 class Login
 {
     
-    public $provider;
+    private $provider;
     
-    public $token;
+    private $token;
     
-    public $userDetails;
+    private $userDetails;
     
-    public $userName;
+    private $userName;
     
-    public $tableId;
+    private $tableId;
     
     function __construct()
     {
-	$provider = new OAuth2\Client\Provider\Github(array(
+	$this->provider = new OAuth2\Client\Provider\Github(array(
 	    'clientId' => 'fd0b49991778467ebe9d',
 	    'clientSecret' => '82c139b5cf2109a8b9ae0670fd0d818640f1b3bc',
 	    'redirectUri' => 'http://54.200.185.101/login',
@@ -23,17 +23,17 @@ class Login
 	));
         if(!isset($_GET['code']))
 	{
-	    $provider->authorize();
+	    $this->provider->authorize();
 	}
         else
         {
             try
             {
-                $token = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
+                $this->token = $provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
                 try
                 {
-                    $userDetails = $provider->getUserDetails($token);
-		    $userName = $userDetails->nickname;
+                    $this->userDetails = $provider->getUserDetails($token);
+		    $this->userName = $userDetails->nickname;
                     echo "<script type='text/javascript'>alert('Login for $userName');</script>";
                 }
                 catch(Exception $e)
@@ -51,10 +51,10 @@ class Login
     public function beginSession()
     {
         echo "<script type='text/javascript'>alert('Beginning Session');</script>";
-        echo "<script type='text/javascript'>alert('Testing beginSession: $userName');</script>";
-	Session::put('uid','$userName');
+        echo "<script type='text/javascript'>alert('Testing beginSession: $this->userName');</script>";
+	Session::put('uid','$this->userName');
 	//Session::put('tableId', '$tableId');
-	Session::put('token', '$t');
+	Session::put('token', '$this->token');
     }
     
     public function testSession()
