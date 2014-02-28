@@ -50,9 +50,9 @@ class Login
     public function beginSession()
     {
         echo "<script type='text/javascript'>alert('Beginning Session');</script>";
-	Session::put('uid', '$userName');
+	Session::put('uid', $userName);
 	//Session::put('tableId', '$tableId');
-	Session::put('token', '$t');
+	Session::put('token', $t);
     }
     
     public function testSession()
