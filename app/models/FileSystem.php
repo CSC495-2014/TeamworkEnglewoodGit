@@ -165,11 +165,11 @@ class FileSystem extends AbstractFileSystem
 		//Copies First directory then calls recursive copy function
 		if(!file_exists(FileSystem::getPath($destPath)))
 		{
-			mkdir(FileSystem::getPath($destPath));
+			mkdir(FileSystem::getPath($destPath), 0700);
 		}
 		if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
 		{
-			mkdir(FileSystem::getPath($destPath)."/".$sourcePath);
+			mkdir(FileSystem::getPath($destPath)."/".$sourcePath, 0700);
 		}
 		$this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
 
@@ -189,12 +189,12 @@ class FileSystem extends AbstractFileSystem
 			//If the folders does not exist create them
 			if(!file_exists($destPath))
 			{
-				mkdir($destPath, 0600, true);
+				mkdir($destPath, 0700, true);
 			}
 			if(!file_exists(dirname($destPath)))
 			{
 			
-				mkdir(dirname($destPath), 0600, true);
+				mkdir(dirname($destPath), 0700, true);
 			}
 			
 			$srcfile = rtrim($sourcePath, '/') .'/'. $file;
@@ -213,13 +213,13 @@ class FileSystem extends AbstractFileSystem
 					if (!file_exists($destfile))
 					{ 
 
-						mkdir($destfile);
+						mkdir($destfile, 0700);
 						
 					} 
 					if(!file_exists(dirname($destPath)))
 					{
 					
-						mkdir(dirname($destPath), 0600, true);
+						mkdir(dirname($destPath), 0700, true);
 					}
 					//recursively call copy to handle all sub-directories
 					$this->_copy($srcfile, $destfile);
@@ -253,7 +253,7 @@ class FileSystem extends AbstractFileSystem
 	*/
 	public function makeDir($dirPath)
 	{
-		mkdir(FileSystem::getPath($dirPath));
+		mkdir(FileSystem::getPath($dirPath), 0700);
 	}
 	
 
