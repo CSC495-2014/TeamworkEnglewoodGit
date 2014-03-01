@@ -132,6 +132,7 @@ class Login
 	Session::put('token', $this->token);
     }
     
+    /*
     public function userExists()
     {
 	echo "<script type='text/javascript'>alert('Checking Table');</script>";
@@ -158,4 +159,5 @@ class Login
 	$tableId = $user->$user_id;
 	return $tableId;
     }
+    */
 }
