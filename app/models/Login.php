@@ -141,26 +141,26 @@ class Login
     public function userExists()
     {
 	echo "<script type='text/javascript'>alert('Checking Table');</script>";
-	$userExists = laraveldb::table('users')->where('username',$this->userName)->find();
+	$userExists = DB::table('users')->where('username',$this->userName)->find();
 	return $userExists;
     }
     public function deleteUser()
     {
 	echo "<script type='text/javascript'>alert('Deleting User');</script>";
-	laraveldb::table('users')->where('user_id', $this->tableId)->delete();
+	DB::table('users')->where('user_id', $this->tableId)->delete();
     }
     
     public function addUser()
     {
 	echo "<script type='text/javascript'>alert('Adding User');</script>";
-	$id = laraveldb::table('users')->insertGetId(array('username' => $this->userName, 'oauth' => $t));
+	$id = DB::table('users')->insertGetId(array('username' => $this->userName, 'oauth' => $t));
 	return $id;
     }
     
     public function getTableId()
     {
 	echo "<script type='text/javascript'>alert('Getting Table ID');</script>";
-	$user = laraveldb::table('users')->where('username', $this->userName)->get();
+	$user = DB::table('users')->where('username', $this->userName)->get();
 	$tableId = $user->$user_id;
 	return $tableId;
     }
