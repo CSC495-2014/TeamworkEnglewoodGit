@@ -87,20 +87,20 @@ class Login
     
     public function processUser()
     {
-	$userExists = $this->userExists($this->userName);
-	$userInGroup = $this->checkUserGroup($this->userName, $this->organization);
+	$userExists = $this->userExists();
+	$userInGroup = $this->checkUserGroup();
 	
 	if($userInGroup)
 	{
 	    if($userExists)
 	    {
 		echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
-		$this->tableId = $this->getTableId($this->userName);
+		$this->tableId = $this->getTableId();
 	    }
 	    else
 	    {
 		echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-		$this->tableId = $this->addUser($this->userName);
+		$this->tableId = $this->addUser();
 	    }
 	    $this->beginSession();
 	}
@@ -108,7 +108,7 @@ class Login
 	{
 	    if($userExists)
 	    {
-		$this->tableId = $this->getTableId($this->userName);
+		$this->tableId = $this->getTableId();
 		$this->deleteUser();
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
 	    }
@@ -117,6 +117,11 @@ class Login
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 	    }
 	}
+    }
+    
+    private function checkUserGroup()
+    {
+        return true;
     }
     
     /**
@@ -132,7 +137,7 @@ class Login
 	Session::put('token', $this->token);
     }
     
-    /*
+    
     public function userExists()
     {
 	echo "<script type='text/javascript'>alert('Checking Table');</script>";
@@ -159,5 +164,5 @@ class Login
 	$tableId = $user->$user_id;
 	return $tableId;
     }
-    */
+    
 }
