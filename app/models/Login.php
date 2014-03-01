@@ -135,7 +135,7 @@ class Login
     public function userExists()
     {
 	echo "<script type='text/javascript'>alert('Checking Table');</script>";
-	$userExists = laraveldb::table('users')->where('username',$this->userName)->find();
+	$userExists = DB::table('users')->where('username',$this->userName)->find();
 	return $userExists;
     }
     public function deleteUser()
@@ -154,7 +154,7 @@ class Login
     public function getTableId()
     {
 	echo "<script type='text/javascript'>alert('Getting Table ID');</script>";
-	$user = laraveldb::table('users')->where('username', $this->userName)->get();
+	$user = DB::table('users')->where('username', $this->userName)->get();
 	$tableId = $user->$user_id;
 	return $tableId;
     }
