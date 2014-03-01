@@ -1,5 +1,5 @@
 <?php
-
+require_once '../../vendor/autoload.php';
 use GitWrapper\GitWrapper;
 
 class GitCommands extends AbstractFileSystem
@@ -28,6 +28,7 @@ class GitCommands extends AbstractFileSystem
 	{
 		// TODO Need to possibly make a WorkingCopy variable that will be set depending if the repo is cloned or not.
 		$this->gitWrapper = new GitWrapper();
+		$this->getWrapper()->setPrivateKey('../data/' . '/' . $userName);
 		parent::__construct($userName, $projectName); // calling AbstractFileSystem's constructor
 	}
 
@@ -53,6 +54,11 @@ class GitCommands extends AbstractFileSystem
 		return $this->wrapper;
 	}
 
+	public function getWorkingCopy()
+	{
+		return $this->getWrapper()->workingCopy($this->getPath());	
+	}
+
 	/**
 	* 
 	* clone a repo into a new directory. 
@@ -63,7 +69,7 @@ class GitCommands extends AbstractFileSystem
 	{
 		$repoURL = 'https://github.com/' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
 		$path = $this->getPath();
-		$this->gitWrapper->clone($repoURL, $path);
+		$this->getWrapper()->clone($repoURL, $path);
 	}
 
 	/**
@@ -76,7 +82,7 @@ class GitCommands extends AbstractFileSystem
 	{
 		// #TODO: Doesn't support adding new directories along with files.
 		// this only supports adding a single file at a time.
-		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath()); // This 
+        $WorkingCopy = $this->getWorkingCopy(); // This 
 		return $WorkingCopy->add($path);
 	}
 	
@@ -88,8 +94,8 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitCommit($message)
 	{
-		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath());
-		return $WorkingCopy->commit($message);
+        $WorkingCopy = $this->getWorkingCopy();
+		$WorkingCopy->commit($message);
 	}
 
 	/**
@@ -101,34 +107,40 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitPush($remoteAlias, $remoteBranch)
 	{
-		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath());
+        $WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->push($remoteAlias, $remoteBranch);
 	}
 
 	public function gitRm($path)
 	{
-		$WorkingCopy = $this->gitWrapper->workingCopy($this->getPath());
+        $WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->rm($path);
 	}
 
 	public function gitStatus()
 	{
-
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->status()->getOutput();
 	}
 
-	public function gitRemoteAdd($username, $project, $alias, $link)
+	public function gitRemoteAdd($userName, $project, $alias)
 	{
-
+        $WorkingCopy = $this->getWorkingCopy();
+		$repoURL = "https://github.com/" . $userName . "/" . $project . ".git";
+		return $WorkingCopy->remote("add", $alias, $repoURL);
 	}
 
 	public function gitRemoteRm($username, $project, $alias)
 	{
-
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->remote("remove", $alias);
+	
 	} // remove remote
 
-	public function gitPull($username, $project, $remoteAlias, $remoteBranch)
+	public function gitPull($remoteAlias, $remoteBranch)
 	{
-
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->pull($remoteAlias, $remoteBranch);
 	}
 
  	public function isCloned($user, $project)
@@ -138,6 +150,7 @@ class GitCommands extends AbstractFileSystem
 
 }
 	/* --- Testing of GitCommands public interfaces --- */
+	
 	/*
 	$user = 'ZAM-';
 	$project = 'TestRepo';
@@ -147,8 +160,8 @@ class GitCommands extends AbstractFileSystem
 	$git->gitClone();
 	touch($git->getPath() . $testFile); // Saving test file witihin the file system.
 	$git->gitAdd($testFile);
-	$git->gitCommit('Added my test file!');
+	print $git->gitStatus();
+	$git->gitCommit('Added my test file again!');
 	$git->gitPush('origin', 'master');
 	*/
-
 ?>
