@@ -12,7 +12,7 @@ class LoginController extends BaseController {
 	if(Config::get('oauth.online'))
 	{
 	    $gitHubLogin = new Login();
-	    $gitHubLogin->beginSession();
+	    $gitHubLogin->processUser();
 	}
 	else
 	{
@@ -23,6 +23,7 @@ class LoginController extends BaseController {
 	    Session::put('tableId', $userId);
 	    Session::put('token', $token);
 	    
+	    return Route::get('user/$userName/projects');
 	}
     }
 }

@@ -96,5 +96,15 @@ return array(
     |
     */
     'offlineToken' => 'jfieowqpjreiwoqjrweqpjgirweq',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Organization Name
+    |--------------------------------------------------------------------------
+    |
+    | The name of the organization to confirm membership with
+    |
+    */
+    'organization' => 'CSC495-2014'
   
 );

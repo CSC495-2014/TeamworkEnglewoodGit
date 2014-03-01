@@ -13,10 +13,12 @@ class Login
     
     private $tableId;
     
+    private $organization;
+    
     function __construct()
     {
 	$this->provider = $this->getProvider();
-        
+        $this->organization = Config::get('oauth.organization');
         if(!isset($_GET['code']))
 	{
 	    $this->provider->authorize();
@@ -82,6 +84,41 @@ class Login
         return $this->provider->getUserDetails($this->token);
     }
     
+    
+    public function processUser()
+    {
+	$userExists = $this->userExists($this->userName);
+	$userInGroup = $this->checkUserGroup($this->userName, $this->organization);
+	
+	if($userInGroup)
+	{
+	    if($userExists)
+	    {
+		echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
+		$this->tableId = $this->getTableId($this->userName);
+	    }
+	    else
+	    {
+		echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
+		$this->tableId = $this->addUser($this->userName);
+	    }
+	    $this->beginSession();
+	}
+	else
+	{
+	    if($userExists)
+	    {
+		$this->tableId = $this->getTableId($this->userName);
+		$this->deleteUser();
+		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
+	    }
+	    else
+	    {
+		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
+	    }
+	}
+    }
+    
     /**
     *
     * Begins the Laravel Session, Storing userName, userId, and token within the session
@@ -89,8 +126,36 @@ class Login
     */
     public function beginSession()
     {
+        echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 	Session::put('uid',$this->userName);
 	//Session::put('tableId', '$tableId');
 	Session::put('token', $this->token);
+    }
+    
+    public function userExists()
+    {
+	echo "<script type='text/javascript'>alert('Checking Table');</script>";
+	$userExists = laraveldb::table('users')->where('username',$this->userName)->find();
+	return $userExists;
+    }
+    public function deleteUser()
+    {
+	echo "<script type='text/javascript'>alert('Deleting User');</script>";
+	DB::table('users')->where('user_id', $this->tableId)->delete();
+    }
+    
+    public function addUser()
+    {
+	echo "<script type='text/javascript'>alert('Adding User');</script>";
+	$id = DB::table('users')->insertGetId(array('username' => $this->userName, 'oauth' => $t));
+	return $id;
+    }
+    
+    public function getTableId()
+    {
+	echo "<script type='text/javascript'>alert('Getting Table ID');</script>";
+	$user = laraveldb::table('users')->where('username', $this->userName)->get();
+	$tableId = $user->$user_id;
+	return $tableId;
     }
 }
