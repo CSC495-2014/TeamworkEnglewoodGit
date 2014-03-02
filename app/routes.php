@@ -16,9 +16,9 @@ Route::get('/', function()
 	return View::make('login');
 });
 
-Route::get('projects', function()
+Route::get('login', function()
 {
-	return View::make('projects');
+	return View::make('login');
 });
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
@@ -26,12 +26,9 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
     return View::make('editor', ['user' => $user, 'project' => $project]);
 });
 
-Route::get('user/{user}/projects', function($user) {
-    $projects = glob('../../*', GLOB_ONLYDIR | GLOB_MARK);
-    foreach ($projects as &$project) {
-        $project = basename($project);
-    }
-    return View::make('projectsPage', ['user' => $user]);
+Route::get('user/{user}/projects', function($user)
+{
+	return View::make('projectsPage', ['user' => $user]);
 });
 
 Route::pattern('file', '.*');
@@ -109,5 +106,3 @@ Route::delete('/user/{user}/project/{project}/git-remote', 'GitController@delete
 Custom Command Handling
 */
 Route::post('/user/{user}/project/{project}/git', 'GitController@customCmd');
-
-?>
