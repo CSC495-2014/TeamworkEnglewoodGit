@@ -33,27 +33,47 @@ body {
 #projectsPage {
   height: 650px;
   width: 75%;
-  background-color: #FAFAFA;
+  background: transparent;
   padding-top: 50px;
-/*  padding-left: 50px;   use only if projectPage1 is used with white background*/
   overflow: hidden;
-  
+
 }
 .th {
-  background-color: #085c2f;
+  background-color: #1D703A;
+/* not even changing the border color of the table...must be using the hover class defaults */
+/*  border-color: #000000; /* change this and see if it fixes border problem */
+  border: 5px solid black;
   border-color: #D8D8D8;
   color: #000000;
   text-align: center;
+  font: bold;
 }
 .row0 {
   text-align: center;
   background-color: #D8D8D8;
-  color: #ffffff;
+  color: #000000;
 }
 .row1 {
   text-align: center;
-  background-color: #28AB41;
-  color: #ffffff;
+  background-color: #FFFFFF;
+  /*background-color: #28AB41;*/
+  color: #000000;
+}
+.table{
+  border: 5px solid #D8D8D8;
+  height: 334;
+  width: 90%;
+}
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+  background-color: #444444;
+}
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+/* grey from save button */
+  background-color: #444444;
+/* light green from englewood logo
+  background-color: #28AB41; */
 }
 #editor {
   height: 650px;
