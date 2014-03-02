@@ -242,18 +242,18 @@ class FileSystem extends AbstractFileSystem
 	*/
 	public function move($sourcePath, $destPath)
 	{
-		$this->copy($sourcePath,$destPath);
+		$this->copy($sourcePath, $destPath);
 		$this->removeDir($sourcePath);
 	}
 	/*
 	*	Creates a directory at $dirPath
 	*
 	*	@param String $dirPath
-	*
+	*   @return bool True if successful.
 	*/
 	public function makeDir($dirPath)
 	{
-		mkdir(FileSystem::getPath($dirPath), 0700);
+		return mkdir(FileSystem::getPath($dirPath), 0700);
 	}
 	
 
