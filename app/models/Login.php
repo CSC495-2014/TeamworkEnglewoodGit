@@ -88,9 +88,9 @@ class Login
     public function processUser()
     {
 	//$userExists = $this->userExists();
-	//$userInGroup = $this->checkUserGroup();
-	$this->checkUserGroup();
-	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
+	$userInGroup = $this->checkUserGroup();
+	//$this->checkUserGroup();
+	echo "<script type='text/javascript'>alert('$userInGroup');</script>";
 	/*
 	if($userInGroup)
 	{
@@ -148,16 +148,16 @@ class Login
         // $output contains the output string 
         $output = curl_exec($ch);
 	
-	var_dump($output);
+	//var_dump($output);
 
         // close curl resource to free up system resources 
         curl_close($ch);
 	
-	var_dump(json_decode($output, true));
+	//var_dump(json_decode($output, true));
 	
-	//$resultsArray = json_decode($output);
+	$resultsArray = json_decode($output);
 	
-	//return $resultsArray->{'login'};
+	return $resultsArray->{'login'};
 	
 	//echo "<script type='text/javascript'>alert('$found');</script>";
 	
