@@ -78,7 +78,7 @@
                         var filename = filepath.substring(filepath.lastIndexOf("/") + 1);
 
                         $.get('{{ URL::to("/user/$user/project/$project/file") }}' + filepath, function (data) {
-                            window.addTab(filename, data);
+                            window.addTab(filepath, data);
                         });
 
                     });

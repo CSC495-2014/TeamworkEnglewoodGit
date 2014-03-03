@@ -113,6 +113,7 @@ class FileSystem extends AbstractFileSystem
 	*@param string $dirPath
 	* 
 	*/	
+
 	protected function _removeDir($dirPath)
 	{
         $objects = scandir($dirPath);
@@ -163,13 +164,100 @@ class FileSystem extends AbstractFileSystem
 
 	public function copy($sourcePath, $destPath)
 	{
+		//Copies First directory then calls recursive copy function
+		if(!file_exists(FileSystem::getPath($destPath)))
+		{
+			mkdir(FileSystem::getPath($destPath), 0700);
+		}
+		if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
+		{
+			mkdir(FileSystem::getPath($destPath)."/".$sourcePath, 0700);
+		}
+		$this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
 
 	}
+	/**
+	*             
+	*  Copies files | folder and subdirectories/files recursively 
+	*
+	* 
+	*  @param string $sourcePath  
+	*  @param string $destPath  
+	*/ 
+	protected function _copy($sourcePath, $destPath)
+	 {
+		foreach(scandir($sourcePath) as $file)
+		{
+			//If the folders does not exist create them
+			if(!file_exists($destPath))
+			{
+				mkdir($destPath, 0700, true);
+			}
+			if(!file_exists(dirname($destPath)))
+			{
+			
+				mkdir(dirname($destPath), 0700, true);
+			}
+			
+			$srcfile = rtrim($sourcePath, '/') .'/'. $file;
+			$destfile = rtrim($destPath, '/') .'/'. $file;
 
+			if (!is_readable($srcfile))
+			{ 
+				continue;
+			} 
+			if ($file != '.' && $file != '..')
+			{
+				//IS a Directory
+				if (is_dir($srcfile))
+				{ 
+					//If folder does not exist in destination create
+					if (!file_exists($destfile))
+					{ 
+
+						mkdir($destfile, 0700);
+						
+					} 
+					if(!file_exists(dirname($destPath)))
+					{
+					
+						mkdir(dirname($destPath), 0700, true);
+					}
+					//recursively call copy to handle all sub-directories
+					$this->_copy($srcfile, $destfile);
+				} 
+				//Else it is a file, copy
+				else
+				{
+					copy($srcfile, $destfile); 
+				}
+			} 
+		} 
+		
+	} 	
+		
+	/*         
+	*   Moves files | folders and subdirectories/files removing original
+	*
+	*	@param String $sourcePath
+	*	@param String $destPath
+	*/
 	public function move($sourcePath, $destPath)
 	{
-
+		$this->copy($sourcePath,$destPath);
+		$this->removeDir($sourcePath);
 	}
+	/*
+	*	Creates a directory at $dirPath
+	*
+	*	@param String $dirPath
+	*
+	*/
+	public function makeDir($dirPath)
+	{
+		mkdir(FileSystem::getPath($dirPath), 0700);
+	}
+	
 
 	/** 
 	* 
@@ -220,5 +308,18 @@ class FileSystem extends AbstractFileSystem
 	//$fileSystem->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
+	
+	//This will copy the files/folders in in the app/data/users/ZAM-/projects/TestRepo/js directory
+	//to app/data/users/ZAM-/projects/TestRepo/test directory
+	$test->copy("js/", "test");
+	
+	//This will copy the testFile.txt
+	$test->copy($testFile, "TestFileCopy.txt");
+	
+	//This moves $testFileCopy to ../test
+	$test->move($testFileCopy, "test/TestFileCopy.txt");
+	
+	//This moves all folders and files in ../js to ../test
+	$test->move("js/", "test");
 	*/
 ?>
