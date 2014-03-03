@@ -129,7 +129,7 @@ class Login
         $ch = curl_init(); 
 
         // set url 
-        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/orgs/CSC495-2014/members");
+        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
 	///
 
         //return the transfer as a string 
@@ -158,7 +158,7 @@ class Login
 	
 	$resultsArray = json_decode($output, true);
 	
-	return $resultsArray{1};
+	return $resultsArray;
 	
 	//echo "<script type='text/javascript'>alert('$found');</script>";
 	
