@@ -8,7 +8,7 @@ class FileController extends \BaseController {
     {
         $dir = Input::get('dir');
 
-        if (FileController::containsParentDirectoryReference($dir))
+        if (FileController::containsParentDirectoryReference([$user, $project, $dir]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -54,7 +54,7 @@ class FileController extends \BaseController {
 	 */
 	public function show($user, $project, $path)
 	{
-        if (FileController::containsParentDirectoryReference($path))
+        if (FileController::containsParentDirectoryReference([$user, $project, $path]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -80,7 +80,7 @@ class FileController extends \BaseController {
 	 */
 	public function update($user, $project, $path)
 	{
-        if (FileController::containsParentDirectoryReference($path))
+        if (FileController::containsParentDirectoryReference([$user, $project, $path]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -111,7 +111,7 @@ class FileController extends \BaseController {
 	 */
 	public function destroy($user, $project, $path)
 	{
-        if (FileController::containsParentDirectoryReference($path))
+        if (FileController::containsParentDirectoryReference([$user, $project, $path]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -134,7 +134,7 @@ class FileController extends \BaseController {
     {
         $path = Input::get('path');
 
-        if (FileController::containsParentDirectoryReference($path))
+        if (FileController::containsParentDirectoryReference([$user, $project, $path]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -163,7 +163,7 @@ class FileController extends \BaseController {
         $src = Input::get('src');
         $dest = Input::get('dest');
 
-        if (FileController::containsParentDirectoryReference($src))
+        if (FileController::containsParentDirectoryReference([$user, $project, $src]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -185,12 +185,7 @@ class FileController extends \BaseController {
         $src = Input::get('src');
         $dest = Input::get('dest');
 
-        if (FileController::containsParentDirectoryReference($src))
-        {
-            return FileController::makeParentDirectoryResponse();
-        }
-
-        if (FileController::containsParentDirectoryReference($dest))
+        if (FileController::containsParentDirectoryReference([$user, $project, $src, $dest]))
         {
             return FileController::makeParentDirectoryResponse();
         }
@@ -202,9 +197,17 @@ class FileController extends \BaseController {
         return Response::make(null, 200);
     }
 
-    public static function containsParentDirectoryReference($path)
+    public static function containsParentDirectoryReference(array $args)
     {
-        return preg_match('/\.\./', $path);
+        foreach ($args as $arg)
+        {
+            if ($arg === '.' or $arg === '..')
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function makeParentDirectoryResponse()
