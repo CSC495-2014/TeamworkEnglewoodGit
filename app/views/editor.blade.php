@@ -448,7 +448,6 @@
                                 alert('Unable to create file.');
                             }
                         },
-                        contentType: 'application/json; charset=utf-8',
                         success: function(data) {
                             $parentJqueryFileTree.append(html);
                             $(html).children().bind(window.jqueryFileTree.folderEvent, window.jqueryFileTree.handler);
