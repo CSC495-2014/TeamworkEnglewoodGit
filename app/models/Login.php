@@ -95,13 +95,11 @@ class Login
 	    if (in_array("CSC495-20514", $userInGroup{$x})) {
 		echo "<script type='text/javascript'>alert('IT WORKS: $x');</script>";
 	    }
+	    else
+	    {
+		echo "<script type='text/javascript'>alert('IT FAILS: $x');</script>";
+	    }
 	} 
-	
-	
-	else
-	{
-	    echo "<script type='text/javascript'>alert('IT FAILS');</script>";
-	}
 	//$this->checkUserGroup();
 	//var_dump($userInGroup);
 	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
