@@ -128,8 +128,8 @@ class Login
         $ch = curl_init(); 
 
         // set url 
-        curl_setopt($ch, CURLOPT_URL, "'User-Agent: ' https://api.github.com/orgs/CSC495-2014/members");
-	///$this->userName?access_token=$this->token
+        curl_setopt($ch, CURLOPT_URL, "'User-Agent: ' https://api.github.com/orgs/CSC495-2014/members/$this->userName?access_token=$this->token");
+	///
 
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
