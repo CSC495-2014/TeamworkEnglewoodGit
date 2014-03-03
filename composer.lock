@@ -1,9 +1,5 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
-    ],
-    "hash": "90d7283eeb469f5eb53d2c02aec76fb8",
+    "hash": "11f521821512679e7967c10cd0f8f182",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -272,16 +268,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v4.1.23",
+            "version": "v4.1.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "054c1a29aaf537c6c6ca7e7804375c671eddcaaf"
+                "reference": "a18a892c9d768464249baa1d16117fe52e0a7004"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/054c1a29aaf537c6c6ca7e7804375c671eddcaaf",
-                "reference": "054c1a29aaf537c6c6ca7e7804375c671eddcaaf",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a18a892c9d768464249baa1d16117fe52e0a7004",
+                "reference": "a18a892c9d768464249baa1d16117fe52e0a7004",
                 "shasum": ""
             },
             "require": {
@@ -385,7 +381,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-02-28 22:07:47"
+            "time": "2014-02-20 15:13:32"
         },
         {
             "name": "monolog/monolog",
@@ -546,16 +542,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.1.20",
+            "version": "v1.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolas-grekas/Patchwork-UTF8.git",
-                "reference": "aea0de833cba7cf2c25239be71f2787edaee36d5"
+                "reference": "66a936cc633fe13378c91f81030d5193be968480"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/aea0de833cba7cf2c25239be71f2787edaee36d5",
-                "reference": "aea0de833cba7cf2c25239be71f2787edaee36d5",
+                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/66a936cc633fe13378c91f81030d5193be968480",
+                "reference": "66a936cc633fe13378c91f81030d5193be968480",
                 "shasum": ""
             },
             "require": {
@@ -593,32 +589,29 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2014-03-01 20:01:07"
+            "time": "2014-02-02 17:09:49"
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "0.3.6",
+            "version": "0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "0ea31d9b65d49a8661e93bec19f44e989bd34c69"
+                "reference": "fe3765fe1773c9d62985d05d5b5da24c921c4bd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/0ea31d9b65d49a8661e93bec19f44e989bd34c69",
-                "reference": "0ea31d9b65d49a8661e93bec19f44e989bd34c69",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/fe3765fe1773c9d62985d05d5b5da24c921c4bd0",
+                "reference": "fe3765fe1773c9d62985d05d5b5da24c921c4bd0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.0.0"
             },
-            "require-dev": {
-                "squizlabs/php_codesniffer": "1.*"
-            },
             "suggest": {
                 "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
                 "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
-                "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 4.3.3."
+                "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP >= 4.3.3."
             },
             "type": "library",
             "extra": {
@@ -631,8 +624,7 @@
                     "Crypt": "phpseclib/",
                     "File": "phpseclib/",
                     "Math": "phpseclib/",
-                    "Net": "phpseclib/",
-                    "System": "phpseclib/"
+                    "Net": "phpseclib/"
                 },
                 "files": [
                     "phpseclib/Crypt/Random.php"
@@ -650,21 +642,6 @@
                     "name": "Jim Wigginton",
                     "email": "terrafrost@php.net",
                     "role": "Lead Developer"
-                },
-                {
-                    "name": "Patrick Monnerat",
-                    "email": "pm@datasphere.ch",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Andreas Fischer",
-                    "email": "bantu@phpbb.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Hans-Jürgen Petrich",
-                    "email": "petrich@tronic-media.com",
-                    "role": "Developer"
                 }
             ],
             "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
@@ -674,7 +651,6 @@
                 "aes",
                 "asn.1",
                 "asn1",
-                "blowfish",
                 "crypto",
                 "cryptography",
                 "encryption",
@@ -684,11 +660,10 @@
                 "signature",
                 "signing",
                 "ssh",
-                "twofish",
                 "x.509",
                 "x509"
             ],
-            "time": "2014-02-28 16:05:05"
+            "time": "2013-06-08 17:40:39"
         },
         {
             "name": "predis/predis",
@@ -860,7 +835,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
