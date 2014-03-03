@@ -134,7 +134,7 @@ class Login
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	
-	curl_setopt($ch, CURLOPT_USERAGENT, "wwforg");
+	curl_setopt($ch, CURLOPT_USERAGENT, "TeamworkEnglewoodGit");
 
 	if(curl_exec($ch) === false)
 	{
