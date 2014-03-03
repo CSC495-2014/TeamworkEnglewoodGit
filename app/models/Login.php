@@ -90,7 +90,7 @@ class Login
 	//$userExists = $this->userExists();
 	$userInGroup = $this->checkUserGroup();
 	
-	if (in_array("CSC495-2014", $userInGroup{0})) {
+	if (in_array("CSC495-20514", $userInGroup{0})) {
 	    echo "<script type='text/javascript'>alert('IT WORKS');</script>";
 	}
 	else
