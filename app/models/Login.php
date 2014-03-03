@@ -158,7 +158,7 @@ class Login
 	
 	$resultsArray = json_decode($output, true);
 	
-	return $resultsArray{0};
+	return $resultsArray{1};
 	
 	//echo "<script type='text/javascript'>alert('$found');</script>";
 	
