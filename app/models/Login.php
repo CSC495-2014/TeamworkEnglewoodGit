@@ -137,7 +137,7 @@ class Login
 	
 	curl_setopt($ch, CURLOPT_USERAGENT, "TeamworkEnglewoodGit");
 
-	if($output = curl_exec($ch) === false)
+	if(curl_exec($ch) === false)
 	{
 	    echo 'Curl error: ' . curl_error($ch);
 	}
@@ -147,9 +147,7 @@ class Login
 	}
 	
         // $output contains the output string 
-	//$output = curl_exec($ch);
-	
-	//var_dump($output);
+	$output = curl_exec($ch);
 
         // close curl resource to free up system resources 
         curl_close($ch);
