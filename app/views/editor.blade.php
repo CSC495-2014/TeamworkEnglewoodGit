@@ -45,8 +45,6 @@
 				</div>
 				<div id="mainContent"> 		  
 					<div id="filesystem">
-					
-                    <!--Tabbed Interface-->	
 					</div>
 					<div id="editor">
 						<div id="tabs">
@@ -54,8 +52,6 @@
 							</ul>
 						</div>
 					</div>
-                    <!--End of Tabbed Interface-->
-                    
 					<div id="optionSideBar">
 						<div class="panel panel-default">
 						  <div class="panel-body">
@@ -341,7 +337,7 @@
 
                     sortFolder($parentJqueryFileTree);
                     applyGitStatus();
-                    window.addTab(filename, '');
+                    window.addTab(path, '');
 
                     console.log('Created: ' + path);
                 }
@@ -425,6 +421,31 @@
                         }
                     });
                 }
+
+                /**
+                 * Save a file at the given path.
+                 *
+                 * @param {string} path Path of file to save.
+                 */
+                function saveFile(path){
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/file") }}' + path,
+                        type: 'PUT',
+                        data: fileContents,
+                        statusCode: {
+                            400: function() {
+                                alert('Unable to create file.');
+                            }
+                        },
+                        success: function(data) {
+                            alert(path.basename(path) + ' is saved!');
+                        },
+                        failure: function(data) {
+                            alert('Fail to save ' + path.basename(path));
+                        }
+                    });
+                }
+
 
             </script>
 		</body>
