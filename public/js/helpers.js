@@ -52,7 +52,10 @@ function sortFolder($folder) {
         } else if ($a.hasClass('file') && $b.hasClass('directory')) {
             return 1;
         } else {
-            return $a.children('a').first().text().localeCompare($b.children('a').first().text());
+            var aTxt = $a.children('a').first().text();
+            var bTxt = $b.children('a').first().text();
+            if (aTxt === bTxt) { return 0; }
+            return aTxt < bTxt ? -1 : 1;
         }
     });
 

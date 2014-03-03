@@ -21,8 +21,15 @@
 		{{ HTML::script('/js/ui/jquery.ui.core.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.widget.js') }}
 		{{ HTML::script('/js/ui/jquery.ui.button.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}		
-		
+		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
+
+        {{ HTML::script('/js/handlebars-1.0.rc.1.min.js') }}
+
+        <script id="h-git-custom-prompt-modal" type="text/x-handlebars-template">@include('handlebars/git-custom-prompt-modal')</script>
+        <script id="h-git-custom-confirm-modal" type="text/x-handlebars-template">@include('handlebars/git-custom-confirm-modal')</script>
+        <script id="h-git-commit-modal" type="text/x-handlebars-template">@include('handlebars/git-commit-modal')</script>
+        <script id="h-git-push-modal" type="text/x-handlebars-template">@include('handlebars/git-push-modal')</script>
+
 		<style>
 		#tabs { margin-top: 0em; }
 		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
@@ -64,14 +71,14 @@
 							<button class="btn btn-lg btn-file btn-block" type="button">Save</button>
 							<hr/>
 							<h4>Git Options</h4>
-							<button class="btn btn-lg btn-project btn-block" type="button">Commit</button>
-							<button class="btn btn-lg btn-project btn-block" type="button">Push</button>
-                            <button class="btn btn-lg btn-project btn-block" type="button">Custom</button>
+							<button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
+							<button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
+                            <button id="git-custom" class="btn btn-lg btn-project btn-block" type="button">Custom</button>
 						  </div>
 						</div>
 					</div>
-				</div>	
-			</div>	
+				</div>
+			</div>
             @include('modals')
             {{ HTML::script('/js/filesystem.js') }}
             <script>
@@ -82,9 +89,139 @@
                         $.get('{{ URL::to("/user/$user/project/$project/file") }}' + filepath, function (data) {
                             window.addTab(filename, data);
                         });
+                    });
 
+                    var $gitCommit = $('#git-commit');
+                    var $gitPush = $('#git-push');
+                    var $gitCustom = $('#git-custom');
+
+                    $gitCommit.bind('click', function(event){
+                        console.log('git-commit clicked');
+
+                        // Load the modal from the handlebars template.
+                        var commitSource = $('#h-git-commit-modal').html();
+                        var commitTemplate = Handlebars.compile(commitSource);
+                        var commitData = {placeholder: 'Sample git commit message.' };
+                        var commitView = commitTemplate(commitData);
+
+                        $(document.body).append(commitView);
+                        var $commitModal = $('#git-commit-modal');
+
+                        // Destroy modal after it becomes hidden.
+                        $commitModal.bind('hidden.bs.modal', function(event){ $commitModal.remove(); });
+
+                        // Execute a request and show results modal.
+                        $commitModal.find('.positive').bind('click', function(executeEvent){
+                            var $commitButton = $(executeEvent.target);
+                            // Remove callbacks so user does not make multiple requests with one modal.
+                            $commitButton.unbind();
+                            // Change button text when it is clicked while the AJAX call is being made.
+                            $commitButton.text('Executing...');
+
+                            // TODO: do some ajax call here...
+                            setTimeout(function(){
+                                $commitModal.modal('hide');
+                                applyGitStatus();
+                            }, 1000); // end setTimeout
+
+                        });
+
+                        // Make the commit modal visible.
+                        $commitModal.modal();
+                    });
+
+                    $gitPush.bind('click', function(event){
+                        console.log('git-push clicked');
+
+                        // Load the modal from the handlebars template.
+                        var commitSource = $('#h-git-push-modal').html();
+                        var commitTemplate = Handlebars.compile(commitSource);
+                        var commitData = {
+                            remotePlaceholder: 'origin',
+                            branchPlaceholder: 'master'
+                        };
+                        var commitView = commitTemplate(commitData);
+
+                        $(document.body).append(commitView);
+                        var $commitModal = $('#git-push-modal');
+
+                        // Destroy modal after it becomes hidden.
+                        $commitModal.bind('hidden.bs.modal', function(event){ $commitModal.remove(); });
+
+                        // Execute a request and show results modal.
+                        $commitModal.find('.positive').bind('click', function(executeEvent){
+                            var $commitButton = $(executeEvent.target);
+                            // Remove callbacks so user does not make multiple requests with one modal.
+                            $commitButton.unbind();
+                            // Change button text when it is clicked while the AJAX call is being made.
+                            $commitButton.text('Executing...');
+
+                            // TODO: do some ajax call here...
+                            setTimeout(function(){
+                                $commitModal.modal('hide');
+                                applyGitStatus();
+                            }, 1000); // end setTimeout
+
+                        });
+
+                        // Make the commit modal visible.
+                        $commitModal.modal();
+                    });
+
+                    $gitCustom.bind('click', function(event){
+                        console.log('git-custom clicked');
+
+                        // Load the modal from the handlebars template.
+                        var promptSource = $('#h-git-custom-prompt-modal').html();
+                        var promptTemplate = Handlebars.compile(promptSource);
+                        var promptData = {placeholder: 'git add /path/to/file' };
+                        var promptView = promptTemplate(promptData);
+
+                        $(document.body).append(promptView);
+                        var $promptModal = $('#git-custom-prompt-modal');
+
+                        // Destroy modal after it becomes hidden.
+                        $promptModal.bind('hidden.bs.modal', function(event){ $promptModal.remove(); });
+
+                        // Execute a request and show results modal.
+                        $promptModal.find('.positive').bind('click', function(executeEvent){
+                            var $promptButton = $(executeEvent.target);
+                            // Remove callbacks so user does not make multiple requests with one modal.
+                            $promptButton.unbind();
+                            // Change button text when it is clicked while the AJAX call is being made.
+                            $promptButton.text('Executing...');
+
+                            // TODO: do some ajax call here...
+                            setTimeout(function(){
+                                var confirmSource = $('#h-git-custom-confirm-modal').html();
+                                var confirmTemplate = Handlebars.compile(confirmSource);
+                                var confirmData = {
+                                    output: 'Successful command\nwith\nsome\nnewlines\nand a really long line that bleeds off of the side of the modal, boy do I hope this is scrollable'
+                                };
+                                var confirmView = confirmTemplate(confirmData);
+
+                                $(document.body).append(confirmView);
+                                var $confirmModal = $('#git-custom-confirm-modal');
+
+                                // Destroy modal after it becomes hidden.
+                                $confirmModal.bind('hidden.bs.modal', function(event){ $confirmModal.remove(); });
+                                $confirmModal.find('.positive').bind('click', function(dismissEvent){
+                                    $confirmModal.modal('hide');
+                                });
+
+                                $confirmModal.modal();
+
+                                $promptModal.modal('hide');
+                                applyGitStatus();
+                            }, 1000); // end setTimeout
+
+                        });
+
+                        // Make the prompt modal visible.
+                        $promptModal.modal();
                     });
                 });
+
 
 
                 /* ********************
