@@ -139,7 +139,7 @@ class Login
         // close curl resource to free up system resources 
         curl_close($ch);
 	
-	$resultsArray = json_decode($output, true);
+	$resultsArray = json_decode($output);
 	
 	return $resultsArray->{'Status'};
 	
