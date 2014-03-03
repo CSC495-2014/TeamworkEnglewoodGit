@@ -89,17 +89,6 @@ class Login
     {
 	//$userExists = $this->userExists();
 	$userInGroup = $this->checkUserGroup();
-	
-	for ($x=0; $x<count($userInGroup); $x++)
-	{
-	    if (in_array("CSC495-2014", $userInGroup{$x})) {
-		echo "<script type='text/javascript'>alert('IT WORKS: $x');</script>";
-	    }
-	    else
-	    {
-		echo "<script type='text/javascript'>alert('IT FAILS: $x');</script>";
-	    }
-	} 
 	//$this->checkUserGroup();
 	//var_dump($userInGroup);
 	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
@@ -148,7 +137,7 @@ class Login
 	
 	curl_setopt($ch, CURLOPT_USERAGENT, "TeamworkEnglewoodGit");
 
-	if(curl_exec($ch) === false)
+	if($output = curl_exec($ch) === false)
 	{
 	    echo 'Curl error: ' . curl_error($ch);
 	}
@@ -158,20 +147,23 @@ class Login
 	}
 	
         // $output contains the output string 
-        $output = curl_exec($ch);
+	//$output = curl_exec($ch);
 	
 	//var_dump($output);
 
         // close curl resource to free up system resources 
         curl_close($ch);
 	
-	//var_dump(json_decode($output, true));
-	
 	$resultsArray = json_decode($output, true);
 	
-	return $resultsArray;
-	
-	//echo "<script type='text/javascript'>alert('$found');</script>";
+	for ($x=0; $x<count($resultsArray); $x++)
+	{
+	    if (in_array("CSC495-2014", $resultsArray{$x})) {
+		echo "<script type='text/javascript'>alert('IT WORKS');</script>";
+		return true;
+	    }
+	} 
+	return false;
     }
     
     /**
