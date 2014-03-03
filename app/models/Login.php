@@ -90,7 +90,7 @@ class Login
 	//$userExists = $this->userExists();
 	$userInGroup = $this->checkUserGroup();
 	//$this->checkUserGroup();
-	//var_dump($userInGroup);
+	var_dump($userInGroup);
 	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
 	/*
 	if($userInGroup)
@@ -157,7 +157,6 @@ class Login
 	for ($x=0; $x<count($resultsArray); $x++)
 	{
 	    if (in_array("CSC495-2014", $resultsArray{$x})) {
-		echo "<script type='text/javascript'>alert('IT WORKS');</script>";
 		return true;
 	    }
 	} 
