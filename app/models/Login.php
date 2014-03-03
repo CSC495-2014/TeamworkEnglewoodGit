@@ -134,6 +134,15 @@ class Login
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 
+	if(curl_exec($ch) === false)
+	{
+	    echo 'Curl error: ' . curl_error($ch);
+	}
+	else
+	{
+	    echo "<script type='text/javascript'>alert('no error');</script>";
+	}
+	
         // $output contains the output string 
         $output = curl_exec($ch);
 	
