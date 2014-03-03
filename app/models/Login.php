@@ -90,7 +90,7 @@ class Login
 	//$userExists = $this->userExists();
 	//$userInGroup = $this->checkUserGroup();
 	$this->checkUserGroup();
-	echo "<script type='text/javascript'>alert('$userInGroup');</script>";
+	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
 	/*
 	if($userInGroup)
 	{
