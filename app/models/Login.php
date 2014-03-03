@@ -90,7 +90,7 @@ class Login
 	//$userExists = $this->userExists();
 	$userInGroup = $this->checkUserGroup();
 	//$this->checkUserGroup();
-	var_dump($userInGroup);
+	var_dump($userInGroup{0});
 	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
 	/*
 	if($userInGroup)
@@ -158,7 +158,7 @@ class Login
 	
 	$resultsArray = json_decode($output, true);
 	
-	return $resultsArray{1}->{'login'};
+	return $resultsArray{1};
 	
 	//echo "<script type='text/javascript'>alert('$found');</script>";
 	
