@@ -23,7 +23,23 @@ class LoginController extends BaseController {
 	    Session::put('tableId', $userId);
 	    Session::put('token', $token);
 	    
-	    return Route::get('user/$userName/projects');
+	    $url = URL::to('user/testing/projects');
+	    
+	    //return Redirect::to('user/{user}/projects', ['user' => $userName]);
+	    //return Redirect::to('user/{user}/projects', [$userName]);
+	    //return Redirect::route('user/{user}/projects', $userName);
+	    
+	    //$hasTable = Schema::hasTable('users');
+	    
+	    //$results = DB::select('select * from users where $userName = username', array(1));
+	    
+	    //$results = DB::select('select * from users where user_id = 1', array(1));
+	    
+	    //$userExists = DB::select('users')->where('username',$userName)->find();
+	    //var_dump($results);
+	    //echo "<script type='text/javascript'>alert('User Exists: $results[0]');</script>";
+	    
+	    //Redirect::route('user/$userName/projects');
 	}
     }
 }

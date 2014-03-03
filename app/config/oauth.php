@@ -73,7 +73,7 @@ return array(
     |
     */
     
-    'offlineUserName' => 'IamAtest',
+    'offlineUserName' => 'firstuser',
     
     /*
     |--------------------------------------------------------------------------

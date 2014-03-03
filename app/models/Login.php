@@ -87,9 +87,11 @@ class Login
     
     public function processUser()
     {
-	$userExists = $this->userExists();
+	//$userExists = $this->userExists();
 	$userInGroup = $this->checkUserGroup();
 	
+	echo "<script type='text/javascript'>alert('$userInGroup');</script>";
+	/*
 	if($userInGroup)
 	{
 	    if($userExists)
@@ -117,11 +119,32 @@ class Login
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 	    }
 	}
+	*/
     }
     
     private function checkUserGroup()
     {
-        return true;
+	// create curl resource 
+        $ch = curl_init(); 
+
+        // set url 
+        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/orgs/CSC495-2014/members/$this->userName?access_token=$this->token"); 
+
+        //return the transfer as a string 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+
+        // $output contains the output string 
+        $output = curl_exec($ch); 
+
+        // close curl resource to free up system resources 
+        curl_close($ch);
+	
+	$resultsArray = json_decode($output, true);
+	
+	return $resultsArray->{'Status'};
+	
+	//echo "<script type='text/javascript'>alert('$found');</script>";
+	
     }
     
     /**
@@ -143,6 +166,7 @@ class Login
 	echo "<script type='text/javascript'>alert('Checking Table');</script>";
 	$userExists = DB::table('users')->where('username',$this->userName)->find();
 	return $userExists;
+        return true;
     }
     public function deleteUser()
     {
