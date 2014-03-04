@@ -270,6 +270,7 @@ class GitCommands extends AbstractFileSystem
 	$git->gitCommit('Added my test file!');
 	$git->gitPush('origin', 'master');
 	// Pushing it to the remote repo
+	// Making sure to pull before pushing
 	$git->gitPull($remoteAlias, 'master');
 	$git->gitPush($remoteAlias, 'master');
 	// Removing the file, commiting, then pushing.
