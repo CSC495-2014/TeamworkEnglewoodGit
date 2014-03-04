@@ -89,12 +89,11 @@ class Login
     {
 	//$userExists = $this->userExists();
 	$userInGroup = $this->checkUserGroup();
-	//$this->checkUserGroup();
-	var_dump($userInGroup);
-	//echo "<script type='text/javascript'>alert('$userInGroup');</script>";
-	/*
+	
 	if($userInGroup)
 	{
+	    echo "<script type='text/javascript'>alert('In Group');</script>";
+	    /*
 	    if($userExists)
 	    {
 		echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
@@ -106,9 +105,12 @@ class Login
 		$this->tableId = $this->addUser();
 	    }
 	    $this->beginSession();
+	    */
 	}
 	else
 	{
+	    echo "<script type='text/javascript'>alert('Not In Group');</script>";
+	    /*
 	    if($userExists)
 	    {
 		$this->tableId = $this->getTableId();
@@ -119,8 +121,8 @@ class Login
 	    {
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 	    }
+	    */
 	}
-	*/
     }
     
     private function checkUserGroup()
@@ -156,7 +158,7 @@ class Login
 	
 	for ($x=0; $x<count($resultsArray); $x++)
 	{
-	    if (in_array("CSC495-2014", $resultsArray{$x})) {
+	    if (in_array(Config::get(oauth.organization), $resultsArray{$x})) {
 		return true;
 	    }
 	} 
