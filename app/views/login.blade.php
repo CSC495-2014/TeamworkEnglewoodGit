@@ -22,7 +22,8 @@
 			<div class="panel-body">
 				<form class="form-signin" role="form">
 					<h3 class="form-signin-heading">Englewood Codes</h3>
-					<button class="btn btn-lg btn-signIn btn-block" type="submit" name="loginButton" value="loginButton" >Login with GitHub</button>
+					//<button class="btn btn-lg btn-signIn btn-block" type="submit" name="loginButton" value="loginButton" >Login with GitHub</button>
+					<input type="submit" name="loginButton" value="loginButton" >Login with GitHub</button>
 					<hr>
 					<a href ="https://github.com/" class="btn btn-med btn-GitHub btn-block" type="button">Create GitHub Account</a>
 				</form>
