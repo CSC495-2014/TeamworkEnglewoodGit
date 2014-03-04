@@ -6,8 +6,7 @@
 	
 	<?php
 	include(app_path().'/controllers/LoginController.php');
-	$loginButton;
-	if($_GET['loginButton=1']){loginCall();}
+	if($_GET['$loginButton=1']){loginCall();}
 	function loginCall()
 	{
 		LoginController::GitHubLogin();
