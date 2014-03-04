@@ -27,7 +27,7 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
 });
 
 Route::get('user/{user}/projects', function($user) {
-    $projects = glob('../../*', GLOB_ONLYDIR | GLOB_MARK);
+    $projects = glob("../data/users/$user/projects/*", GLOB_ONLYDIR | GLOB_MARK);
     foreach ($projects as &$project) {
         $project = basename($project);
     }

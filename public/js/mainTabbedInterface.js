@@ -8,16 +8,23 @@
 $(function() 
 {
     var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
-        tabCounter = 2;
+        tabCounter = 1;
+        tabTrack = new Array();
     tabs = $( "#tabs" ).tabs();
 
 	// actual addTab function: adds new tab by passing the name and content of files
-	function addTab(tabTitle, tabContent)
+	function addTab(filePath, tabContent)
 	{
+	    // If tab already exist in the list, return
+		if(tabTrack.indexOf(filePath) != -1){
+			return;
+		}		
+		var tabTitle = window.basename(filePath);
 		var label = tabTitle || "Untitled",
 			id = "tabs-" + tabCounter,
 			li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ),
 			tabContentHtml = tabContent || "";
+		tabTrack[tabCounter] = filePath;	//track opened file
 
 		tabs.find( ".ui-tabs-nav" ).append( li );
 		tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
@@ -35,6 +42,7 @@ $(function()
 	{
 		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
 		$( "#" + panelId ).remove();
+		tabTrack[panelId.charAt(panelId.length-1)]='';		//remove file from tabTrack array
 		tabs.tabs( "refresh" );
 	});
 	tabs.bind( "keyup", function( event ) 
