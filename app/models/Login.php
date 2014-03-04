@@ -37,7 +37,6 @@ class Login
                 {
                     $this->userDetails = $this->getDetails();
 		    $this->userName = $this->userDetails->nickname;
-                    echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
                 }
                 catch(Exception $e)
                 {
@@ -103,6 +102,7 @@ class Login
 	if($userInGroup)
 	{
 	    echo "<script type='text/javascript'>alert('In Group');</script>";
+	    echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
 	    /*
 	    if(!is_null($userExists))
 	    {
