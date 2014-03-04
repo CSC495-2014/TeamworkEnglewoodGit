@@ -2,7 +2,6 @@
 
 class Login
 {
-    
     private $provider;
     
     private $token;
@@ -15,6 +14,12 @@ class Login
     
     private $organization;
     
+    /**
+    *
+    * Redirect to GitHub for authorization, then populate $token, $userDetails,
+    * $userName and $organization
+    *
+    */
     function __construct()
     {
 	$this->provider = $this->getProvider();
@@ -84,7 +89,12 @@ class Login
         return $this->provider->getUserDetails($this->token);
     }
     
-    
+    /**
+    *
+    * Once the userDetails are obtained, check if they are present in our user table, then check if
+    * they are a member of the specified group
+    * 
+    */
     public function processUser()
     {
 	//$userExists = $this->userExists();
@@ -94,15 +104,15 @@ class Login
 	{
 	    echo "<script type='text/javascript'>alert('In Group');</script>";
 	    /*
-	    if($userExists)
+	    if(!is_null($userExists))
 	    {
+	    $this->tableId = $userExists
 		echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
-		$this->tableId = $this->getTableId();
 	    }
 	    else
 	    {
 		echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-		$this->tableId = $this->addUser();
+		//Database Query to Add User Goes Here
 	    }
 	    $this->beginSession();
 	    */
@@ -111,20 +121,28 @@ class Login
 	{
 	    echo "<script type='text/javascript'>alert('Not In Group');</script>";
 	    /*
-	    if($userExists)
+	    if(!is_null($userExists))
 	    {
-		$this->tableId = $this->getTableId();
-		$this->deleteUser();
+		//Database Query to Delete User Goes Here
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
+		//Route to Login Page
 	    }
 	    else
 	    {
 		echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
+		//Route to Login Page
 	    }
 	    */
 	}
     }
     
+    /**
+    *
+    * Grab a list of the organizations a member belongs to, and check them against the organization specified
+    * In the configuration file. Return true if they are a member
+    *
+    *@return bool $userInGroup
+    */
     private function checkUserGroup()
     {
 	// create curl resource 
@@ -132,7 +150,6 @@ class Login
 
         // set url 
         curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
-	///
 
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -145,66 +162,36 @@ class Login
 	}
 	else
 	{
-	    echo "<script type='text/javascript'>alert('no error');</script>";
+	    // $output contains the output string 
+	    $output = curl_exec($ch);
+    
+	    // close curl resource to free up system resources 
+	    curl_close($ch);
+	    
+	    $resultsArray = json_decode($output, true);
+	    
+	    for ($x=0; $x<count($resultsArray); $x++)
+	    {
+		if (in_array($this->organization, $resultsArray{$x})) {
+		    return true;
+		}
+	    } 
 	}
-	
-        // $output contains the output string 
-	$output = curl_exec($ch);
-
-        // close curl resource to free up system resources 
-        curl_close($ch);
-	
-	$resultsArray = json_decode($output, true);
-	
-	for ($x=0; $x<count($resultsArray); $x++)
-	{
-	    if (in_array($this->organization, $resultsArray{$x})) {
-		return true;
-	    }
-	} 
 	return false;
     }
     
     /**
     *
-    * Begins the Laravel Session, Storing userName, userId, and token within the session
+    * Begins the Laravel Session, Storing userName, userId, and token within the session, then
+    * routes to the projects page
     *
     */
     public function beginSession()
     {
         echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 	Session::put('uid',$this->userName);
-	//Session::put('tableId', '$tableId');
+	Session::put('tableId', '$tableId');
 	Session::put('token', $this->token);
+	//Route to Projects Page
     }
-    
-    
-    public function userExists()
-    {
-	echo "<script type='text/javascript'>alert('Checking Table');</script>";
-	$userExists = DB::table('users')->where('username',$this->userName)->find();
-	return $userExists;
-        return true;
-    }
-    public function deleteUser()
-    {
-	echo "<script type='text/javascript'>alert('Deleting User');</script>";
-	DB::table('users')->where('user_id', $this->tableId)->delete();
-    }
-    
-    public function addUser()
-    {
-	echo "<script type='text/javascript'>alert('Adding User');</script>";
-	$id = DB::table('users')->insertGetId(array('username' => $this->userName, 'oauth' => $t));
-	return $id;
-    }
-    
-    public function getTableId()
-    {
-	echo "<script type='text/javascript'>alert('Getting Table ID');</script>";
-	$user = DB::table('users')->where('username', $this->userName)->get();
-	$tableId = $user->$user_id;
-	return $tableId;
-    }
-    
 }
