@@ -162,7 +162,7 @@ class FileSystem extends AbstractFileSystem
         return file_get_contents(FileSystem::getPath($path));
     }
 
-	public function copyF($sourcePath, $destPath)
+	public function copy($sourcePath, $destPath)
 	{
 		if(is_dir(FileSystem::getPath($sourcePath)))
 		{
@@ -249,7 +249,7 @@ class FileSystem extends AbstractFileSystem
 	*/
 	public function move($sourcePath, $destPath)
 	{
-		$this->copyF($sourcePath,$destPath);
+		$this->copy($sourcePath,$destPath);
 		if(is_dir(FileSystem::getPath($sourcePath)))
 		{
 			$this->removeDir($sourcePath);
@@ -324,7 +324,7 @@ class FileSystem extends AbstractFileSystem
 	
 	//This will copy the files/folders in in the app/data/users/ZAM-/projects/TestRepo/js directory
 	//to app/data/users/ZAM-/projects/TestRepo/test directory
-	$fileSystem->copyF("js/", "test");
+	$fileSystem->copy("js/", "test");
 	
 	//This will copy the testFile.txt
 	$fileSystem->copy($testFile, "TestFileCopy.txt");
