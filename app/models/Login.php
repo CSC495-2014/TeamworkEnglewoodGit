@@ -190,7 +190,7 @@ class Login
     {
         echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 	Session::put('uid',$this->userName);
-	Session::put('tableId', '$tableId');
+	Session::put('tableId', $this->tableId);
 	Session::put('token', $this->token);
 	//Route to Projects Page
     }
