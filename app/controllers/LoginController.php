@@ -9,6 +9,7 @@ class LoginController extends BaseController {
     */
     public static function GitHubLogin()
     {
+	echo "<script type='text/javascript'>alert('OOOOOOOOOOOOOOO');</script>";
 	if(Config::get('oauth.online'))
 	{
 	    $gitHubLogin = new Login();

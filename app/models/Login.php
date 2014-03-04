@@ -22,6 +22,7 @@ class Login
     */
     function __construct()
     {
+	echo "<script type='text/javascript'>alert('FWEIOJFWIOFWE');</script>";
 	$this->provider = $this->getProvider();
         $this->organization = Config::get('oauth.organization');
         if(!isset($_GET['code']))
