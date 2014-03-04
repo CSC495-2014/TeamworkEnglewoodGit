@@ -6,40 +6,40 @@ abstract class AbstractFileSystem
 	/**
 	* Root directory where all users and their projects/repos will be stored.
 	*
-	* @var string 
+	* @var string
 	*/
 	const ROOT = '../data/';
-	
+
 	/**
-	* User name of the instance of this class. 
+	* User name of the instance of this class.
 	* This will be used to create the user's directory path.
 	*
 	* This will be set in the constructor.
 	*
-	* @var string 
+	* @var string
 	*/
 	protected $userName;
 
 	/**
-	* Project name of the instance of this class. 
+	* Project name of the instance of this class.
 	* This will be used to create the user's project path.
 	*
 	* This will be set in the constructor.
 	*
-	* @var string 
+	* @var string
 	*/
 	public $projectName;
 
 	/**
 	*
 	* instantiates a GitWrapper object. All of the local Git commands
-	* will be executed with methods of this object. 
+	* will be executed with methods of this object.
 	* methods can use it.
 	*
 	* @param string @userName
 	* @param string @projectName
 	*/
-	
+
 	function __construct($userName, $projectName)
 	{
 		$this->userName = $userName;
@@ -47,8 +47,8 @@ abstract class AbstractFileSystem
 	}
 
 	/**
-	*			  
-	* return the user name. 
+	*
+	* return the user name.
 	*
 	* @return string $userName
 	*/
@@ -58,8 +58,8 @@ abstract class AbstractFileSystem
 	}
 
 	/**
-	*			  
-	* set the user name. 
+	*
+	* set the user name.
 	*
 	* @param string $userName
 	*/
@@ -69,8 +69,8 @@ abstract class AbstractFileSystem
 	}
 
 	/**
-	*			  
-	* return the project name. 
+	*
+	* return the project name.
 	*
 	* @return string $projectName
 	*/
@@ -80,8 +80,8 @@ abstract class AbstractFileSystem
 	}
 
 	/**
-	*			  
-	* set the project name. 
+	*
+	* set the project name.
 	*
 	* @param string $projectName
 	*/
@@ -92,8 +92,8 @@ abstract class AbstractFileSystem
 
 	/**
 	*
-	* will create a full path to a given resource within the user's project dir. 
-	* 
+	* will create a full path to a given resource within the user's project dir.
+	*
 	* @param string $path
 	* @return string full path within the application's file system
 	*/

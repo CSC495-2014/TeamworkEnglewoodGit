@@ -1,11 +1,11 @@
 
 /* mainTabbedInterface.js
-   
+
    This javascript creates new closable tabs with editable panels
 */
 
 
-$(function() 
+$(function()
 {
     var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
         tabCounter = 1;
@@ -18,7 +18,7 @@ $(function()
 	    // If tab already exist in the list, return
 		if(tabTrack.indexOf(filePath) != -1){
 			return;
-		}		
+		}
 		var tabTitle = window.basename(filePath);
 		var label = tabTitle || "Untitled",
 			id = "tabs-" + tabCounter,
@@ -38,21 +38,21 @@ $(function()
     window.addTab = addTab;
 
 	// close icon: removing the tab on click
-	tabs.delegate( "span.ui-icon-close", "click", function() 
+	tabs.delegate( "span.ui-icon-close", "click", function()
 	{
 		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
 		$( "#" + panelId ).remove();
 		tabTrack[panelId.charAt(panelId.length-1)]='';		//remove file from tabTrack array
 		tabs.tabs( "refresh" );
 	});
-	tabs.bind( "keyup", function( event ) 
+	tabs.bind( "keyup", function( event )
 	{
-		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) 
+		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE )
 		{
 			var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
 			$( "#" + panelId ).remove();
 			tabs.tabs( "refresh" );
 		}
 	});
-	
+
 });
