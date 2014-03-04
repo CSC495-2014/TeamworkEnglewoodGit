@@ -22,8 +22,7 @@ class LoginController extends BaseController {
 	    
 	    Session::put('uid', $userName);
 	    Session::put('tableId', $userId);
-	    Session::put('token', $token);`
-	    
+	    Session::put('token', $token);
 	    //Route to Projects Page
 	}
     }
