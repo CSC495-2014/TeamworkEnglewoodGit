@@ -11,6 +11,7 @@ class LoginController extends BaseController {
     {
 	if(Config::get('oauth.online'))
 	{
+	    echo "<script type='text/javascript'>alert('Starting Login Process');</script>";
 	    $gitHubLogin = new Login();
 	    $gitHubLogin->processUser();
 	}
