@@ -9,7 +9,7 @@ class GitCommands extends AbstractFileSystem
 	*
 	* GitWrapper object that will be used to execute Git commands to local file system. 
 	*
-	* @var GitWrapper
+	* @var wrapper
 	*/
 	private $wrapper;
 	
@@ -21,20 +21,22 @@ class GitCommands extends AbstractFileSystem
 	* Also, instantiates a GitWrapper object. All of the local Git commands
 	* will be executed with methods of this object.
 	* 
+	* Setting the user's private key
+	*
 	* @param string $userName
 	* @param string $projectName
 	*/
 	function __construct($userName, $projectName)
 	{
-		// TODO Need to possibly make a WorkingCopy variable that will be set depending if the repo is cloned or not.
-		$this->gitWrapper = new GitWrapper();
-		$this->getWrapper()->setPrivateKey('../data/' . '/' . $userName);
-		parent::__construct($userName, $projectName); // calling AbstractFileSystem's constructor
+		$this->wrapper = new GitWrapper();
+		$this->wrapper->setPrivateKey('../data/' . 'users/' . $userName . '/id_rsa');
+		// AbstractFileSystem constructor
+		parent::__construct($userName, $projectName);
 	}
 
 	/** 
 	*
-	* sets wrapper to a GitWrapper object.
+	* sets wrapper to a GitWrapper object
 	*
 	* @param GitWrapper $wrapper
 	*/
@@ -54,33 +56,56 @@ class GitCommands extends AbstractFileSystem
 		return $this->wrapper;
 	}
 
+	/**
+	* 
+	* returns a working copy object of the repo.
+	*
+	* @return WorkingCopy
+	*/
 	public function getWorkingCopy()
 	{
 		return $this->getWrapper()->workingCopy($this->getPath());	
 	}
 
 	/**
-	* 
-	* clone a repo into a new directory. 
-	* The directory name will be the same as the project name.   
 	*
+	* sets username and email configuration for the 
+	* 
+	* for now, this is hardcoded in for testing.
+	*
+	* TODO: This should be automatically set in the constructor,
+	* by querying the DB for the email.
+	* 
+	*/
+	public function setIdentity()
+	{
+		$this->getWorkingCopy()
+					->config('user.name', $this->getUserName())
+					->config('user.email', 'zachary.mance@gmail.com');
+
+	}
+
+	/**
+	* 
+	* clone a repo into a new directory 
+	* The directory name will be the same as the project name   
 	*/
 	public function gitClone()
 	{
-		$repoURL = 'https://github.com/' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
+		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
+		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
 		$path = $this->getPath();
 		$this->getWrapper()->clone($repoURL, $path);
 	}
 
 	/**
 	* 
-	* adds a file to be tracked and staged to commit.
+	* adds a file to be tracked and staged to commit
 	*
 	* @param string $path
 	*/
 	public function gitAdd($path)
 	{
-		// #TODO: Doesn't support adding new directories along with files.
 		// this only supports adding a single file at a time.
         $WorkingCopy = $this->getWorkingCopy(); // This 
 		return $WorkingCopy->add($path);
@@ -88,7 +113,7 @@ class GitCommands extends AbstractFileSystem
 	
 	/**
 	*
-	* commits the files that were staged with a message.
+	* commits the files that were staged with a message
 	*
 	* @param string $message
 	*/
@@ -100,7 +125,72 @@ class GitCommands extends AbstractFileSystem
 
 	/**
 	* 
-	* pushes changes to the user's remote repository on GitHub. 
+	*  removes file from staging
+	*
+	* @param string $path
+	*/
+	public function gitRm($path)
+	{
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->rm($path);
+	}
+	
+	/**
+	* 
+	*  returns the status of staging area 
+	*
+	* @param string $path
+	*/
+	public function gitStatus()
+	{
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->status()->getOutput();
+	}
+
+	/**
+	* 
+	*  adds a new remote repository  
+	*
+	* @param string $userName
+	* @param string $project
+	* @param string $alias
+	*/
+	public function gitRemoteAdd($userName, $project, $alias)
+	{
+        $WorkingCopy = $this->getWorkingCopy();
+		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
+		$repoURL = 'git@github.com:' . $userName . '/' . $project . '.git';
+		return $WorkingCopy->remote('add', $alias, $repoURL);
+	}
+
+	/**
+	* 
+	*  removes a remote repository  
+	*
+	* @param string $alias
+	*/
+	public function gitRemoteRm($alias)
+	{
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->remote('remove', $alias);	
+	}
+
+	/**
+	* 
+	*  fetches and merges files from a remote repository  
+	*
+	* @param string $remoteAlias
+	* @param string $remoteBranch
+	*/
+	public function gitPull($remoteAlias, $remoteBranch)
+	{
+        $WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->pull($remoteAlias, $remoteBranch);
+	}
+
+	/**
+	* 
+	* pushes changes to the user's remote repository
 	*
 	* @param string $remoteAlias
 	* @param string $remoteBranch
@@ -111,57 +201,99 @@ class GitCommands extends AbstractFileSystem
 		return $WorkingCopy->push($remoteAlias, $remoteBranch);
 	}
 
-	public function gitRm($path)
-	{
-        $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->rm($path);
-	}
-
-	public function gitStatus()
-	{
-        $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->status()->getOutput();
-	}
-
-	public function gitRemoteAdd($userName, $project, $alias)
-	{
-        $WorkingCopy = $this->getWorkingCopy();
-		$repoURL = "https://github.com/" . $userName . "/" . $project . ".git";
-		return $WorkingCopy->remote("add", $alias, $repoURL);
-	}
-
-	public function gitRemoteRm($username, $project, $alias)
-	{
-        $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->remote("remove", $alias);
-	
-	} // remove remote
-
-	public function gitPull($remoteAlias, $remoteBranch)
-	{
-        $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->pull($remoteAlias, $remoteBranch);
-	}
-
- 	public function isCloned($user, $project)
+	/**
+	*
+	* Checks whether a repository has already been cloned in the user's project's directory.
+	*
+	* @return boolean
+	*/
+ 	public function isCloned()
  	{
-
+ 		$WorkingCopy = $this->getWorkingCopy();
+ 		return $WorkingCopy->isCloned();
  	}
 
 }
-	/* --- Testing of GitCommands public interfaces --- */
+	/* --- Testing of GitCommands public interfaces ---
 	
+	* After all the testing is done, TestRepo should have have
+	* remoteTestFile.txt. RemoteTestRepo should have both MyFile.txt and remoteTestFile.txt
+	*
+	* I will be testing the following git commands below:
+	* 
+	* add 
+	* rm 
+	* clone 
+	* status
+	* remote add
+	* remote rm
+	* push 
+	* pull
+	*
+	* The terms project and repository are used interchangeably, since we are treating all repos as projects.
+	*/
+
 	/*
+
 	$user = 'ZAM-';
 	$project = 'TestRepo';
-	$testFile = 'MyFile.txt';
+	$remoteProject = 'RemoteTestRepo';
+	$remoteAlias = 'upstream';
+	$testFile = 'MyTestFile.txt';
+	$remoteTestFile = 'remoteTestFile.txt';
 	$git = new GitCommands($user, $project);
 
+
+	// Return false, because the repo is not cloned yet.
+	if (!$git->isCloned()){
+		print "Not cloned! \n";
+	}
+
+	// Will clone into ../data/users/ZAM-/projects/TestRepo/
+	print "Cloning " . $project . " project...\n";
 	$git->gitClone();
-	touch($git->getPath() . $testFile); // Saving test file witihin the file system.
+	// MUST set the username and email config for the repo.
+	$git->setIdentity();
+	// Adding remote repo
+	$git->gitRemoteAdd($user, $remoteProject, $remoteAlias);
+
+	// Return true, because the repo was just cloned.
+	if ($git->isCloned()){
+		print "Cloned! \n";
+	}
+	// Adding a file, commiting, then pushing.
+	touch($git->getPath() . $testFile); // must first create test file witihin the file system.
 	$git->gitAdd($testFile);
+	// printing out status
 	print $git->gitStatus();
-	$git->gitCommit('Added my test file again!');
+	// commit and push to origin master
+	$git->gitCommit('Added my test file!');
 	$git->gitPush('origin', 'master');
+	// Pushing it to the remote repo
+	$git->gitPull($remoteAlias, 'master');
+	$git->gitPush($remoteAlias, 'master');
+	// Removing the file, commiting, then pushing.
+	$git->gitRm($testFile);
+	// Commit and push to origin master branch
+	$git->gitCommit('Removed my test file!');
+	$git->gitPush('origin', 'master');
+	// Remove remote
+
+	// Need to test gitPull()
+	// Adding a file to the remote, then will pull into local repo.
+	$gitRemote = new GitCommands($user, $remoteProject);
+	print "Cloning " . $remoteProject . "project...\n";
+	$gitRemote->gitClone();
+	$gitRemote->setIdentity();
+	touch($gitRemote->getPath() . $remoteTestFile); // must first create file within file system. 
+	$gitRemote->gitAdd($remoteTestFile);
+	$gitRemote->gitCommit('Added file to remote repo');
+	$gitRemote->gitPush('origin', 'master');
+	
+	// Pulling into TestRepo
+	$git->gitPull($remoteAlias, 'master');
+	$git->gitPush('origin', 'master');
+	$git->gitRemoteRm($remoteAlias);
+
 	*/
 ?>

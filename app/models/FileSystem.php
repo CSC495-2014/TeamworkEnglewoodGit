@@ -275,13 +275,14 @@ class FileSystem extends AbstractFileSystem
 		// Create key
 		$rsa = new Crypt_RSA();
 		$rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_OPENSSH);
-		extract($rsa->createKey(1024));
-		// Save private key to file
-		$path = FileSystem::ROOT . 'users/' . $user;
-		// need to first create directories since this gets called when a user first logs in.
-		mkdir($path, 0700, true); // RW for user
-		file_put_contents($path . '/id_rsa.pub', $privatekey);
-		chmod($path . '/id_rsa.pub', 600);
+		extract($rsa->createKey(1024)); // creates $privatekey and $publickey variables
+
+		// need to first create user dir since this gets called when a user first logs in.
+		$userPath = FileSystem::ROOT . 'users/' . $user;
+		$privateKeyPath = $userPath . '/ida_rsa';
+		mkdir($userPath, 0700, true); // RW for user
+		file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
+		chmod($privateKeyPath, 600); // set perms for private key
 		return $publickey;
 	}
 
