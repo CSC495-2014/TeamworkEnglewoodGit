@@ -2,9 +2,12 @@
 
 @section('content')
         {{ HTML::style('/css/bootstrap.css') }}
+<!-- these dont appear to be needed either
         {{ HTML::style('/css/jqueryFileTree.css') }}
         {{ HTML::style('/css/jquery.contextMenu.css') }}
+-->
         {{ HTML::style('css/projectsPage.css') }}
+<!-- none of theses below appear to be needed
         {{ HTML::script('/js/jquery-1.10.2.js') }}
         {{ HTML::script('/js/jqueryFileTree.js') }}
         {{ HTML::script('/js/jquery.ui.position.js') }}
@@ -18,6 +21,7 @@
         {{ HTML::script('/js/ui/jquery.ui.dialog.js') }}
         {{ HTML::script('/js/mainTabbedInterface.js') }}
         {{ HTML::script('/js/ace.js') }}
+-->
         <style>
         #tabs { margin-top: 0em; }
         #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
@@ -48,6 +52,11 @@
                         <th><h1><center> Description </center></h1></th>
                         <th><h1><center> Date Last Saved </center></h1></th>
                     </thead>
+<!--
+                <script type="text/javascript">
+
+                </script>
+-->
                     <tr class="row0">
                         <td><h2> Project 1 </h2></td>
                         <td> short description </td>
