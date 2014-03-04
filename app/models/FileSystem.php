@@ -1,5 +1,4 @@
 <?php
-
 class FileSystem extends AbstractFileSystem
 {
 	/**
@@ -150,9 +149,12 @@ class FileSystem extends AbstractFileSystem
 	public function save($filePath, $contents)
 	{
 		$searchFile = FileSystem::getPath($filePath);
+		print $searchFile;
 		$handle = fopen($searchFile, 'w');
 		fwrite($handle, $contents);
 		fclose($handle);
+		// after writing to the file, change the perm to RW for user 
+		chmod($searchFile, 600);
 	}
 
     public function read($path)
@@ -267,6 +269,33 @@ class FileSystem extends AbstractFileSystem
 	}
 	
 
+	/** 
+	* 
+	* generates an SSH keygen pair and saves the private key in the user's directory
+	*
+	* RSA Private Key Format - PKCS#1
+	* RSA Public Key Format - OpenSSH
+	*
+	*@param string $user
+	*@return string $publickey
+	*/	
+
+	public static function sshKeyGen($user)
+	{
+		// Create key
+		$rsa = new Crypt_RSA();
+		$rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_OPENSSH);
+		extract($rsa->createKey(1024)); // creates $privatekey and $publickey variables
+
+		// need to first create user dir since this gets called when a user first logs in.
+		$userPath = FileSystem::ROOT . 'users/' . $user;
+		$privateKeyPath = $userPath . '/ida_rsa';
+		mkdir($userPath, 0700, true); // RW for user
+		file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
+		chmod($privateKeyPath, 600); // set perms for private key
+		return $publickey;
+	}
+
 }
 
 	/* --- Testing of FileSystem public interfaces --- */
@@ -276,13 +305,19 @@ class FileSystem extends AbstractFileSystem
 	$project = 'TestRepo';
 	$testFile = "testFile.txt";
 
-	// To properly test the FileCommands class, I need to possibly create a dir before hand.
+	// Creating an ssh key and saving the private key under /data/users/ZAM-/
+	//FileSystem::sshKeyGen($user);
+
+	// To properly test the FileCommands class, I need to create a dir before hand.
+	// example dir -> /data/users/ZAM-/projects/TestRepo/
 	// Normally the initial clone would properly create the directory. 
 	$fileSystem = new FileSystem($user, $project);
 	
 	// This saves a test file in the app/data/users/ZAM-/projects/TestRepo directory
 	$fileSystem->save($testFile, "This is some data.\n And some other data.\n");
+
 	//$fileSystem->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
+
 	//$fileSystem->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
@@ -300,5 +335,4 @@ class FileSystem extends AbstractFileSystem
 	//This moves all folders and files in ../js to ../test
 	$fileSystem->move("js/", "test");
 	*/
-	
 ?>
