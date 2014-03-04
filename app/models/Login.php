@@ -170,13 +170,15 @@ class Login
 	    curl_close($ch);
 	    
 	    $resultsArray = json_decode($output, true);
-	    
+	    /*
 	    for ($x=0; $x<count($resultsArray); $x++)
 	    {
 		if (in_array($this->organization, $resultsArray{$x})) {
 		    return true;
 		}
-	    } 
+	    }
+	    */
+	    return true;
 	}
 	return false;
     }
