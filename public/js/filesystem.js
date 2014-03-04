@@ -1,4 +1,12 @@
 $(function() {
+    var rootDirectoryItems = {
+        'newFolder': {name: 'New Folder...', icon: 'add-dir', fscallback: onClickFsDirNewDir},
+        'newFile': {name: 'New File...', icon: 'add-file', fscallback: onClickFsDirNewFile},
+        'gitAdd': {name: 'Git Add', icon: 'git-add', fscallback: onClickFsItemGitAdd},
+        'refresh': {name: 'Refresh', icon: 'refresh', fscallback: onClickRefresh},
+        'sep1': '------------',
+        'quit': {name: 'Quit', icon: 'quit'}
+    };
     var directoryItems = {
         'newFolder': {name: 'New Folder...', icon: 'add-dir', fscallback: onClickFsDirNewDir},
         'newFile': {name: 'New File...', icon: 'add-file', fscallback: onClickFsDirNewFile},
@@ -79,23 +87,30 @@ $(function() {
         }
     }
 
-    // Directory context menu.
+    // Root directory context menu.
     $.contextMenu({
-        selector: '.directory.expanded',
+        selector: 'div ul .directory.expanded',
+        callback: contextMenuCallback,
+        items: rootDirectoryItems
+    });
+
+    // Expanded directory context menu.
+    $.contextMenu({
+        selector: 'li ul .directory.expanded',
         callback: contextMenuCallback,
         items: directoryItems
     });
 
-    // Directory context menu.
+    // Collapsed directory context menu.
     $.contextMenu({
-        selector: '.directory.collapsed',
+        selector: 'li ul .directory.collapsed',
         callback: contextMenuCallback,
         items: collapsedDirectoryItems
     });
 
     // File context menu.
     $.contextMenu({
-        selector: '.file',
+        selector: 'li ul .file',
         callback: contextMenuCallback,
         items: fileItems
     });
