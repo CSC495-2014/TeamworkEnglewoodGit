@@ -8,9 +8,7 @@
 	include(app_path().'/controllers/LoginController.php');
 	//function loginCall()
 	//{
-		echo "<script type='text/javascript'>alert('Calling GitHubLogin');</script>";
 		LoginController::GitHubLogin();
-		echo "<script type='text/javascript'>alert('Failed Calling GitHubLogin');</script>";
 	//}
 	?>
 	
