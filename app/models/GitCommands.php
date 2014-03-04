@@ -1,5 +1,4 @@
 <?php
-require_once '../../vendor/autoload.php';
 use GitWrapper\GitWrapper;
 
 class GitCommands extends AbstractFileSystem
