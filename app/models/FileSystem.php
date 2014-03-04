@@ -160,18 +160,23 @@ class FileSystem extends AbstractFileSystem
         return file_get_contents(FileSystem::getPath($path));
     }
 
-	public function copy($sourcePath, $destPath)
+	public function copyF($sourcePath, $destPath)
 	{
-		//Copies First directory then calls recursive copy function
-		if(!file_exists(FileSystem::getPath($destPath)))
+		if(is_dir(FileSystem::getPath($sourcePath)))
 		{
-			mkdir(FileSystem::getPath($destPath), 0700);
+			//Copies First directory then calls recursive copy function
+			if(!file_exists(FileSystem::getPath($destPath)))
+			{
+				mkdir(FileSystem::getPath($destPath), 0700);
+			}
+			if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
+			{
+				mkdir(FileSystem::getPath($destPath)."/".$sourcePath, 0700);
+			}
+			$this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
 		}
-		if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
-		{
-			mkdir(FileSystem::getPath($destPath)."/".$sourcePath, 0700);
-		}
-		$this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
+		else
+			copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath));
 
 	}
 	/**
@@ -242,8 +247,13 @@ class FileSystem extends AbstractFileSystem
 	*/
 	public function move($sourcePath, $destPath)
 	{
-		$this->copy($sourcePath,$destPath);
-		$this->removeDir($sourcePath);
+		$this->copyF($sourcePath,$destPath);
+		if(is_dir(FileSystem::getPath($sourcePath)))
+		{
+			$this->removeDir($sourcePath);
+		}
+		else
+			$this->removeFile($sourcePath);
 	}
 	/*
 	*	Creates a directory at $dirPath
@@ -272,23 +282,23 @@ class FileSystem extends AbstractFileSystem
 	
 	// This saves a test file in the app/data/users/ZAM-/projects/TestRepo directory
 	$fileSystem->save($testFile, "This is some data.\n And some other data.\n");
-	//$test->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
-	//$test->removeFile($testFile);
+	//$fileSystem->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
+	//$fileSystem->removeFile($testFile);
 	$listFiles = $fileSystem->listDir();
 	print_r($listFiles);
 	
 	//This will copy the files/folders in in the app/data/users/ZAM-/projects/TestRepo/js directory
 	//to app/data/users/ZAM-/projects/TestRepo/test directory
-	$test->copy("js/", "test");
+	$fileSystem->copyF("js/", "test");
 	
 	//This will copy the testFile.txt
-	$test->copy($testFile, "TestFileCopy.txt");
+	$fileSystem->copy($testFile, "TestFileCopy.txt");
 	
 	//This moves $testFileCopy to ../test
-	$test->move($testFileCopy, "test/TestFileCopy.txt");
+	$fileSystem->move($testFileCopy, "test/TestFileCopy.txt");
 	
 	//This moves all folders and files in ../js to ../test
-	$test->move("js/", "test");
+	$fileSystem->move("js/", "test");
 	*/
 	
 ?>
