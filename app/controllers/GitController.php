@@ -33,12 +33,12 @@ class GitController extends \BaseController {
      * @todo change name in routes too
      */
     public function gitAdd($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
 
         $path = Input::get("item");
         try {
-            $fileSystem->gitAdd($path);
+            $gitCommands->gitAdd($path);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -61,11 +61,11 @@ class GitController extends \BaseController {
      * @return null if success, error and status code if failure
      */
     public function gitRm($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
         $path = Input::get("item");
         try {
-            $fileSystem->gitRm($path);
+            $gitCommands->gitRm($path);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -88,7 +88,7 @@ class GitController extends \BaseController {
      * @return null if success, error and status code if failure
      */
     public function commit($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
         $msg = Input::get("message");
 
@@ -96,7 +96,7 @@ class GitController extends \BaseController {
             return Response::make(400);
         }
         try {
-            $fileSystem->gitCommit($msg);
+            $gitCommands->gitCommit($msg);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -119,12 +119,12 @@ class GitController extends \BaseController {
      * @param string $project
      */
     public function push($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
         $ra = Input::get("remote");
         $rb = Input::get("branch");
         try {
-            $fileSystem->gitPush($ra, $rb);
+            $gitCommands->gitPush($ra, $rb);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -147,12 +147,12 @@ class GitController extends \BaseController {
      * @param string $project
      */
     public function pull($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
         $ra = Input::get("remote");
         $rb = Input::get("branch");
         try {
-            $fileSystem->gitPull($ra, $rb);
+            $gitCommands->gitPull($ra, $rb);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -175,7 +175,7 @@ class GitController extends \BaseController {
      * @param string $project
      */
     public function addRemote($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
 
         $alias = Input::get("remote");
@@ -186,7 +186,7 @@ class GitController extends \BaseController {
             return Response::json("URL must start with git@github.com", 500);
         }
         try {
-            $fileSystem->gitRemoteAdd($alias, $url);
+            $gitCommands->gitRemoteAdd($alias, $url);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -208,11 +208,11 @@ class GitController extends \BaseController {
      * @param string $project
      */
     public function removeRemote($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
         $alias = Input::get("remote");
         try {
-            $fileSystem->gitRemoteRm($alias);
+            $gitCommands->gitRemoteRm($alias);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -232,10 +232,10 @@ class GitController extends \BaseController {
      * @return blank response if sucess, 500 and message if fail
      */
     public function gitClone($user, $project) {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
 
         try {
-            $fileSystem->gitClone();
+            $gitCommands->gitClone();
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -255,10 +255,10 @@ class GitController extends \BaseController {
      * @todo figure out return type/value
      */
     public function cmd() {
-        $fileSystem = new FileSystem($user, $project);
+        $gitCommands = new GitCommands($user, $project);
         $args = Input::get("args");
         try {
-            $return = $fileSystem->git($args);
+            $return = $gitCommands->git($args);
         } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
