@@ -248,13 +248,17 @@ class GitController extends \BaseController {
      * 
      * Run an array of arguments in git and return the resulting message data
      * 
+     * @see Route::post('/user/{user}/project/{project}/git', 'GitController@customCmd');
+     *
+     * @param string $user
+     * @param string $project
+     *
      * Parameters in Request:
      * * "arglist":"["list","of","args"]"
      * 
      * @todo find out what Mike is naming the request params
-     * @todo figure out return type/value
      */
-    public function cmd() {
+    public function cmd($user, @project) {
         $gitCommands = new GitCommands($user, $project);
         $args = Input::get("args");
         try {
