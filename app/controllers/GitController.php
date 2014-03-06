@@ -43,7 +43,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -70,7 +70,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -93,7 +93,7 @@ class GitController extends \BaseController {
         $msg = Input::get("message");
 
         if (empty($msg)) {
-            return Response::make(400);
+            return Response::make(null, 400);
         }
         try {
             $gitCommands->gitCommit($msg);
@@ -101,7 +101,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -129,7 +129,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -157,7 +157,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -191,7 +191,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -217,7 +217,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
@@ -240,7 +240,7 @@ class GitController extends \BaseController {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-        return Response::make(200);
+        return Response::make(null, 200);
     }
 
     /**
