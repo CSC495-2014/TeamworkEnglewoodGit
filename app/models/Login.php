@@ -23,7 +23,7 @@ class Login
     function __construct()
     {
 	echo "<script type='text/javascript'>alert('FWEIOJFWIOFWE');</script>";
-	$this->provider = $this->getProvider();
+	$this->provider = $this->_getProvider();
         $this->organization = Config::get('oauth.organization');
         if(!isset($_GET['code']))
 	{
@@ -33,10 +33,10 @@ class Login
         {
             try
             {
-                $this->token = $this->getToken();
+                $this->token = $this->_getToken();
                 try
                 {
-                    $this->userDetails = $this->getDetails();
+                    $this->userDetails = $this->_getDetails();
 		    $this->userName = $this->userDetails->nickname;
                 }
                 catch(Exception $e)
@@ -57,7 +57,7 @@ class Login
     *
     *@return Github $provider
     */
-    private function getProvider()
+    private function _getProvider()
     {
         return new OAuth2\Client\Provider\Github(array(
 	    'clientId' => Config::get('oauth.clientId'),
@@ -73,7 +73,7 @@ class Login
     *
     *@return AccessToken $token
     */
-    private function getToken()
+    private function _getToken()
     {
         return $this->provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
     }
@@ -84,7 +84,7 @@ class Login
     *
     *@return array $userDetails
     */
-    private function getDetails()
+    private function _getDetails()
     {
         return $this->provider->getUserDetails($this->token);
     }
@@ -98,7 +98,7 @@ class Login
     public function processUser()
     {
 	//$userExists = $this->userExists();
-	$userInGroup = $this->checkUserGroup();
+	$userInGroup = $this->_checkUserGroup();
 	
 	if($userInGroup)
 	{
@@ -144,41 +144,16 @@ class Login
     *
     *@return bool $userInGroup
     */
-    private function checkUserGroup()
+    private function _checkUserGroup()
     {
-	// create curl resource 
-        $ch = curl_init(); 
-
-        // set url 
-        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
-
-        //return the transfer as a string 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
+	$resultsArray=json_decode($request->body, true);
 	
-	curl_setopt($ch, CURLOPT_USERAGENT, "TeamworkEnglewoodGit");
-
-	if(curl_exec($ch) === false)
+	for ($x=0; $x<count($resultsArray); $x++)
 	{
-	    echo 'Curl error: ' . curl_error($ch);
-	}
-	else
-	{
-	    // $output contains the output string 
-	    $output = curl_exec($ch);
-    
-	    // close curl resource to free up system resources 
-	    curl_close($ch);
-	    
-	    $resultsArray = json_decode($output, true);
-	    /*
-	    for ($x=0; $x<count($resultsArray); $x++)
-	    {
-		if (in_array($this->organization, $resultsArray{$x})) {
-		    return true;
-		}
+	    if (in_array($this->organization, $resultsArray{$x})) {
+		return true;
 	    }
-	    */
-	    return true;
 	}
 	return false;
     }
