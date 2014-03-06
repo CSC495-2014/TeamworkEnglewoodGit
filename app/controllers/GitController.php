@@ -258,7 +258,7 @@ class GitController extends \BaseController {
      * 
      * @todo find out what Mike is naming the request params
      */
-    public function cmd($user, @project) {
+    public function cmd($user, $project) {
         $gitCommands = new GitCommands($user, $project);
         $args = Input::get("args");
         try {
