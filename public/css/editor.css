@@ -19,6 +19,7 @@ html, body {
 #mainContent {
    height: calc(100% - 165px);
    min-height: 400px;
+   width: 100%;
 }
 
 #topLeft {
@@ -41,7 +42,7 @@ html, body {
 #topRight {
 	height: 100%;
 	min-height: 165px;
-	width: 20%;
+	width: 19.7%;
 	background-color: transparent;
 	padding-top: 8px;
 	float: left;
@@ -77,7 +78,7 @@ UL.jqueryFileTree A:hover {
 
 #optionSideBar {
   height: 100%;
-  width: 20%;
+  width: 19.7%;
   background-color: #085c2f;
   float: left;
   overflow: hidden;
@@ -142,7 +143,7 @@ UL.jqueryFileTree A:hover {
   line-height: 1.33;
   border-radius: 6px;
   margin: auto;
-  width: 90%;
+  width: 92%;
   overflow: hidden;
 }
 
@@ -150,7 +151,7 @@ UL.jqueryFileTree A:hover {
 .panel {
   overflow: hidden;
   color: #000000;
-  width: 90%;
+  width: 92%;
   text-align: center;
   margin: auto;
   background-color: #D8D8D8;

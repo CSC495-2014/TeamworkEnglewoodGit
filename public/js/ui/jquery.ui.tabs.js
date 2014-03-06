@@ -644,6 +644,7 @@ $.widget( "ui.tabs", {
 	},
 
 	_activate: function( index ) {
+
 		var anchor,
 			active = this._findActive( index );
 
