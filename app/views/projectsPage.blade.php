@@ -27,24 +27,24 @@
         #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
         #add_tab { cursor: pointer; }
         </style>
-        <body background="{{ URL::asset('css/images/adjbackground.png') }}">
+        <body background="{{ URL::asset('css/images/adjbackground.png') }}" onload="newRow()">
             <div id="topLeft">
 
             </div>
             <div id="header">
-                <h1 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h1>
+                <h1 style="color:#FFFFFF; text-align: center; padding-top:10px;"> $user </h1><!-- fix $user -->
             </div>
             <div id="topRight">
                 <center>
                     <ul class="nav nav-pills-square nav-stacked">
-                         <a href ="https://github.com/{{ $user }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
-                        <button class="btn btn-lgr btn-account btn-block" type="button" >Logout</button>
+                         <a href ="https://github.com/ $user " class="btn btn-lgr btn-account btn-block" type="button">GitHub</a><!-- fix $user in url -->
+                        <button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
                     </ul>
                 </center>
             </div>
             <center>
             <div id="projectsPage">
-                <table class="table table-hover" border="">
+                <table id="projectsTable" class="table table-hover" border="">
                     <!-- the above border property gives each cell a small thin border and does not alter the overall table border-->
                 <tbody>
                     <thead class="th" border="10">
@@ -52,12 +52,32 @@
                         <th><h1><center> Description </center></h1></th>
                         <th><h1><center> Date Last Saved </center></h1></th>
                     </thead>
-<!--
-                <script type="text/javascript">
 
+                <script type="text/javascript">
+                    //Need to pass in projects oldest - newest so that it appears on bottom of table
+
+                    //Need to figure out how to call this function foreach project only
+
+                    function newRow() {
+                        // grab the table to be worked with
+                        var table = document.getElementById("projectsTable");
+
+                        //create a new row 1 of table
+                        var row = table.insertRow(1);
+
+                        //create individual cells within new row
+                        var projectCell = row.insertCell(0);
+                        var descriptionCell = row.insertCell(1);
+                        var dateCell = row.insertCell(2);
+
+                        //add data from server to their respective cells
+                        projectCell.innerHTML = "{{ $projects['name'] }}";//or $projects->name
+                        descriptionCell.innerHTML = "{{ $projects['description'] }}";
+                        dateCell.innerHTML = "{{ $projects['date'] }}";
+                    }
                 </script>
--->
-                    <tr class="row0">
+
+<!--                    <tr class="row0">
                         <td><h2> Project 1 </h2></td>
                         <td> short description </td>
                         <td><h3> 10/22/1991 </h3></td>
@@ -77,6 +97,7 @@
                         <td> short description </td>
                         <td><h3> 02/16/2013 </h3></td>
                     </tr>
+-->
                 </tbody>
                 </table>
             </div>
