@@ -68,7 +68,8 @@
 						<div class="panel panel-default">
 						  <div class="panel-body">
 							<h4>File Options</h4>
-							<button class="btn btn-lg btn-file btn-block" type="button">Save</button>
+							<button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
+                            <div id="saveAlert"></div>
 							<hr/>
 							<h4>Git Options</h4>
 							<button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
@@ -454,7 +455,7 @@
 
                             sortFolder($parentJqueryFileTree);
                             applyGitStatus();
-                            window.addTab(filename, '');
+                            window.addTab(path, '');
 
                             console.log('Created: ' + path);
                         }
@@ -540,6 +541,33 @@
                             alert('Unable to rename file. Error: ' + data ? data : 1);
                         }
                     });
+                }
+
+                /**
+                   * Save a file at the given path.
+                  *
+                  * @param {string} path Path of file to save.
+               */
+                function saveFile(){
+                    
+                    $.ajax({
+                         url: '{{ URL::to("/user/$user/project/$project/file") }}' + window.getTabPath(),
+                         type: 'PUT',
+                         data: window.getTabContent(),
+                         statusCode: {
+                             400: function() {
+                                 alert('Unable to create file.');
+                             }
+                         },
+                         success: function(data) {
+                             document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                         },
+                         failure: function(data) {
+                             //document.getElementById("saveAlert").innerHTML= 'Fail to save ' + basename(window.getTabPath());
+                             alert('Unable to save file. Error: ' + data ? data : 1);
+                         },
+                   });
+
                 }
 
             </script>
