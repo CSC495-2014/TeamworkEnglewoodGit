@@ -7,6 +7,7 @@
 		"laravel/framework": "4.1.*",
 		"cpliakas/git-wrapper": "1.1.*",
 		"phpseclib/phpseclib": "0.3.*",
+		"rmccue/requests": "v1.6.0",
 		"league/oauth2-client": "0.1"
 	},
 	"autoload": {
