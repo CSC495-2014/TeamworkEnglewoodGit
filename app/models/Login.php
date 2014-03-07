@@ -148,9 +148,12 @@ class Login
     private function _checkUserGroup()
     {
 		//$request = Reque\st::header('User-Agent');
-		$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
-		$resultsArray=json_decode($request->body, true);
+		$request = Requests::get('https://api.github.com/users/wwforg/orgs');
+		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
+		
+		$resultsArray=json_decode($request->body);
 		var_dump($resultsArray);
+		
 		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
 		
 		//for ($x=0; $x<count($resultsArray); $x++)
