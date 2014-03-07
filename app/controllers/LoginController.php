@@ -9,14 +9,32 @@ class LoginController extends BaseController {
     */
     public static function GitHubLogin()
     {
-	echo "<script type='text/javascript'>alert('OOOOOOOOOOOOOOO');</script>";
 	if(Config::get('oauth.online'))
 	{
+	    //Standard Online Session
 	    $gitHubLogin = new Login();
-	    $gitHubLogin->processUser();
+	    $validUser = $gitHubLogin->processUser();
+	    if($validUser)
+	    {
+		//begin session
+		echo "<script type='text/javascript'>alert('Beggining Session');</script>";
+		Session::put('uid',$gitHubLogin->getUserName());
+		Session::put('tableId', $gitHubLogin->getTableId());
+		Session::put('token', $gitHubLogin->getToken());
+		echo "<script type='text/javascript'>alert('Populated Session');</script>";
+		//Route to Projects Page
+	    }
+	    else
+	    {
+		$org = Config::get('oauth.organization');
+		echo "<script type='text/javascript'>alert('Login Failed: You are Not a Member of $org on GitHub. Please join $org and try again.');</script>";
+		//Stay on login page
+	    }
 	}
 	else
 	{
+		echo "<script type='text/javascript'>alert('Offline Login');</script>";
+	    //Offline Testing Session
 	    $userName = Config::get('oauth.offlineUserName');
 	    $userId = Config::get('oauth.offlineTableId');
 	    $token = Config::get('oauth.offlineToken');

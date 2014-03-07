@@ -116,6 +116,7 @@ class Login
 		//Database Query to Add User Goes Here
 	    }
 	    $this->beginSession();
+	    return array (, $this->userName, $this->tableId, $this->token);
 	    */
 	}
 	else
@@ -149,6 +150,8 @@ class Login
 	$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
 	$resultsArray=json_decode($request->body, true);
 	
+	echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
+	
 	for ($x=0; $x<count($resultsArray); $x++)
 	{
 	    if (in_array($this->organization, $resultsArray{$x})) {
@@ -158,18 +161,18 @@ class Login
 	return false;
     }
     
-    /**
-    *
-    * Begins the Laravel Session, Storing userName, userId, and token within the session, then
-    * routes to the projects page
-    *
-    */
-    public function beginSession()
+    public function getUserName()
     {
-        echo "<script type='text/javascript'>alert('Beggining Session');</script>";
-	Session::put('uid',$this->userName);
-	Session::put('tableId', $this->tableId);
-	Session::put('token', $this->token);
-	//Route to Projects Page
+	return $this->userName;
+    }
+    
+    public function getTableId()
+    {
+	return $this->tableId;
+    }
+    
+    public function getToken()
+    {
+	return $this->token;
     }
 }
