@@ -215,11 +215,11 @@ class Login
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
-		var_dump($request);
-		echo(gettype($request));
-		//$resultsArray = json_decode($request);
+		//var_dump($request);
+		//echo(gettype($request));
+		$resultsArray = json_decode($request-body);
 			
-			foreach ($request as $orgArray) {
+			foreach ($resultsArray as $orgArray) {
 			//Make sure the request passed back an array of array's (check that the inside object is an array)
 				if (is_array($orgArray)){
 					if(in_array($this->organization, $orgArray))
