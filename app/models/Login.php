@@ -150,14 +150,14 @@ class Login
 		//$request = Reque\st::header('User-Agent');
 		$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
 		$resultsArray=json_decode($request->body, true);
-		
+		var_dump($resultsArray);
 		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
 		
 		//for ($x=0; $x<count($resultsArray); $x++)
 		//{
-			if (in_array($this->organization, $resultsArray{0})) {
-			return true;
-			}
+			//if (in_array($this->organization, $resultsArray{0})) {
+			//return true;
+			//}
 		//}
 		return false;
     }
