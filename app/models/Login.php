@@ -147,6 +147,7 @@ class Login
     */
     private function _checkUserGroup()
     {
+		/*
 		// create curl resource 
         $ch = curl_init(); 
 
@@ -172,9 +173,6 @@ class Login
 	
 			$resultsArray = json_decode($output, true);
 			
-			var_dump($resultsArray);
-			
-			
 			foreach ($resultsArray as $orgArray) {
 			//Make sure the request passed back an array of array's (check that the inside object is an array)
 				if (is_array($orgArray)){
@@ -188,8 +186,8 @@ class Login
 			}
 		}
 		return false;
-		
-		/*Errors with Requests Library, leave out for now
+		*/
+		/*//Errors with Requests Library, leave out for now
 		//$request = Reque\st::header('User-Agent');
 		$url = 'https://api.github.com/users/userName/orgs?access_token=userToken';
 		$headers = array('User-Agent' => 'TeamEnglewoodGit');
@@ -211,6 +209,13 @@ class Login
 		//}
 		return false;
 	    */
+		$headers = [
+			'Accept' => 'application/json',
+			'Authorization' => "token $oauthToken",
+			'User-Agent' => 'TeamworkEnglewoodGit'
+		];
+		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
+		var_dump($request->body);
     }
     
     public function getUserName()
