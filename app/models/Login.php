@@ -149,10 +149,9 @@ class Login
     {
 		//$request = Reque\st::header('User-Agent');
 		$headers = array(
-	    'useragent' => 'TeamEnglewoodGet',
-	    'auth' => $this->token
+	    'useragent' => 'TeamEnglewoodGet'
 		);
-		$request = Requests::get('https://api.github.com/users/wwforg/orgs', $headers);
+		$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token', $headers);
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
 		$resultsArray=json_decode($request->body);
