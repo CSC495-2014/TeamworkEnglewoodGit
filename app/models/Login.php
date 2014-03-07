@@ -172,8 +172,11 @@ class Login
 			// close curl resource to free up system resources 
 			curl_close($ch);
 	
-			$resultsArray = json_decode($output, true);
+			$resultsArray = json_decode($output);
 			
+			var_dump($resultsArray);
+			
+			/*
 			foreach ($resultsArray as $innerArray) {
 			//  Check type
 				if (is_array($innerArray)){
@@ -185,7 +188,7 @@ class Login
 				// one, two, three
 					echo $innerArray;
 				}	
-			}
+			}*/
 			
 			/*
 			for ($x=0; $x<count($resultsArray); $x++)
