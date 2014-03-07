@@ -215,7 +215,20 @@ class Login
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
-		var_dump($request->body);
+
+		$resultsArray = json_decode($request, true);
+			
+			foreach ($resultsArray as $orgArray) {
+			//Make sure the request passed back an array of array's (check that the inside object is an array)
+				if (is_array($orgArray)){
+					if(in_array($this->organization, $orgArray))
+					{
+						return true;
+					}
+				}else{
+					echo "<script type='text/javascript'>alert('Organization Check Failed: Not an Array');</script>";
+				}	
+			}
     }
     
     public function getUserName()
