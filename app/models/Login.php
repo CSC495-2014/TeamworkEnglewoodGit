@@ -153,12 +153,12 @@ class Login
 		
 		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
 		
-		for ($x=0; $x<count($resultsArray); $x++)
-		{
-			if (in_array($this->organization, $resultsArray{x})) {
+		//for ($x=0; $x<count($resultsArray); $x++)
+		//{
+			if (in_array($this->organization, $resultsArray{0})) {
 			return true;
 			}
-		}
+		//}
 		return false;
     }
     
