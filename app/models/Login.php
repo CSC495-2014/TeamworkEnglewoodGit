@@ -151,9 +151,7 @@ class Login
         $ch = curl_init(); 
 
         // set url
-		
-		//https://api.github.com/users/$this->userName/orgs?access_token=$this->token
-        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/orgs/$this->organization/members/$this->userName?access_token=$this->token");
+        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
 
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -172,11 +170,11 @@ class Login
 			// close curl resource to free up system resources 
 			curl_close($ch);
 	
-			$resultsArray = json_decode($output);
+			$resultsArray = json_decode($output, true);
 			
 			var_dump($resultsArray);
 			
-			/*
+			
 			foreach ($resultsArray as $innerArray) {
 			//  Check type
 				if (is_array($innerArray)){
@@ -188,7 +186,7 @@ class Login
 				// one, two, three
 					echo $innerArray;
 				}	
-			}*/
+			}
 			
 			/*
 			for ($x=0; $x<count($resultsArray); $x++)
