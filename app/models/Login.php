@@ -179,12 +179,18 @@ class Login
 			//  Check type
 				if (is_array($innerArray)){
 				//  Scan through inner loop
+					if(in_array($this->organization, $innerArray))
+					{
+						echo "<script type='text/javascript'>alert('WWWOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');</script>";
+					}
+				/*
 					foreach ($innerArray as $value) {
 						echo $value;
 					}
+				*/
 				}else{
 				// one, two, three
-					echo $innerArray;
+					echo "<script type='text/javascript'>alert('NO');</script>";
 				}	
 			}
 			
