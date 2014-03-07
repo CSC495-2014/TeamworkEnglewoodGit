@@ -211,7 +211,7 @@ class Login
 	    */
 		$headers = [
 			'Accept' => 'application/json',
-			'Authorization' => "token $oauthToken",
+			'Authorization' => "token $this->token",
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
