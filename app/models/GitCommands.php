@@ -154,12 +154,10 @@ class GitCommands extends AbstractFileSystem
 	* @param string $project
 	* @param string $alias
 	*/
-	public function gitRemoteAdd($userName, $project, $alias)
+	public function gitRemoteAdd($alias, $url)
 	{
         $WorkingCopy = $this->getWorkingCopy();
-		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
-		$repoURL = 'git@github.com:' . $userName . '/' . $project . '.git';
-		return $WorkingCopy->remote('add', $alias, $repoURL);
+		return $WorkingCopy->remote('add', $alias, $url);
 	}
 
 	/**
@@ -238,6 +236,7 @@ class GitCommands extends AbstractFileSystem
 	$project = 'TestRepo';
 	$remoteProject = 'RemoteTestRepo';
 	$remoteAlias = 'upstream';
+	$remoteURL = 'git@github.com:ZAM-/RemoteTestRepo.git';
 	$testFile = 'MyTestFile.txt';
 	$remoteTestFile = 'remoteTestFile.txt';
 	$git = new GitCommands($user, $project);
@@ -254,7 +253,7 @@ class GitCommands extends AbstractFileSystem
 	// MUST set the username and email config for the repo.
 	$git->setIdentity();
 	// Adding remote repo
-	$git->gitRemoteAdd($user, $remoteProject, $remoteAlias);
+	$git->gitRemoteAdd($remoteAlias, $remoteURL);
 
 	// Return true, because the repo was just cloned.
 	if ($git->isCloned()){
