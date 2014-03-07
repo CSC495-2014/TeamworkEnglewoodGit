@@ -215,7 +215,8 @@ class Login
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
-
+		var_dump($request);
+		echo(type($request));
 		//$resultsArray = json_decode($request);
 			
 			foreach ($request as $orgArray) {
