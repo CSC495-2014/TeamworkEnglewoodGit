@@ -37,7 +37,7 @@ class Login
 					try
 					{
 						$this->userDetails = $this->_getDetails();
-				$this->userName = $this->userDetails->nickname;
+						$this->userName = $this->userDetails->nickname;
 					}
 					catch(Exception $e)
 					{
@@ -147,11 +147,63 @@ class Login
     */
     private function _checkUserGroup()
     {
+		// create curl resource 
+        $ch = curl_init(); 
+
+        // set url 
+        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
+
+        //return the transfer as a string 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+		curl_setopt($ch, CURLOPT_USERAGENT, "TeamworkEnglewoodGit");
+	
+		if(curl_exec($ch) === false)
+		{
+			echo 'Curl error: ' . curl_error($ch);
+		}
+		else
+		{
+			// $output contains the output string 
+			$output = curl_exec($ch);
+		
+			// close curl resource to free up system resources 
+			curl_close($ch);
+	
+			$resultsArray = json_decode($output, true);
+			
+			foreach ($resultsArray as $innerArray) {
+			//  Check type
+				if (is_array($innerArray)){
+				//  Scan through inner loop
+					foreach ($innerArray as $value) {
+						echo $value;
+					}
+				}else{
+				// one, two, three
+					echo $innerArray;
+				}	
+			}
+			
+			/*
+			for ($x=0; $x<count($resultsArray); $x++)
+			{
+				if (in_array($this->organization, $resultsArray{$x})) {
+					return true;
+				}
+			}
+			return true;
+			*/
+		}
+		return false;
+		
+		/*Errors with Requests Library, leave out for now
 		//$request = Reque\st::header('User-Agent');
 		$url = 'https://api.github.com/users/userName/orgs?access_token=userToken';
-		$headers = array('User-Agent' => 'TeamEnglewoodGit', 'Content-Type' => 'application/json');
+		$headers = array('User-Agent' => 'TeamEnglewoodGit');
+		//'Content-Type' => 'application/json'
 		$data = array('userName' => $this->userName, 'userToken' => $this->token);
-		$request = Requests::get($url, $headers, json_encode($data));
+		$request = Requests::get($url, $headers, $data);
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
 		//$resultsArray=json_decode($request->body);
@@ -166,6 +218,7 @@ class Login
 			//}
 		//}
 		return false;
+	    */
     }
     
     public function getUserName()
