@@ -147,10 +147,8 @@ class Login
     */
     private function _checkUserGroup()
     {
-		$request = new Symfony\Component\HttpFoundation\Request(array(
-			'HTTP_USER_AGENT' => 'TeamworkEnglewoodGit'														  
-		));
-		$request = Request::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
+		//$request = Reque\st::header('User-Agent');
+		$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
 		$resultsArray=json_decode($request->body, true);
 		
 		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
