@@ -148,7 +148,11 @@ class Login
     private function _checkUserGroup()
     {
 		//$request = Reque\st::header('User-Agent');
-		$request = Requests::get('https://api.github.com/users/wwforg/orgs');
+		$headers = array(
+	    'useragent' => 'TeamEnglewoodGet',
+	    'auth' => $this->token
+		);
+		$request = Requests::get('https://api.github.com/users/wwforg/orgs', $headers);
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
 		$resultsArray=json_decode($request->body);
