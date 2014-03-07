@@ -175,39 +175,17 @@ class Login
 			var_dump($resultsArray);
 			
 			
-			foreach ($resultsArray as $innerArray) {
-			//  Check type
-				if (is_array($innerArray)){
-				//  Scan through inner loop
-					if(in_array($this->organization, $innerArray))
+			foreach ($resultsArray as $orgArray) {
+			//Make sure the request passed back an array of array's (check that the inside object is an array)
+				if (is_array($orgArray)){
+					if(in_array($this->organization, $orgArray))
 					{
-						echo "<script type='text/javascript'>alert('WWWOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');</script>";
-						//return true;
+						return true;
 					}
-					else
-					{
-						echo "<script type='text/javascript'>alert('NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');</script>";
-					}
-				/*
-					foreach ($innerArray as $value) {
-						echo $value;
-					}
-				*/
 				}else{
-				// one, two, three
-					echo "<script type='text/javascript'>alert('NO');</script>";
+					echo "<script type='text/javascript'>alert('Organization Check Failed: Not an Array');</script>";
 				}	
 			}
-			
-			/*
-			for ($x=0; $x<count($resultsArray); $x++)
-			{
-				if (in_array($this->organization, $resultsArray{$x})) {
-					return true;
-				}
-			}
-			return true;
-			*/
 		}
 		return false;
 		
