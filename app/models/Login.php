@@ -148,10 +148,10 @@ class Login
     private function _checkUserGroup()
     {
 		//$request = Reque\st::header('User-Agent');
-		$headers = array(
-	    'useragent' => 'TeamEnglewoodGet'
-		);
-		$request = Requests::get('https://api.github.com/orgs/$this->organization/members/$this->userName?access_token=$this->token', $headers);
+		$url = 'https://api.github.com/users/userName/orgs?access_token=userToken';
+		$headers = array('useragent' => 'TeamEnglewoodGit');
+		$data = array('userName' => $this->userName, 'userToken' => $this->token);
+		$request = Requests::get($url, $headers, $data);
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
 		//$resultsArray=json_decode($request->body);
