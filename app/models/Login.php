@@ -151,7 +151,7 @@ class Login
 		$headers = array(
 	    'useragent' => 'TeamEnglewoodGet'
 		);
-		$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token', $headers);
+		$request = Requests::get('https://api.github.com/orgs/$this->organization/members/$this->userName?access_token=$this->token', $headers);
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
 		$resultsArray=json_decode($request->body);
