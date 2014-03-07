@@ -155,7 +155,7 @@ class Login
 		
 		for ($x=0; $x<count($resultsArray); $x++)
 		{
-			if (in_array($this->organization, $resultsArray{$x})) {
+			if (in_array($this->organization, $resultsArray{x})) {
 			return true;
 			}
 		}
