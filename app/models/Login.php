@@ -154,8 +154,8 @@ class Login
 		$request = Requests::get('https://api.github.com/orgs/$this->organization/members/$this->userName?access_token=$this->token', $headers);
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
-		$resultsArray=json_decode($request->body);
-		var_dump($resultsArray);
+		//$resultsArray=json_decode($request->body);
+		var_dump($request->body);
 		
 		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
 		
