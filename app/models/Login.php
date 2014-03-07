@@ -217,7 +217,7 @@ class Login
 		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
 		//var_dump($request);
 		//echo(gettype($request));
-		$resultsArray = json_decode($request-body);
+		$resultsArray = json_decode($request->body);
 			
 			foreach ($resultsArray as $orgArray) {
 			//Make sure the request passed back an array of array's (check that the inside object is an array)
