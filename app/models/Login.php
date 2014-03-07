@@ -147,7 +147,7 @@ class Login
     */
     private function _checkUserGroup()
     {
-	$request = Requests::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
+	$request = Request::get('https://api.github.com/users/$this->userName/orgs?access_token=$this->token');
 	$resultsArray=json_decode($request->body, true);
 	
 	echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
