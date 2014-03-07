@@ -182,6 +182,7 @@ class Login
 					if(in_array($this->organization, $innerArray))
 					{
 						echo "<script type='text/javascript'>alert('WWWOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');</script>";
+						//return true;
 					}
 				/*
 					foreach ($innerArray as $value) {
