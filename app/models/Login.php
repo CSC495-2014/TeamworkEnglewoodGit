@@ -150,8 +150,10 @@ class Login
 		// create curl resource 
         $ch = curl_init(); 
 
-        // set url 
-        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
+        // set url
+		
+		//https://api.github.com/users/$this->userName/orgs?access_token=$this->token
+        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/orgs/$this->organization/members/$this->userName?access_token=$this->token");
 
         //return the transfer as a string 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
