@@ -149,9 +149,9 @@ class Login
     {
 		//$request = Reque\st::header('User-Agent');
 		$url = 'https://api.github.com/users/userName/orgs?access_token=userToken';
-		$headers = array('useragent' => 'TeamEnglewoodGit');
+		$headers = array('User-Agent' => 'TeamEnglewoodGit', 'Content-Type' => 'application/json');
 		$data = array('userName' => $this->userName, 'userToken' => $this->token);
-		$request = Requests::get($url, $headers, $data);
+		$request = Requests::get($url, $headers, json_encode($data));
 		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
 		
 		//$resultsArray=json_decode($request->body);
