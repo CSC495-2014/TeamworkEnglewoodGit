@@ -26,7 +26,7 @@ class LoginController extends BaseController {
 				Session::put('token', $gitHubLogin->getToken());
 				echo "<script type='text/javascript'>alert('Populated Session');</script>";
 				//Route to Projects Page
-				echo "<script type='text/javascript'>alert('Attempting Route');</script>";
+				//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
 				
 				//echo "<script type='text/javascript'>alert('Failed Route');</script>";
 				//return Redirect::route('user/{user}/projects', [$userName]);
@@ -60,10 +60,11 @@ class LoginController extends BaseController {
 	{
 		
 	}
-	
+	/*
 	public function redirect()
 	{
 		$userName = Session::get('uid');
 		return Redirect::route('user/{user}/projects','wwforg');
 	}
+	*/
 }
