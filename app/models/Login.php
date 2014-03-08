@@ -102,15 +102,15 @@ class Login
     */
     public function processUser()
     {
-		//$this->tableId = DatabaseQueries::userExists($this->userName);
+		$this->tableId = DatabaseQueries::userExists($this->userName);
 		$userInGroup = $this->_checkUserGroup();
 		
-		if($this->tableId)
+		if($userInGroup)
 		{
 			echo "<script type='text/javascript'>alert('In Group');</script>";
 			echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
 			
-			if(!is_null($userExists))
+			if(!is_null($this->tableId))
 			{
 				echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
 			}
