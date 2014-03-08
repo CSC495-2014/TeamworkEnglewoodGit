@@ -19,7 +19,7 @@
 //            ];
 //
 //            $request = Requests::get("https://api.github.com/users/$user/keys", $headers, []);
-            $request = Requests::get('https://api.github.com/users/apotheos/repos');
+            $request = Requests::get('https://api.github.com/users/kwpembrook/repos');
 
             //decode the json request body into an object
             $projects_object = json_decode($request->body);
