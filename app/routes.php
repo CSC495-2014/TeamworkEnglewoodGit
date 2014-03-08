@@ -21,7 +21,7 @@ Route::get('login', function()
 	return View::make('login');
 });
 
-Route::get('/loginClick', 'LoginController@gitHubLogin');
+Route::get('/login', 'LoginController@gitHubLogin');
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
 {
