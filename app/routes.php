@@ -21,7 +21,7 @@ Route::get('login', function()
 	return View::make('login');
 });
 */
-Route::get('/login', 'LoginController@gitHubLogin');
+Route::get('login', 'LoginController@gitHubLogin');
 
 Route::get('/login/redirect', 'LoginController@redirect');
 
