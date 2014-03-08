@@ -26,7 +26,7 @@ class LoginController extends BaseController {
 			echo "<script type='text/javascript'>alert('Populated Session');</script>";
 			//Route to Projects Page
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-			//return Redirect::to('user/wwforg/projects');
+			return Redirect::to('login/redirect');
 			//echo "<script type='text/javascript'>alert('Failed Route');</script>";
 			//return Redirect::route('user/{user}/projects', [$userName]);
 			//return Redirect::route('user/{user}/projects', $userName);
@@ -53,4 +53,10 @@ class LoginController extends BaseController {
 	    //Route to Projects Page
 	}
     }
+	
+	public function redirect()
+	{
+		$userName = Session::get('uid');
+		return redirect::to('user/$userName/projects');
+	}
 }
