@@ -26,7 +26,7 @@ class LoginController extends BaseController {
 			echo "<script type='text/javascript'>alert('Populated Session');</script>";
 			//Route to Projects Page
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-			return Redirect::route('/user/wwforg/projects');
+			Redirect::route('user/wwforg/projects');
 			echo "<script type='text/javascript'>alert('Failed Route');</script>";
 			//return Redirect::route('user/{user}/projects', [$userName]);
 			//return Redirect::route('user/{user}/projects', $userName);
