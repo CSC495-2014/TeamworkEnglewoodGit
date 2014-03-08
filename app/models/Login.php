@@ -13,6 +13,8 @@ class Login
     private $tableId;
     
     private $organization;
+	
+	private $email;
     
     /**
     *
@@ -38,6 +40,7 @@ class Login
 					{
 						$this->userDetails = $this->_getDetails();
 						$this->userName = $this->userDetails->nickname;
+						$this->email = $this->userDetails->email;
 					}
 					catch(Exception $e)
 					{
@@ -104,6 +107,7 @@ class Login
 		{
 			echo "<script type='text/javascript'>alert('In Group');</script>";
 			echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
+			return true;
 			/*
 			if(!is_null($userExists))
 			{
@@ -122,6 +126,7 @@ class Login
 		else
 		{
 			echo "<script type='text/javascript'>alert('Not In Group');</script>";
+			return false;
 			/*
 			if(!is_null($userExists))
 			{
@@ -147,78 +152,13 @@ class Login
     */
     private function _checkUserGroup()
     {
-		/*
-		// create curl resource 
-        $ch = curl_init(); 
-
-        // set url
-        curl_setopt($ch, CURLOPT_URL, "https://api.github.com/users/$this->userName/orgs?access_token=$this->token");
-
-        //return the transfer as a string 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-		curl_setopt($ch, CURLOPT_USERAGENT, "TeamworkEnglewoodGit");
-	
-		if(curl_exec($ch) === false)
-		{
-			echo 'Curl error: ' . curl_error($ch);
-		}
-		else
-		{
-			// $output contains the output string 
-			$output = curl_exec($ch);
-		
-			// close curl resource to free up system resources 
-			curl_close($ch);
-	
-			$resultsArray = json_decode($output, true);
-			
-			foreach ($resultsArray as $orgArray) {
-			//Make sure the request passed back an array of array's (check that the inside object is an array)
-				if (is_array($orgArray)){
-					if(in_array($this->organization, $orgArray))
-					{
-						return true;
-					}
-				}else{
-					echo "<script type='text/javascript'>alert('Organization Check Failed: Not an Array');</script>";
-				}	
-			}
-		}
-		return false;
-		*/
-		/*//Errors with Requests Library, leave out for now
-		//$request = Reque\st::header('User-Agent');
-		$url = 'https://api.github.com/users/userName/orgs?access_token=userToken';
-		$headers = array('User-Agent' => 'TeamEnglewoodGit');
-		//'Content-Type' => 'application/json'
-		$data = array('userName' => $this->userName, 'userToken' => $this->token);
-		$request = Requests::get($url, $headers, $data);
-		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
-		
-		//$resultsArray=json_decode($request->body);
-		var_dump($request->body);
-		
-		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
-		
-		//for ($x=0; $x<count($resultsArray); $x++)
-		//{
-			//if (in_array($this->organization, $resultsArray{0})) {
-			//return true;
-			//}
-		//}
-		return false;
-	    */
 		$headers = [
 			'Accept' => 'application/json',
 			'Authorization' => "token $this->token",
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
-		//var_dump($request);
-		//echo(gettype($request));
 		$resultsArray = json_decode($request->body, true);
-			
 			foreach ($resultsArray as $orgArray) {
 			//Make sure the request passed back an array of array's (check that the inside object is an array)
 				if (is_array($orgArray)){
@@ -246,4 +186,9 @@ class Login
     {
 		return $this->token;
     }
+	
+	public function getEmail()
+	{
+		return $this->email;
+	}
 }
