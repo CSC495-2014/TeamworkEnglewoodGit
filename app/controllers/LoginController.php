@@ -26,7 +26,7 @@ class LoginController extends BaseController {
 			echo "<script type='text/javascript'>alert('Populated Session');</script>";
 			//Route to Projects Page
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-			return Redirect::to('login/redirect');
+			
 			//echo "<script type='text/javascript'>alert('Failed Route');</script>";
 			//return Redirect::route('user/{user}/projects', [$userName]);
 			//return Redirect::route('user/{user}/projects', $userName);
@@ -52,6 +52,7 @@ class LoginController extends BaseController {
 	    Session::put('token', $token);
 	    //Route to Projects Page
 	}
+	return Redirect::to('login/redirect');
     }
 	
 	public function redirect()
