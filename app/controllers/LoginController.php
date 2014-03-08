@@ -27,7 +27,7 @@ class LoginController extends BaseController {
 			//Route to Projects Page
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
 			Redirect::to('user/$user/projects');
-			echo "<script type='text/javascript'>alert('Failed Route');</script>";
+			//echo "<script type='text/javascript'>alert('Failed Route');</script>";
 			//return Redirect::route('user/{user}/projects', [$userName]);
 			//return Redirect::route('user/{user}/projects', $userName);
 			//return Redirect::to('/user/$gitHubLogin->getUserName/projects');
