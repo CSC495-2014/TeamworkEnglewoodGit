@@ -64,6 +64,6 @@ class LoginController extends BaseController {
 	public function redirect()
 	{
 		$userName = Session::get('uid');
-		return Redirect::to('user/{user}/projects',['user' => 'wwforg']);
+		return Redirect::to('user/{user}/projects',['wwforg']);
 	}
 }
