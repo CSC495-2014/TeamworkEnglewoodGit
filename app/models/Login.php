@@ -1,5 +1,5 @@
 <?php
-include(app_path().'/models/DatabaseQueries.php');
+//include(app_path().'/models/DatabaseQueries.php');
 class Login
 {
     private $provider;
