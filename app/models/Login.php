@@ -24,6 +24,7 @@ class Login
     */
     function __construct()
     {
+		echo "<script type='text/javascript'>alert('Starting Login');</script>";
 		$this->provider = $this->_getProvider();
 			$this->organization = Config::get('oauth.organization');
 			if(!isset($_GET['code']))
@@ -34,9 +35,11 @@ class Login
 			{
 				try
 				{
+					echo "<script type='text/javascript'>alert('Get Token');</script>";
 					$this->token = $this->_getToken();
 					try
 					{
+						echo "<script type='text/javascript'>alert('Get Details');</script>";
 						$this->userDetails = $this->_getDetails();
 						$this->userName = $this->userDetails->nickname;
 						$this->email = $this->userDetails->email;
