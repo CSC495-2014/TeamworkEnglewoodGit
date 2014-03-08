@@ -22,7 +22,7 @@ class DatabaseQueries{
 	*/
 	public function deleteUsers(string $userName) {
 		
-		DB::table('users')->where('userName', '$name')->delete();
+		DB::table('users')->where('username', '$userName')->delete();
 	}
 	
 	/**
