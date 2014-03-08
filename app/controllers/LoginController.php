@@ -59,6 +59,6 @@ class LoginController extends BaseController {
 	public function redirect()
 	{
 		$userName = Session::get('uid');
-		return Redirect::route('user/{userID}/projects', ['userID' => $userName]);
+		return Redirect::route('user/{user}/projects', ['user' => $userName]);
 	}
 }
