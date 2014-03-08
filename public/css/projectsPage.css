@@ -46,28 +46,26 @@ body {
   text-align: center;
   font: bold;
 }
-.row0 {
-  text-align: center;
-  background-color: #D8D8D8;
-  color: #000000;
-}
-.row1 {
-  text-align: center;
+.tr:nth-child(even) > td {
   background-color: #FFFFFF;
   color: #000000;
+  text-align: middle;
+}
+.tr:nth-child(odd) > td {
+  background-color: #D8D8D8;
+  color: #000000;
+  text-align: middle;
 }
 .table{
   border: 10px solid #D8D8D8;
   height: 334;
   width: 90%;
 }
-.table-striped > tbody > tr:nth-child(odd) > td,
-.table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: #444444;
-}
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
-  background-color: #444444;
+  /*background-color: transparent; /* dark grey */
+  /*background-color: #26AE42; /* light green */
+  background-color: #1D703A; /* dark green */
 }
 /* NEITHER ELEMENTS ARE NEEDED OR USED ON PROJECTS PAGE
 #editor {

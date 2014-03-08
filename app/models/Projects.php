@@ -9,21 +9,28 @@
         * Calls the organzieProjects method to rearange the projects from oldest to newest.
         * @return array $project
         **/
-        public function getProjects() {
-            //get the users authentication token from the session
-//            $userToken = Session::get('token');
+        public function getProjects(/*$token*/) {
+            $projects_object = null;
 
-            $projects_object = '';
+//            $headers = [
+//                'Accept' => 'application/json',
+//                'Authorization' => "token $oauthToken",
+//                'User-Agent' => 'TeamworkEnglewoodGit'
+//            ];
+//
+//            $request = Requests::get("https://api.github.com/users/$user/keys", $headers, []);
+            $request = Requests::get('https://api.github.com/users/apotheos/repos');
 
-            $request = Requests::get('https://api.github.com/users/kwpembrook/repos');
-//                https://api.github.com/users/{$userToken}/repos?access_token=$userToken
+            //decode the json request body into an object
+            $projects_object = json_decode($request->body);
+//            $projects_object = json_decode($request->body, true);
 
-                //decode the json request body into an array
-                $projects_object = json_decode($request->body);
-                //USED FOR PHPUNIT.PHAR TESTING THROUGH BITNAMI CAMMAND LINE
-                //var_dump($projects_object);
-
-                return $projects_object;
+//TESTING THE ORGANIZE PROJECTS METHOD
+            // $sorted_object = _organizeProjects($projects_object);
+            // var_dump($sorted_object);
+            // exit();
+            // return $sorted_object;
+            return $projects_object;
         }//end getProjects function
 
 
@@ -33,12 +40,12 @@
         * @param array $projectsList
         * @return array $projectsList
         **/
-        public function organizeProjects($projectsList) {
+        private function _organizeProjects($projectsList) {
             //organize the list from oldest to newest updated_at dates
 
-            arsort($projectsList['updated_at']);
+            $sortedList = arsort($projectsList);
 
-            return $projectsList;
+            return $sortedList;
         }
     }//end projects class
 

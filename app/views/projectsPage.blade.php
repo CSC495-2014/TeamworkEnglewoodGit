@@ -27,80 +27,39 @@
         #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
         #add_tab { cursor: pointer; }
         </style>
-        <body background="{{ URL::asset('css/images/adjbackground.png') }}" onload="newRow()">
+        <body background="{{ URL::asset('css/images/adjbackground.png') }}">
             <div id="topLeft">
 
             </div>
             <div id="header">
-                <h1 style="color:#FFFFFF; text-align: center; padding-top:10px;"> $user </h1><!-- fix $user -->
+                <h1 style="color:#FFFFFF; text-align: center; padding-top:10px;"> $user </h1>   <!-- FIX $USER -->
             </div>
             <div id="topRight">
                 <center>
                     <ul class="nav nav-pills-square nav-stacked">
-                         <a href ="https://github.com/ $user " class="btn btn-lgr btn-account btn-block" type="button">GitHub</a><!-- fix $user in url -->
+                         <a href ="https://github.com/ $user " class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>   <!-- FIX $USER IN URL -->
                         <button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
                     </ul>
                 </center>
             </div>
             <center>
-            <div id="projectsPage">
-                <table id="projectsTable" class="table table-hover" border="">
-                    <!-- the above border property gives each cell a small thin border and does not alter the overall table border-->
-                <tbody>
-                    <thead class="th" border="10">
-                        <th><h1><center> Project Name </center></h1></th>
-                        <th><h1><center> Description </center></h1></th>
-                        <th><h1><center> Date Last Saved </center></h1></th>
-                    </thead>
-
-                <script type="text/javascript">
-                    //Need to pass in projects oldest - newest so that it appears on bottom of table
-
-                    //Need to figure out how to call this function foreach project only
-
-                    function newRow() {
-                        // grab the table to be worked with
-                        var table = document.getElementById("projectsTable");
-
-                        //create a new row 1 of table
-                        var row = table.insertRow(1);
-
-                        //create individual cells within new row
-                        var projectCell = row.insertCell(0);
-                        var descriptionCell = row.insertCell(1);
-                        var dateCell = row.insertCell(2);
-
-                        //add data from server to their respective cells
-                        projectCell.innerHTML = "{{ $projects['name'] }}";//or $projects->name
-                        descriptionCell.innerHTML = "{{ $projects['description'] }}";
-                        dateCell.innerHTML = "{{ $projects['date'] }}";
-                    }
-                </script>
-
-<!--                    <tr class="row0">
-                        <td><h2> Project 1 </h2></td>
-                        <td> short description </td>
-                        <td><h3> 10/22/1991 </h3></td>
-                    </tr>
-                    <tr class="row1">
-                        <td><h2> Project 2 </h2></td>
-                        <td> short description </td>
-                        <td><h3> 12/20/2013 </h3></td>
-                    </tr>
-                    <tr class="row0">
-                        <td><h2> Project 3 </h2></td>
-                        <td> short description </td>
-                        <td><h3> 01/26/2014 </h3></td>
-                    </tr>
-                    <tr class="row1">
-                        <td><h2> Project 4 </h2></td>
-                        <td> short description </td>
-                        <td><h3> 02/16/2013 </h3></td>
-                    </tr>
--->
-                </tbody>
-                </table>
-            </div>
-        </center>
+                <div id="popup">
+                    <!-- David's popup window will go here upon clicking on a project name -->
+                </div>
+                <div id="projectsPage">
+                    <table id="projectsTable" class="table table-hover" border="">
+                        <!-- the above border property gives each cell a small thin border and does not alter the overall table border-->
+                        <tbody link="#000000" vlink="transparent" alink="transparent">
+                            <!-- DOESN'T CHANGE THE TEXT COLOR OF THE LINKS AT ALL...FIGURE THIS OUT!! -->
+                            <thead class="th">
+                                <th><h1><center> Project Name </center></h1></th>
+                                <th><h1><center> Description </center></h1></th>
+                                <th><h1><center> Date Last Saved </center></h1></th>
+                            </thead>
+                                @yield('table')
+                        </tbody>
+                    </table>
+                </div>
+            </center>
         </body>
 @endsection

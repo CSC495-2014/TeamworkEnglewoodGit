@@ -1,43 +1,48 @@
 <?php
 	// Here is where all of the code for the controller will go
-class ProjectsController extends Controller {
+class ProjectsController2 extends Controller {
 
 	// The layout used for the response
 	protected $layout = 'projectsPage';
+	protected $list = 'projects_list';
 
 	/**
 	* Retreives data from the model and passes on to the view
+	* @return $proj
 	**/
 	public function display() {
+		//get the users authentication token from the session
+//		$userToken = Session::get('token');
+		//get the users userID from the session....BUT WHERE DOES THIS GO???
+//		$userId = Session::get('uid');
+
 		//instantiate project object
 		$project = new Projects();
-		$p = $project->getProjects();
+		$project_object = $project->getProjects(/*$userToken*/);
 
-		$id = ($p[0]->id);
-		$name = ($p[0]->name);
-		$description = ($p[0]->description);
-		$date = ($p[0]->updated_at);
+		//insert check and handling of null projects object
 
-		// for each project create an array with that project's information
-//		foreach ($project_object->object as $key => $value) {
-//			$id = ($p[0]->id);
-//			$name = ($p[0]->name);
-//			$description = ($p[0]->description);
-//			$date = ($p[0]->updated_at);
-//		}
+		$size = sizeof($project_object);
+		$projectsArray = array($size);
 
-		$project_array = array("id"=>$id, "name"=>$name, "description"=>$description, "date"=>$date);
+		//For each project...
+		for ($i=0; $i<$size; $i++) {
+			//get that project's information
+			$id = ($project_object[$i]->id);
+			$name = ($project_object[$i]->name);
+			$description = ($project_object[$i]->description);
+			$date = ($project_object[$i]->updated_at);
+			//format the date MM-DD-YYYY
+			//CALL TO DATEFORMAT METHOD TO ONLY DISPLAY THE DATE AND NOT THE TIME
 
-		//displaying the array unformatted
-//		foreach ($project_array as $key => $value) {
-//			echo $key . ": " . $value;
-//		}
-//		exit();
+			//store that information in an array for that individual project
+			$project_array = array("id"=>$id, "name"=>$name, "description"=>$description, "date"=>$date);
 
-		//returning variable with array as second parameter
-		return View::make($this->layout)->with('projects', $project_array);
-		//returning array of data as second parameter
-		//return View::make($this->layout, $project_array);
+			//store that individual project array in a larger array that will conatin all the projects
+			$projectsArray[$i] = $project_array;
+		}
+
+		return View::make($this->list)->with('projects', $projectsArray);
 
 	}//end display function
 }//end ProjectsController class
