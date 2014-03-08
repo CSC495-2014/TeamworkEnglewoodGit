@@ -23,7 +23,7 @@ Route::get('login', function()
 */
 Route::get('login', 'LoginController@gitHubLogin');
 
-Route::get('/login/redirect', 'LoginController@redirect');
+Route::get('loginClick', 'LoginController@redirect');
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
 {

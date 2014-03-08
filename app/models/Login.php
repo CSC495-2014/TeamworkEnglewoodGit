@@ -1,5 +1,5 @@
 <?php
-
+include(app_path().'/models/DatabaseQueries.php');
 class Login
 {
     private $provider;
@@ -102,46 +102,38 @@ class Login
     */
     public function processUser()
     {
-		//$userExists = $this->userExists();
+		$this->tableId = DatabaseQueries::userExists($this->userName);
 		$userInGroup = $this->_checkUserGroup();
 		
-		if($userInGroup)
+		if($this->tableId)
 		{
 			echo "<script type='text/javascript'>alert('In Group');</script>";
 			echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
-			return true;
-			/*
+			
 			if(!is_null($userExists))
 			{
-			$this->tableId = $userExists
-			echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
+				echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
 			}
 			else
 			{
-			echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-			//Database Query to Add User Goes Here
+				echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
+				DatabaseQueries::insertUsers($this->userName, $this->email);
 			}
-			$this->beginSession();
-			return array (, $this->userName, $this->tableId, $this->token);
-			*/
+			return true;
 		}
 		else
 		{
-			echo "<script type='text/javascript'>alert('Not In Group');</script>";
-			return false;
-			/*
-			if(!is_null($userExists))
+			echo "<script type='text/javascript'>alert('Not In Group');</script>";			
+			if(!is_null($this->tableId))
 			{
-			//Database Query to Delete User Goes Here
-			echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
-			//Route to Login Page
+				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
+				DatabaseQueries::deleteUsers($this->userName);
 			}
 			else
 			{
-			echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
-			//Route to Login Page
+				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 			}
-			*/
+			return false;
 		}
     }
     
