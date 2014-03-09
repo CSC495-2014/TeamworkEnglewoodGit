@@ -154,7 +154,7 @@ class FileSystem extends AbstractFileSystem
         fwrite($handle, $contents);
         fclose($handle);
         // after writing to the file, change the perm to RW for user
-        chmod($searchFile, 600);
+        chmod($searchFile, 0600);
     }
 
     public function read($path)

@@ -1,6 +1,6 @@
 <?php
 	// Here is where all of the code for the controller will go
-class ProjectsController2 extends Controller {
+class ProjectsController extends Controller {
 
 	// The layout used for the response
 	protected $layout = 'projectsPage';

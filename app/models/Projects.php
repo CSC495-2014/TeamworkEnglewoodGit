@@ -46,7 +46,31 @@
             $sortedList = arsort($projectsList);
 
             return $sortedList;
-        }
+        }//end _organizeProjects
+
+
+        /**
+        * Formats the date from GitHub to display as MM-DD-YYYY
+        * instead of YYYY-MM-DD with the time right after it
+        *
+        * @param String $date
+        * @return String $format_date
+        **/
+        // public function dateFormat($date) {
+        //     // Set the number of characters to grab from the unformatted date
+        //     $dateLength = 10;
+
+        //     if($date != null) {
+        //         for($i = 0; $i <= $dateLength; $i++) {
+        //             //shorten and rearrange the date here
+
+        //         }
+        //     }
+        //     else
+        //         $format_date = "Date not given."
+
+        //     return $format_date;
+        // }//end dateFormat
     }//end projects class
 
 
