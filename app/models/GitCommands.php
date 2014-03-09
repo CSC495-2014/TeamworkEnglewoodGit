@@ -218,9 +218,9 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function git($commands)
 	{
-		$escapedCommands = escapeshellcmd($commands);
+		
 		$path = $this->getPath();
-		return $this->getWrapper()->git($escapedCommands,$path);
+		return $this->getWrapper()->git($commands,$path);
 		
 	
 	}
