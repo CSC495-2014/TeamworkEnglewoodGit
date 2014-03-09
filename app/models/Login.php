@@ -1,5 +1,5 @@
 <?php
-
+//include(app_path().'/models/DatabaseQueries.php');
 class Login
 {
     private $provider;
@@ -13,6 +13,8 @@ class Login
     private $tableId;
     
     private $organization;
+	
+	private $email;
     
     /**
     *
@@ -22,7 +24,7 @@ class Login
     */
     function __construct()
     {
-		echo "<script type='text/javascript'>alert('FWEIOJFWIOFWE');</script>";
+		echo "<script type='text/javascript'>alert('Starting Login');</script>";
 		$this->provider = $this->_getProvider();
 			$this->organization = Config::get('oauth.organization');
 			if(!isset($_GET['code']))
@@ -33,11 +35,14 @@ class Login
 			{
 				try
 				{
+					echo "<script type='text/javascript'>alert('Get Token');</script>";
 					$this->token = $this->_getToken();
 					try
 					{
+						echo "<script type='text/javascript'>alert('Get Details');</script>";
 						$this->userDetails = $this->_getDetails();
-				$this->userName = $this->userDetails->nickname;
+						$this->userName = $this->userDetails->nickname;
+						$this->email = $this->userDetails->email;
 					}
 					catch(Exception $e)
 					{
@@ -97,44 +102,43 @@ class Login
     */
     public function processUser()
     {
-		//$userExists = $this->userExists();
+		$databaseObj = new DatabaseQueries();
+		$this->tableId = $databaseObj->userExists($this->userName);
 		$userInGroup = $this->_checkUserGroup();
 		
 		if($userInGroup)
 		{
 			echo "<script type='text/javascript'>alert('In Group');</script>";
 			echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
-			/*
-			if(!is_null($userExists))
+			
+			if(!is_null($this->tableId))
 			{
-			$this->tableId = $userExists
-			echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
+				echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
 			}
 			else
 			{
-			echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-			//Database Query to Add User Goes Here
+				echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
+				$databaseObj->insertUsers($this->userName, $this->email);
+				echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
-			$this->beginSession();
-			return array (, $this->userName, $this->tableId, $this->token);
-			*/
+			
+			return true;
 		}
 		else
 		{
 			echo "<script type='text/javascript'>alert('Not In Group');</script>";
-			/*
-			if(!is_null($userExists))
+			
+			if(!is_null($this->tableId))
 			{
-			//Database Query to Delete User Goes Here
-			echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
-			//Route to Login Page
+				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
+			$databaseObj->deleteUsers($this->userName);
 			}
 			else
 			{
-			echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
-			//Route to Login Page
+				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 			}
-			*/
+			
+			return false;
 		}
     }
     
@@ -147,25 +151,24 @@ class Login
     */
     private function _checkUserGroup()
     {
-		//$request = Reque\st::header('User-Agent');
-		$headers = array(
-	    'useragent' => 'TeamEnglewoodGet'
-		);
-		$request = Requests::get('https://api.github.com/orgs/$this->organization/members/$this->userName?access_token=$this->token', $headers);
-		//'https://api.github.com/users/$this->userName/orgs?access_token=$this->token'
-		
-		$resultsArray=json_decode($request->body);
-		var_dump($resultsArray);
-		
-		echo "<script type='text/javascript'>alert('Successful HTTP request');</script>";
-		
-		//for ($x=0; $x<count($resultsArray); $x++)
-		//{
-			//if (in_array($this->organization, $resultsArray{0})) {
-			//return true;
-			//}
-		//}
-		return false;
+		$headers = [
+			'Accept' => 'application/json',
+			'Authorization' => "token $this->token",
+			'User-Agent' => 'TeamworkEnglewoodGit'
+		];
+		$request = Requests::get("https://api.github.com/users/$this->userName/orgs", $headers, []);
+		$resultsArray = json_decode($request->body, true);
+			foreach ($resultsArray as $orgArray) {
+			//Make sure the request passed back an array of array's (check that the inside object is an array)
+				if (is_array($orgArray)){
+					if(in_array($this->organization, $orgArray))
+					{
+						return true;
+					}
+				}else{
+					echo "<script type='text/javascript'>alert('Organization Check Failed: Not an Array');</script>";
+				}	
+			}
     }
     
     public function getUserName()
@@ -182,4 +185,9 @@ class Login
     {
 		return $this->token;
     }
+	
+	public function getEmail()
+	{
+		return $this->email;
+	}
 }

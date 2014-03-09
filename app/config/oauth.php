@@ -105,6 +105,6 @@ return array(
     | The name of the organization to confirm membership with
     |
     */
-    'organization' => 'CSC495-2014'
+    'organization' => 'TeamworkEnglewoodTestingTwo'
   
 );
