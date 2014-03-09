@@ -209,6 +209,21 @@ class GitCommands extends AbstractFileSystem
  		$WorkingCopy = $this->getWorkingCopy();
  		return $WorkingCopy->isCloned();
  	}
+	/**
+	*
+	* Allows custom git commands to be executed
+	*
+	* @param string $commands
+	* @return string
+	*/
+	public function git($commands)
+	{
+		
+		$path = $this->getPath();
+		return $this->getWrapper()->git($commands,$path);
+		
+	
+	}
 
 }
 	/* --- Testing of GitCommands public interfaces ---
@@ -246,7 +261,8 @@ class GitCommands extends AbstractFileSystem
 	if (!$git->isCloned()){
 		print "Not cloned! \n";
 	}
-
+	//run custom git command
+	print $git->git('status');
 	// Will clone into ../data/users/ZAM-/projects/TestRepo/
 	print "Cloning " . $project . " project...\n";
 	$git->gitClone();
