@@ -11,6 +11,7 @@ $(function()
         tabCounter = 1,								//count number of tabs
         tabTrack = new Array();
     var	tabs = $( "#tabs" ).tabs();
+    var edited;										//a flag for edited file 
 
 	// actual addTab function: adds new tab by passing the filepath and content of files
 	function addTab(filePath, tabContent)
@@ -34,10 +35,14 @@ $(function()
 		tabCounter++;
 		document.getElementById(id).name = label;	//set the name of tabs
 		var editor = ace.edit(id);   				//editor format
+		edited = false;								
+		editor.getSession().on('change', function(e){
+    		edited = true;
+		});
 	}
     window.addTab = addTab;							//set addTab as a global function 
  
-
+    
 
     // get path of current opened tab
     function getPath()
@@ -49,15 +54,24 @@ $(function()
     // get content of current opened tab
     function getContent()
     {	
-    	var editor = ace.edit("tabs-"+ (tabs.tabs("option","active") + 1))
+    	var editor = ace.edit("tabs-"+ (tabs.tabs("option","active") + 1));
     	return editor.getValue();
     }
     window.getTabContent = getContent;
 
+    
 
 	// close icon: removing the tab on click
 	tabs.delegate( "span.ui-icon-close", "click", function() 
 	{
+		//To check if files have been changed
+		if(edited){
+			var confirmBtn = confirm("The file has changed. Are you sure you want to close?");
+			if(confirmBtn!=true)
+			{
+				return;
+			}
+		}
 		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
 		$( "#" + panelId ).remove();
 		tabTrack[panelId.charAt(panelId.length-1)]='';		//remove file from tabTrack array
