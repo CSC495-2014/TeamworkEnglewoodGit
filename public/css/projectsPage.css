@@ -58,6 +58,7 @@ body {
 }
 .table{
   border: 10px solid #D8D8D8;
+  border-collapse: inherit;
   height: 334;
   width: 100%;
 }

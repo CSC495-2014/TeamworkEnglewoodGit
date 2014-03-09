@@ -2,7 +2,7 @@
 
 @section('table')
 
-    <ol>
+
         @for($i = 0; $i < sizeOf($projects); $i++)
             <tr class="tr">
                 <td id="projectName">
@@ -13,6 +13,6 @@
                 <td><h4><center>{{ $projects[$i]['date'] }}</center></h4></td>
             </tr>
         @endfor
-    </ol>
+
 
 @endsection
