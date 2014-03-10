@@ -173,7 +173,7 @@ class Login
 	
 	public function redirectToProjects()
 	{
-		return Redirect::to('user/{$user}/projects', ['$user'=>$this->userName]);
+		return Redirect::route('user/{$user}/projects', ['$user'=>$this->userName]);
 	}
     
     public function getUserName()
