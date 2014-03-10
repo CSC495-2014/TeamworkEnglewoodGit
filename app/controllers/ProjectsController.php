@@ -11,6 +11,7 @@ class ProjectsController extends Controller {
 	* @return $proj
 	**/
 	public function display() {
+        echo "<script type='text/javascript'>alert('PROJECTS CONTROLLER DISPLAY');</script>";
 		//get the users authentication token from the session
 //		$userToken = Session::get('token');
 		//get the users userID from the session....BUT WHERE DOES THIS GO???
