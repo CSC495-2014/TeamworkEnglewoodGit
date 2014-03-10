@@ -25,6 +25,7 @@ class LoginController extends BaseController {
 				Session::put('email', $gitHubLogin->getEmail());
 				Session::put('token', $gitHubLogin->getToken());
 				echo "<script type='text/javascript'>alert('Populated Session');</script>";
+				$gitHubLogin->redirectToProjects();
 				//Route to Projects Page
 				//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
 				
@@ -53,13 +54,15 @@ class LoginController extends BaseController {
 			Session::put('token', $token);
 			//Route to Projects Page
 		}
-		return Redirect::to('login/redirect');
+		//return Redirect::to('login/redirect');
     }
-	
+	/*
 	public function continueLogin()
 	{
 		
 	}
+	*/
+	
 	/*
 	public function redirect()
 	{

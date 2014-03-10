@@ -16,23 +16,19 @@ Route::get('/', function()
 	return View::make('login');
 });
 
-Route::get('login', function()
-{
-	return View::make('login');
-});
+//Route::get('login', function()
+//{
+//	return View::make('login');
+//});
+
+Route::get('login', 'LoginController@GitHubLogin');
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
 {
 	return View::make('editor', ['user' => $user, 'project' => $project]);
 });
 
-Route::get('user/{user}/projects', function($user) {
-    $projects = glob("../data/users/$user/projects/*", GLOB_ONLYDIR | GLOB_MARK);
-    foreach ($projects as &$project) {
-        $project = basename($project);
-    }
-    return View::make('projectPageHack', ['projects' => $projects, 'user' => $user]);
-});
+Route::get('user/{user}/projects', 'ProjectsController@display');
 
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');

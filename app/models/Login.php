@@ -102,15 +102,15 @@ class Login
     */
     public function processUser()
     {
-		$databaseObj = new DatabaseQueries();
-		$this->tableId = $databaseObj->userExists($this->userName);
+		//$databaseObj = new DatabaseQueries();
+		//$this->tableId = $databaseObj->userExists($this->userName);
 		$userInGroup = $this->_checkUserGroup();
 		
 		if($userInGroup)
 		{
 			echo "<script type='text/javascript'>alert('In Group');</script>";
 			echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
-			
+			/*
 			if(!is_null($this->tableId))
 			{
 				echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
@@ -121,13 +121,13 @@ class Login
 				$databaseObj->insertUsers($this->userName, $this->email);
 				echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
-			
+			*/
 			return true;
 		}
 		else
 		{
 			echo "<script type='text/javascript'>alert('Not In Group');</script>";
-			
+			/*
 			if(!is_null($this->tableId))
 			{
 				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
@@ -137,7 +137,7 @@ class Login
 			{
 				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 			}
-			
+			*/
 			return false;
 		}
     }
@@ -170,6 +170,11 @@ class Login
 				}	
 			}
     }
+	
+	public function redirectToProjects()
+	{
+		return Redirect::to('user/{$user}/projects', ['$user'=>$this->userName]);
+	}
     
     public function getUserName()
     {
