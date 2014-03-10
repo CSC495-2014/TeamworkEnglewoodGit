@@ -53,7 +53,9 @@ class LoginController extends BaseController {
 			Session::put('tableId', $userId);
 			Session::put('token', $token);
 			
-			$redirect = Redirect::route('projects');
+			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
+			return = Redirect::route('projects');
+			echo "<script type='text/javascript'>alert('Route Failed');</script>";
 			//Route to Projects Page
 		}
 		//return Redirect::to('login/redirect');
