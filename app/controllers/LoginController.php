@@ -54,7 +54,7 @@ class LoginController extends BaseController {
 			Session::put('token', $token);
 			
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-			return Redirect::route('user/wwforg/projects');
+			return Redirect::to('user/wwforg/projects');
 			echo "<script type='text/javascript'>alert('Route Failed');</script>";
 			//Route to Projects Page
 		}
