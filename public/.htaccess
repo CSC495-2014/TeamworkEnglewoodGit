@@ -1,17 +1,6 @@
-<IfModule mod_rewrite.c>
-	<IfModule mod_negotiation.c>
-    	Options -MultiViews
-    </IfModule>
+Options +FollowSymLinks
+RewriteEngine On
 
-    RewriteEngine On
-
-    # Redirect trailing slashes, but exclude files.
-    RewriteCond %{REQUEST_URI} !^/capstone/user/.*/project/.*/file/.*$
-	RewriteRule ^(.*)/$ /$1 [L,R=301]
-
-	# Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-	RewriteBase /~home/laravel_folder/public
-</IfModule>
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
