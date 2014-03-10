@@ -10,7 +10,7 @@ class ProjectsController extends Controller {
 	* Retreives data from the model and passes on to the view
 	* @return $proj
 	**/
-	public function display() {
+	public function display($user) {
         echo "<script type='text/javascript'>alert('PROJECTS CONTROLLER DISPLAY');</script>";
 		//get the users authentication token from the session
 //		$userToken = Session::get('token');
