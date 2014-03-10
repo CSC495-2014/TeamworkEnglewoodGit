@@ -28,7 +28,7 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
 	return View::make('editor', ['user' => $user, 'project' => $project]);
 });
 
-Route::get('user/{user}/projects', 'ProjectsController@display');
+Route::get('user/{user}/projects', array('as'=>'projects', 'uses'=>'ProjectsController@display'));
 
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');
