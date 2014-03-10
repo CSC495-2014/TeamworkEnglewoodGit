@@ -52,6 +52,8 @@ class LoginController extends BaseController {
 			Session::put('uid', $userName);
 			Session::put('tableId', $userId);
 			Session::put('token', $token);
+			
+			return Redirect::route('user/{$user}/projects', ['$user'=>$userName]);
 			//Route to Projects Page
 		}
 		//return Redirect::to('login/redirect');
