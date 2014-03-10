@@ -1,4 +1,5 @@
 <?php
+
 class FileSystem extends AbstractFileSystem
 {
     /**
@@ -149,7 +150,6 @@ class FileSystem extends AbstractFileSystem
     public function save($filePath, $contents)
     {
         $searchFile = FileSystem::getPath($filePath);
-        print $searchFile;
         $handle = fopen($searchFile, 'w');
         fwrite($handle, $contents);
         fclose($handle);
@@ -294,7 +294,7 @@ class FileSystem extends AbstractFileSystem
         $privateKeyPath = $userPath . '/ida_rsa';
         mkdir($userPath, 0700, true); // RW for user
         file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
-        chmod($privateKeyPath, 600); // set perms for private key
+        chmod($privateKeyPath, 0600); // set perms for private key
         return $publickey;
     }
 
@@ -317,7 +317,7 @@ class FileSystem extends AbstractFileSystem
 
     // This saves a test file in the app/data/users/ZAM-/projects/TestRepo directory
     $fileSystem->save($testFile, "This is some data.\n And some other data.\n");
-
+    /*
     //$fileSystem->removeDir("js"); // If you're testing this, make sure to create the dir first before you attempt to delete.
 
     //$fileSystem->removeFile($testFile);

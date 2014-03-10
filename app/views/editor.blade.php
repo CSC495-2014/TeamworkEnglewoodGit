@@ -63,16 +63,17 @@
                         </div>
                     </div>
                     <!--End of Tabbed Interface-->
-					<div id="optionSideBar">
-						<div class="panel panel-default">
-						  <div class="panel-body">
-							<h4>File Options</h4>
-							<button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
+
+                    <div id="optionSideBar">
+                        <div class="panel panel-default">
+                          <div class="panel-body">
+                            <h4>File Options</h4>
+                            <button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
                             <div id="saveAlert"></div>
-							<hr/>
-							<h4>Git Options</h4>
-							<button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
-							<button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
+                            <hr/>
+                            <h4>Git Options</h4>
+                            <button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
+                            <button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
                             <button id="git-custom" class="btn btn-lg btn-project btn-block" type="button">Custom</button>
                           </div>
                         </div>

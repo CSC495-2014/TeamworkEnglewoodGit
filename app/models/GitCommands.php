@@ -218,11 +218,11 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function git($commands)
 	{
-		
+
 		$path = $this->getPath();
 		return $this->getWrapper()->git($commands,$path);
-		
-	
+
+
 	}
 
 }
