@@ -35,6 +35,8 @@ Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
 Route::post('user/{user}/project/{project}/move', 'FileController@movePost');
 Route::post('user/{user}/project/{project}/copy', 'FileController@copyPost');
 
+Route::get('/user/{user}/project/{project}/git-status', 'GitController@gitStatus');
+
 /*
 Branch Operations:Commit Operations
 */
