@@ -113,18 +113,48 @@
 
                         // Execute a request and show results modal.
                         $commitModal.find('.positive').bind('click', function(executeEvent){
+                            var message = $('#git-commit-modal-message').val();
+
+                            if (!message) {
+                                alert('Commit message required.');
+                                return;
+                            }
+
                             var $commitButton = $(executeEvent.target);
                             // Remove callbacks so user does not make multiple requests with one modal.
                             $commitButton.unbind();
+
                             // Change button text when it is clicked while the AJAX call is being made.
                             $commitButton.text('Executing...');
 
-                            // TODO: do some ajax call here...
-                            setTimeout(function(){
-                                $commitModal.modal('hide');
-                                applyGitStatus();
-                            }, 1000); // end setTimeout
-
+                            $.ajax({
+                                url: '{{ URL::to("/user/$user/project/$project/git-commit") }}',
+                                type: 'POST',
+                                data: JSON.stringify({
+                                    message: message
+                                }),
+                                contentType: 'application/json; charset=utf-8',
+                                statusCode: {
+                                    500: function() {
+                                        alert('Not yet implemented on server.');
+                                        $commitButton.text('Commit');
+                                    },
+                                    400:function(data) {
+                                        alert('Nothing to commit, working directory clean.');
+                                        $commitButton.text('Commit');
+                                        $commitModal.modal('hide');
+                                    }
+                                },
+                                success: function(data) {
+                                    console.log('Git commit: ' + message);
+                                    $commitModal.modal('hide');
+                                    applyGitStatus();
+                                },
+                                failure: function(data) {
+                                    alert('Unable to commit. Error: ' + data ? data : 1);
+                                    $commitButton.text('Commit');
+                                }
+                            });
                         });
 
                         // Make the commit modal visible.
@@ -138,8 +168,8 @@
                         var commitSource = $('#h-git-push-modal').html();
                         var commitTemplate = Handlebars.compile(commitSource);
                         var commitData = {
-                            remotePlaceholder: 'origin',
-                            branchPlaceholder: 'master'
+                            remotePlaceholder: 'remote (example: origin)',
+                            branchPlaceholder: 'branch (example: master)'
                         };
                         var commitView = commitTemplate(commitData);
 
@@ -151,18 +181,45 @@
 
                         // Execute a request and show results modal.
                         $commitModal.find('.positive').bind('click', function(executeEvent){
+                            var remote = $('#git-push-modal-remote').val();
+                            var branch = $('#git-push-modal-branch').val();
+
+                            if (!remote && !branch) {
+                                alert('Must provide remote and branch.');
+                                return;
+                            }
+
                             var $commitButton = $(executeEvent.target);
                             // Remove callbacks so user does not make multiple requests with one modal.
                             $commitButton.unbind();
+
                             // Change button text when it is clicked while the AJAX call is being made.
                             $commitButton.text('Executing...');
 
-                            // TODO: do some ajax call here...
-                            setTimeout(function(){
-                                $commitModal.modal('hide');
-                                applyGitStatus();
-                            }, 1000); // end setTimeout
-
+                            $.ajax({
+                                url: '{{ URL::to("/user/$user/project/$project/git-push") }}',
+                                type: 'POST',
+                                data: JSON.stringify({
+                                    remote: remote,
+                                    branch: branch
+                                }),
+                                contentType: 'application/json; charset=utf-8',
+                                statusCode: {
+                                    500: function(data) {
+                                        alert(data.responseText);
+                                        $commitButton.text('Push');
+                                    }
+                                },
+                                success: function(data) {
+                                    console.log('git push ' + remote + ' ' + branch);
+                                    $commitModal.modal('hide');
+                                    applyGitStatus();
+                                },
+                                failure: function(data) {
+                                    alert('Unable to push. Error: ' + data ? data : 1);
+                                    $commitButton.text('Push');
+                                }
+                            });
                         });
 
                         // Make the commit modal visible.
@@ -238,30 +295,18 @@
 
                     $.ajax({
                         // TODO: fix this
-                        url: '{{ URL::to("/user/$user/projects") }}',
+                        url: '{{ URL::to("/user/$user/project/$project/git-status") }}',
                         type: 'GET',
-//                        dataType: 'json',
+                        dataType: 'json',
                         success: function (result) {
-                            console.log('Returned from server');
-                            alert('git status not yet implemented on server');
-
-                            result = {
-                                "/artisan": " M",
-                                "/composer.json": "??",
-                                "/readme.md": "A ",
-                                "/bootstrap/": "A ",
-                                "/app/filters.php": " M",
-                                "/app/start/": " M"
-                            };
-
                             var rel = null;
 
                             $files.each(function(idx) {
                                 rel = $(this).attr('rel');
 
-                                if (result.hasOwnProperty(rel)) {
+                                if (result.hasOwnProperty(rel.substr(1))) {
 
-                                    switch (result[rel]) {
+                                    switch (result[rel.substr(1)]) {
                                         case 'A ':
                                             console.log('git-added: ' + rel);
                                             $(this).addClass('git-added'); break;
@@ -321,24 +366,24 @@
                         }).addClass(getFileExtension(filename));
                     }
 
-                    alert('Broken on server @jkwendt #94');
-//                    $.ajax({
-//                        url: '{{ URL::to("/user/$user/project/$project/move") }}',
-//                        type: 'POST',
-//                        data: JSON.stringify({
-//                            src: source,
-//                            dest: destination
-//                        }),
-//                        statusCode: {
-//                            500: function() {
-//                                alert('Not yet implemented on server.');
-//                            }
-//                        },
-//                        contentType: 'application/json; charset=utf-8',
-//                        failure: function(data) {
-//                            alert('Unable to rename file. Error: ' + data ? data : 1);
-//                        }
-//                    });
+//                    alert('Broken on server @jkwendt #94');
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/move") }}',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            src: source,
+                            dest: destination
+                        }),
+                        statusCode: {
+                            500: function() {
+                                alert('Not yet implemented on server.');
+                            }
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        failure: function(data) {
+                            alert('Unable to rename file. Error: ' + data ? data : 1);
+                        }
+                    });
 
                     var $item = $file.parent();
                     var $containingFolder = $file.parent().parent();
@@ -525,7 +570,7 @@
                         url: '{{ URL::to("/user/$user/project/$project/git-add") }}',
                         type: 'POST',
                         data: JSON.stringify({
-                            item: path
+                            item: path.substr(1)
                         }),
                         contentType: 'application/json; charset=utf-8',
                         statusCode: {
@@ -565,7 +610,7 @@
                          failure: function(data) {
                              //document.getElementById("saveAlert").innerHTML= 'Fail to save ' + basename(window.getTabPath());
                              alert('Unable to save file. Error: ' + data ? data : 1);
-                         },
+                         }
                    });
 
                 }

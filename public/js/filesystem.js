@@ -11,8 +11,8 @@ $(function() {
         'newFolder': {name: 'New Folder...', icon: 'add-dir', fscallback: onClickFsDirNewDir},
         'newFile': {name: 'New File...', icon: 'add-file', fscallback: onClickFsDirNewFile},
         'rename': {name: 'Rename...', icon: 'edit', fscallback: onClickFsRename},
-        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
-        'paste': {name: 'Paste', icon: 'paste', fscallback: onClickFsPaste},
+//        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
+//        'paste': {name: 'Paste', icon: 'paste', fscallback: onClickFsPaste},
         'gitAdd': {name: 'Git Add', icon: 'git-add', fscallback: onClickFsItemGitAdd},
         'delete': {name: 'Delete...', icon: 'delete', fscallback: onClickFsDirDelete},
         'refresh': {name: 'Refresh', icon: 'refresh', fscallback: onClickRefresh},
@@ -22,8 +22,8 @@ $(function() {
 
     var collapsedDirectoryItems = {
         'rename': {name: 'Rename...', icon: 'edit', fscallback: onClickFsRename},
-        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
-        'paste': {name: 'Paste', icon: 'paste', fscallback: onClickFsPaste},
+//        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
+//        'paste': {name: 'Paste', icon: 'paste', fscallback: onClickFsPaste},
         'gitAdd': {name: 'Git Add', icon: 'git-add', fscallback: onClickFsItemGitAdd},
         'delete': {name: 'Delete...', icon: 'delete', fscallback: onClickFsDirDelete},
         'sep1': '------------',
@@ -32,7 +32,7 @@ $(function() {
 
     var fileItems = {
         'rename': {name: 'Rename...', icon: 'edit', fscallback: onClickFsRename},
-        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
+//        'copy': {name: 'Copy', icon: 'copy', fscallback: onClickFsCopy},
         'gitAdd': {name: 'Git Add', icon: 'git-add', fscallback: onClickFsItemGitAdd},
         'delete': {name: 'Delete...', icon: 'delete', fscallback: onClickFsFileDelete},
         'sep1': '------------',

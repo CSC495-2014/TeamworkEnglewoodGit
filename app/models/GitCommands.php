@@ -1,5 +1,6 @@
 <?php
 use GitWrapper\GitWrapper;
+use GitWrapper\GitWorkingCopy;
 
 class GitCommands extends AbstractFileSystem
 {
@@ -27,10 +28,12 @@ class GitCommands extends AbstractFileSystem
 	*/
 	function __construct($userName, $projectName)
 	{
+        // AbstractFileSystem constructor
+        parent::__construct($userName, $projectName);
+
 		$this->wrapper = new GitWrapper();
 		$this->wrapper->setPrivateKey('../data/' . 'users/' . $userName . '/id_rsa');
-		// AbstractFileSystem constructor
-		parent::__construct($userName, $projectName);
+        $this->setIdentity();
 	}
 
 	/** 
@@ -59,7 +62,7 @@ class GitCommands extends AbstractFileSystem
 	* 
 	* returns a working copy object of the repo.
 	*
-	* @return WorkingCopy
+	* @return GitWorkingCopy
 	*/
 	public function getWorkingCopy()
 	{
@@ -76,7 +79,7 @@ class GitCommands extends AbstractFileSystem
 	* by querying the DB for the email.
 	* 
 	*/
-	public function setIdentity()
+	private function setIdentity()
 	{
 		$this->getWorkingCopy()
 					->config('user.name', $this->getUserName())
@@ -143,7 +146,19 @@ class GitCommands extends AbstractFileSystem
 	public function gitStatus()
 	{
         $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->status()->getOutput();
+		$outputLines = explode("\n", $WorkingCopy->status(['porcelain' => true])->getOutput());
+
+
+        $array = [];
+
+        foreach($outputLines as $line) {
+            $status = substr($line, 0, 2);
+            $file = substr($line, 3);
+
+            $array[$file] = $status;
+        }
+
+        return $array;
 	}
 
 	/**
