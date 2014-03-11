@@ -605,7 +605,11 @@
                              }
                          },
                          success: function(data) {
-                             document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                             var saveMessage = document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+
+                             //Use a timeout to clear the save message under the save button after 2 seconds
+                             setTimeout(function(){document.getElementById("saveAlert").innerHTML = "";},2000);     
+
                              window.setFileEdit(); //set saved file editing status false 
                          },
                          failure: function(data) {
