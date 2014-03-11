@@ -1,17 +1,18 @@
 <?php
 use GitWrapper\GitWrapper;
+use GitWrapper\GitWorkingCopy;
 
 class GitCommands extends AbstractFileSystem
 {
 
 	/**
 	*
-	* GitWrapper object that will be used to execute Git commands to local file system.
+	* GitWrapper object that will be used to execute Git commands to local file system. 
 	*
 	* @var wrapper
 	*/
 	private $wrapper;
-
+	
 	/**
 	*
 	* In order for the parent's constructor to be called,
@@ -19,7 +20,7 @@ class GitCommands extends AbstractFileSystem
 	*
 	* Also, instantiates a GitWrapper object. All of the local Git commands
 	* will be executed with methods of this object.
-	*
+	* 
 	* Setting the user's private key
 	*
 	* @param string $userName
@@ -27,13 +28,15 @@ class GitCommands extends AbstractFileSystem
 	*/
 	function __construct($userName, $projectName)
 	{
+        // AbstractFileSystem constructor
+        parent::__construct($userName, $projectName);
+
 		$this->wrapper = new GitWrapper();
 		$this->wrapper->setPrivateKey('../data/' . 'users/' . $userName . '/id_rsa');
-		// AbstractFileSystem constructor
-		parent::__construct($userName, $projectName);
+        $this->setIdentity();
 	}
 
-	/**
+	/** 
 	*
 	* sets wrapper to a GitWrapper object
 	*
@@ -45,7 +48,7 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
+	* 
 	* returns gitWrapper.
 	*
 	* @return GitWrapper
@@ -56,27 +59,27 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
+	* 
 	* returns a working copy object of the repo.
 	*
-	* @return WorkingCopy
+	* @return GitWorkingCopy
 	*/
 	public function getWorkingCopy()
 	{
-		return $this->getWrapper()->workingCopy($this->getPath());
+		return $this->getWrapper()->workingCopy($this->getPath());	
 	}
 
 	/**
 	*
-	* sets username and email configuration for the
-	*
+	* sets username and email configuration for the 
+	* 
 	* for now, this is hardcoded in for testing.
 	*
 	* TODO: This should be automatically set in the constructor,
 	* by querying the DB for the email.
-	*
+	* 
 	*/
-	public function setIdentity()
+	private function setIdentity()
 	{
 		$this->getWorkingCopy()
 					->config('user.name', $this->getUserName())
@@ -85,9 +88,9 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
-	* clone a repo into a new directory
-	* The directory name will be the same as the project name
+	* 
+	* clone a repo into a new directory 
+	* The directory name will be the same as the project name   
 	*/
 	public function gitClone()
 	{
@@ -98,7 +101,7 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
+	* 
 	* adds a file to be tracked and staged to commit
 	*
 	* @param string $path
@@ -106,10 +109,10 @@ class GitCommands extends AbstractFileSystem
 	public function gitAdd($path)
 	{
 		// this only supports adding a single file at a time.
-        $WorkingCopy = $this->getWorkingCopy(); // This
+        $WorkingCopy = $this->getWorkingCopy(); // This 
 		return $WorkingCopy->add($path);
 	}
-
+	
 	/**
 	*
 	* commits the files that were staged with a message
@@ -123,7 +126,7 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
+	* 
 	*  removes file from staging
 	*
 	* @param string $path
@@ -133,22 +136,34 @@ class GitCommands extends AbstractFileSystem
         $WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->rm($path);
 	}
-
+	
 	/**
-	*
-	*  returns the status of staging area
+	* 
+	*  returns the status of staging area 
 	*
 	* @param string $path
 	*/
 	public function gitStatus()
 	{
         $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->status()->getOutput();
+		$outputLines = explode("\n", $WorkingCopy->status(['porcelain' => true])->getOutput());
+
+
+        $array = [];
+
+        foreach($outputLines as $line) {
+            $status = substr($line, 0, 2);
+            $file = substr($line, 3);
+
+            $array[$file] = $status;
+        }
+
+        return $array;
 	}
 
 	/**
-	*
-	*  adds a new remote repository
+	* 
+	*  adds a new remote repository  
 	*
 	* @param string $userName
 	* @param string $project
@@ -161,20 +176,20 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
-	*  removes a remote repository
+	* 
+	*  removes a remote repository  
 	*
 	* @param string $alias
 	*/
 	public function gitRemoteRm($alias)
 	{
         $WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->remote('remove', $alias);
+		return $WorkingCopy->remote('remove', $alias);	
 	}
 
 	/**
-	*
-	*  fetches and merges files from a remote repository
+	* 
+	*  fetches and merges files from a remote repository  
 	*
 	* @param string $remoteAlias
 	* @param string $remoteBranch
@@ -186,7 +201,7 @@ class GitCommands extends AbstractFileSystem
 	}
 
 	/**
-	*
+	* 
 	* pushes changes to the user's remote repository
 	*
 	* @param string $remoteAlias
@@ -218,28 +233,28 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function git($commands)
 	{
-
+		
 		$path = $this->getPath();
 		return $this->getWrapper()->git($commands,$path);
-
-
+		
+	
 	}
 
 }
 	/* --- Testing of GitCommands public interfaces ---
-
+	
 	* After all the testing is done, TestRepo should have have
 	* remoteTestFile.txt. RemoteTestRepo should have both MyFile.txt and remoteTestFile.txt
 	*
 	* I will be testing the following git commands below:
-	*
-	* add
-	* rm
-	* clone
+	* 
+	* add 
+	* rm 
+	* clone 
 	* status
 	* remote add
 	* remote rm
-	* push
+	* push 
 	* pull
 	*
 	* The terms project and repository are used interchangeably, since we are treating all repos as projects.
@@ -300,11 +315,11 @@ class GitCommands extends AbstractFileSystem
 	print "Cloning " . $remoteProject . "project...\n";
 	$gitRemote->gitClone();
 	$gitRemote->setIdentity();
-	touch($gitRemote->getPath() . $remoteTestFile); // must first create file within file system.
+	touch($gitRemote->getPath() . $remoteTestFile); // must first create file within file system. 
 	$gitRemote->gitAdd($remoteTestFile);
 	$gitRemote->gitCommit('Added file to remote repo');
 	$gitRemote->gitPush('origin', 'master');
-
+	
 	// Pulling into TestRepo
 	$git->gitPull($remoteAlias, 'master');
 	$git->gitPush('origin', 'master');

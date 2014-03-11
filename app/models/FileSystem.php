@@ -1,5 +1,5 @@
 <?php
-
+ 
 class FileSystem extends AbstractFileSystem
 {
     /**
@@ -17,12 +17,12 @@ class FileSystem extends AbstractFileSystem
 
     /**
     * returns file extension of specified file
-    * Credit - Michael Holler
+    * Credit - Michael Holler 
     *
     * @param string $fileName
     * @return file extentions
     */
-    private function getFileExtension($fileName)
+    private function getFileExtension($fileName) 
     {
         if (!$fileName)
         {
@@ -42,10 +42,10 @@ class FileSystem extends AbstractFileSystem
     }
 
 
-    /**
+    /**   
     * Lists files and directories from $dirPath
-    *
-    * Credit - Michael Holler
+    * 
+    * Credit - Michael Holler  
     *@param string $dirPath
     *@return list of subdirectories and files in current
     * user directory.
@@ -82,11 +82,11 @@ class FileSystem extends AbstractFileSystem
         return ['folders' => $folders, 'files' => $files];
     }
 
-    /**
+    /** 
     * remove a file from the server's file system
     *
     *@param string $filePath
-    *@return TRUE on success FALSE on failure
+    *@return TRUE on success FALSE on failure 
     */
     public function removeFile($filePath)
     {
@@ -106,14 +106,14 @@ class FileSystem extends AbstractFileSystem
         $this->_removeDir(FileSystem::getPath($dirPath));
     }
 
-    /**
-    *
-    * recursively remove all files and subdirectories from the
+    /** 
+    *        
+    * recursively remove all files and subdirectories from the 
     * supplied dirpath
     *
     *@param string $dirPath
-    *
-    */
+    * 
+    */    
 
     protected function _removeDir($dirPath)
     {
@@ -140,21 +140,21 @@ class FileSystem extends AbstractFileSystem
         rmdir($dirPath);
     }
 
-    /**
-    *
+    /** 
+    *             
     * save the file contents to the webserver's filesystem
     *
     *@param string $filePath
     *@param string $contents
-    */
+    */    
     public function save($filePath, $contents)
     {
         $searchFile = FileSystem::getPath($filePath);
         $handle = fopen($searchFile, 'w');
         fwrite($handle, $contents);
         fclose($handle);
-        // after writing to the file, change the perm to RW for user
-        chmod($searchFile, 0600);
+        // after writing to the file, change the perm to RW for user 
+        chmod($searchFile, Config::get('filesystem.permissions.file'));
     }
 
     public function read($path)
@@ -169,11 +169,11 @@ class FileSystem extends AbstractFileSystem
             //Copies First directory then calls recursive copy function
             if(!file_exists(FileSystem::getPath($destPath)))
             {
-                mkdir(FileSystem::getPath($destPath), 0700);
+                mkdir(FileSystem::getPath($destPath), Config::get('filesystem.permissions.directory'));
             }
             if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
             {
-                mkdir(FileSystem::getPath($destPath)."/".$sourcePath, 0700);
+                mkdir(FileSystem::getPath($destPath)."/".$sourcePath, Config::get('filesystem.permissions.directory'));
             }
             $this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
         }
@@ -182,13 +182,13 @@ class FileSystem extends AbstractFileSystem
 
     }
     /**
+    *             
+    *  Copies files | folder and subdirectories/files recursively 
     *
-    *  Copies files | folder and subdirectories/files recursively
-    *
-    *
-    *  @param string $sourcePath
-    *  @param string $destPath
-    */
+    * 
+    *  @param string $sourcePath  
+    *  @param string $destPath  
+    */ 
     protected function _copy($sourcePath, $destPath)
      {
         foreach(scandir($sourcePath) as $file)
@@ -196,52 +196,52 @@ class FileSystem extends AbstractFileSystem
             //If the folders does not exist create them
             if(!file_exists($destPath))
             {
-                mkdir($destPath, 0700, true);
+                mkdir($destPath, Config::get('filesystem.permissions.directory'), true);
             }
             if(!file_exists(dirname($destPath)))
             {
-
-                mkdir(dirname($destPath), 0700, true);
+            
+                mkdir(dirname($destPath), Config::get('filesystem.permissions.directory'), true);
             }
-
+            
             $srcfile = rtrim($sourcePath, '/') .'/'. $file;
             $destfile = rtrim($destPath, '/') .'/'. $file;
 
             if (!is_readable($srcfile))
-            {
+            { 
                 continue;
-            }
+            } 
             if ($file != '.' && $file != '..')
             {
                 //IS a Directory
                 if (is_dir($srcfile))
-                {
+                { 
                     //If folder does not exist in destination create
                     if (!file_exists($destfile))
-                    {
+                    { 
 
-                        mkdir($destfile, 0700);
-
-                    }
+                        mkdir($destfile, Config::get('filesystem.permissions.directory'));
+                        
+                    } 
                     if(!file_exists(dirname($destPath)))
                     {
-
-                        mkdir(dirname($destPath), 0700, true);
+                    
+                        mkdir(dirname($destPath), Config::get('filesystem.permissions.directory'), true);
                     }
                     //recursively call copy to handle all sub-directories
                     $this->_copy($srcfile, $destfile);
-                }
+                } 
                 //Else it is a file, copy
                 else
                 {
-                    copy($srcfile, $destfile);
+                    copy($srcfile, $destfile); 
                 }
-            }
-        }
-
-    }
-
-    /*
+            } 
+        } 
+        
+    }    
+        
+    /*         
     *   Moves files | folders and subdirectories/files removing original
     *
     *    @param String $sourcePath
@@ -267,12 +267,12 @@ class FileSystem extends AbstractFileSystem
     */
     public function makeDir($dirPath)
     {
-        return mkdir(FileSystem::getPath($dirPath), 0700);
+        return mkdir(FileSystem::getPath($dirPath), Config::get('filesystem.permissions.directory'));
     }
+    
 
-
-    /**
-    *
+    /** 
+    * 
     * generates an SSH keygen pair and saves the private key in the user's directory
     *
     * RSA Private Key Format - PKCS#1
@@ -280,7 +280,7 @@ class FileSystem extends AbstractFileSystem
     *
     *@param string $user
     *@return string $publickey
-    */
+    */    
 
     public static function sshKeyGen($user)
     {
@@ -292,16 +292,16 @@ class FileSystem extends AbstractFileSystem
         // need to first create user dir since this gets called when a user first logs in.
         $userPath = FileSystem::ROOT . 'users/' . $user;
         $privateKeyPath = $userPath . '/ida_rsa';
-        mkdir($userPath, 0700, true); // RW for user
+        mkdir($userPath, Config::get('filesystem.permissions.directory'), true); // RW for user
         file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
-        chmod($privateKeyPath, 0600); // set perms for private key
+        chmod($privateKeyPath, Config::get('filesystem.permissions.file')); // set perms for private key
         return $publickey;
     }
 
 }
 
     /* --- Testing of FileSystem public interfaces --- */
-
+    
     /*
     $user = 'ZAM-';
     $project = 'TestRepo';
@@ -312,9 +312,9 @@ class FileSystem extends AbstractFileSystem
 
     // To properly test the FileCommands class, I need to create a dir before hand.
     // example dir -> /data/users/ZAM-/projects/TestRepo/
-    // Normally the initial clone would properly create the directory.
+    // Normally the initial clone would properly create the directory. 
     $fileSystem = new FileSystem($user, $project);
-
+    
     // This saves a test file in the app/data/users/ZAM-/projects/TestRepo directory
     $fileSystem->save($testFile, "This is some data.\n And some other data.\n");
     /*
@@ -323,17 +323,17 @@ class FileSystem extends AbstractFileSystem
     //$fileSystem->removeFile($testFile);
     $listFiles = $fileSystem->listDir();
     print_r($listFiles);
-
+    
     //This will copy the files/folders in in the app/data/users/ZAM-/projects/TestRepo/js directory
     //to app/data/users/ZAM-/projects/TestRepo/test directory
     $fileSystem->copy("js/", "test");
-
+    
     //This will copy the testFile.txt
     $fileSystem->copy($testFile, "TestFileCopy.txt");
-
+    
     //This moves $testFileCopy to ../test
     $fileSystem->move($testFileCopy, "test/TestFileCopy.txt");
-
+    
     //This moves all folders and files in ../js to ../test
     $fileSystem->move("js/", "test");
     */
