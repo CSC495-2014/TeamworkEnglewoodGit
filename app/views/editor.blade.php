@@ -17,11 +17,11 @@
         {{ HTML::script('/js/mainTabbedInterface.js') }}
         {{ HTML::script('/js/ace.js') }}
 
-		{{ HTML::script('/js/ui/jquery.ui.position.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.core.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.widget.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.button.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.position.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.core.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.widget.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.button.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
 
         {{ HTML::script('/js/handlebars-1.0.rc.1.min.js') }}
 
@@ -30,56 +30,56 @@
         <script id="h-git-commit-modal" type="text/x-handlebars-template">@include('handlebars/git-commit-modal')</script>
         <script id="h-git-push-modal" type="text/x-handlebars-template">@include('handlebars/git-push-modal')</script>
 
-		<style>
-		#tabs { margin-top: 0em; }
-		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
-		#add_tab { cursor: pointer; }
-		</style>
-		<body background="{{ URL::asset('css/images/adjbackground.png') }} ">
-			<div id="container">
-				<div id="topContent">
-					<div id="topLeft">
-					
-					</div>
-					<div id="header">
-						<h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
-						<h4 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h4>
-					</div>
-					<div id="topRight">
-						<a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
-						<a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
-						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
-					</div>
-				</div>
-				<div id="mainContent"> 		  
-					<div id="filesystem">
-					
-                    <!--Tabbed Interface-->	
-					</div>
-					<div id="editor">
-						<div id="tabs">
-							<ul>
-							</ul>
-						</div>
-					</div>
+        <style>
+        #tabs { margin-top: 0em; }
+        #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+        #add_tab { cursor: pointer; }
+        </style>
+        <body background="{{ URL::asset('css/images/adjbackground.png') }} ">
+            <div id="container">
+                <div id="topContent">
+                    <div id="topLeft">
+
+                    </div>
+                    <div id="header">
+                        <h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
+                        <h4 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h4>
+                    </div>
+                    <div id="topRight">
+                        <a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
+                        <a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
+                        <button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
+                    </div>
+                </div>
+                <div id="mainContent">
+                    <div id="filesystem">
+
+                    <!--Tabbed Interface-->
+                    </div>
+                    <div id="editor">
+                        <div id="tabs">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
                     <!--End of Tabbed Interface-->
-                    
-					<div id="optionSideBar">
-						<div class="panel panel-default">
-						  <div class="panel-body">
-							<h4>File Options</h4>
-							<button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
+
+                    <div id="optionSideBar">
+                        <div class="panel panel-default">
+                          <div class="panel-body">
+                            <h4>File Options</h4>
+                            <button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
                             <div id="saveAlert"></div>
-							<hr/>
-							<h4>Git Options</h4>
-							<button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
-							<button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
+                            <hr/>
+                            <h4>Git Options</h4>
+                            <button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
+                            <button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
                             <button id="git-custom" class="btn btn-lg btn-project btn-block" type="button">Custom</button>
-						  </div>
-						</div>
-					</div>
-				</div>
-			</div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @include('modals')
             {{ HTML::script('/js/filesystem.js') }}
             <script>
@@ -594,7 +594,7 @@
                   * @param {string} path Path of file to save.
                */
                 function saveFile(){
-                    
+
                     $.ajax({
                          url: '{{ URL::to("/user/$user/project/$project/file") }}' + window.getTabPath(),
                          type: 'PUT',
@@ -616,5 +616,5 @@
                 }
 
             </script>
-		</body>
+        </body>
 @endsection
