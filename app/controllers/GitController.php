@@ -1,5 +1,8 @@
 <?php
 
+//GitController catches Git::Wrapper::Exception thrown from GitCommands
+use GitWrapper\GitWrapper;
+
 /**
  * GitController - Class that handles git functionality and interfaces
  * with the file system.
@@ -49,20 +52,33 @@ class GitController extends \BaseController {
      */
     public function gitAdd($user, $project)
     {
-        $gitCommands = new GitCommands($user, $project);
-
-        $path = Input::get("item");
-
-        try
+         //Check for null parameters before continuing
+        if($user == null or $project == null) //We have null parameters
         {
-            $gitCommands->gitAdd($path);
+            $exceptionMessage;
+            if($user == null)
+            {
+                $exceptionMessage = $exceptionMessage."user";
+            }
+
+            if($project == null)
+            {
+                $exceptionMessage = $exceptionMessage.",project";
+            }
+            $exceptionMessage = "Required parameter(s) ".$exceptionMessage." is(are) null";
+            return Response::json($exceptionMessage, 500); //Return as server error with message
         }
-        catch (Exception $e)
-        {
+
+
+        $gitCommands = new GitCommands($user, $project);
+        $path = Input::get("item");
+        try {
+            $gitCommands->gitAdd($path);
+            //catch a Git::Wrapper::Exception object thrown in gitCommands
+        } catch (Git::Wrapper::Exception $e) {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
         }
-
         return Response::make(null, 200);
     }
 
@@ -227,7 +243,7 @@ class GitController extends \BaseController {
         $alias = Input::get("remote");
         $url = Input::get("url");
 
-        //check if url starts with Git@github.com:
+        //check if url starts with git@github.com:
         if (!(strpos($url, "git@github.com:") === 0))
         {
             return Response::json("URL must start with git@github.com", 500);
