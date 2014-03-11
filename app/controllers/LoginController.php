@@ -45,16 +45,16 @@ class LoginController extends BaseController {
 		{
 			echo "<script type='text/javascript'>alert('Offline Login');</script>";
 			//Offline Testing Session
-			$userName = Config::get('oauth.offlineUserName');
+			$user = Config::get('oauth.offlineUserName');
 			$userId = Config::get('oauth.offlineTableId');
 			$token = Config::get('oauth.offlineToken');
 			
-			Session::put('uid', $userName);
+			Session::put('uid', $user);
 			Session::put('tableId', $userId);
 			Session::put('token', $token);
 			
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-			return Redirect::to(URL::to("/user/$userName/projects"));
+			return Redirect::to(URL::to("user/$user/projects"));
 			echo "<script type='text/javascript'>alert('Route Failed');</script>";
 			//Route to Projects Page
 		}
