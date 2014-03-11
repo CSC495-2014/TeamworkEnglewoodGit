@@ -62,4 +62,83 @@
                 </div>
             </center>
         </body>
+        <script>
+        //document.getElementById("popupbutton").onclick =
+        function popUp(user, project)   //can i get these passed in? do i need them?
+        {
+
+            //div id ="popup"
+            //make modal in javascript and display onclick
+            var element=document.getElementById("popup");
+            element.innerHTML =     alert("bootstrap popup not working yet.");
+
+            /*"<div class=\"modal hide\" id=\"pleaseWaitDialog\" "+
+                                    "data-backdrop=\"static\" data-keyboard=\"false\">" +
+                                        "<div class=\"modal-header\">"+
+                                            "<h1 id=\"label\">Processing...</h1>"+
+                                        "</div>"+
+                                        "<div class=\"modal-body\">"+
+                                            "<div class=\"progress progress-striped active\">"+
+                                                "<div class=\"bar\" style=\"width: 100%;\">"+
+                                                "</div>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</div>";*/
+
+            $.ajax(
+            {
+                url: '{{ URL::to("/user/'+user+'/project/'+project+'/is-cloned") }}',
+                type: 'GET',    //post or get???
+                statusCode:
+                {
+                    400: function()
+                    {
+                        alert('Unable to find project.');//??
+                    }
+                },
+
+                success: function ()
+                {
+                    alert("file found");
+                    //goto editor of selected project   -   which one of these calls do i use??
+                    //location.href = "/user/{user}/project/{project}/editor";
+                    //URL::to("/user/{user}/project/{project}/editor");
+                },
+
+                failure: function ()
+                {
+                    $.ajax(
+                    {
+                        url: '{{ URL::to("/user/'+user+'/project/'+project+'/git-clone") }}',
+                        type: 'GET',
+                        statusCode:
+                        {
+                            400: function()
+                            {
+                                alert('Unable to clone project.');//??
+                            }
+                        },
+
+                        success: function ()
+                        {
+                            alert("clone success");
+                            //goto editor of selected project   -   which one of these calls do i use??
+                            //location.href = "/user/{user}/project/{project}/editor";
+                            //URL::to("/user/{user}/project/{project}/editor");
+                        },
+
+                        failure: function ()
+                        {
+                            alert("clone fail");
+                            //go back to project page   -   which one of these calls do i use??
+                            //location.href = "/user/{user}/projects";
+                            //URL::to("/user/{user}/projects");
+                        }
+                    });
+                }
+
+            });
+        }
+
+    </script>
 @endsection
