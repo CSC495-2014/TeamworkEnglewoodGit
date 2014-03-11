@@ -561,6 +561,7 @@
                          },
                          success: function(data) {
                              document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                             window.setFileEdit(); //set saved file editing status false 
                          },
                          failure: function(data) {
                              //document.getElementById("saveAlert").innerHTML= 'Fail to save ' + basename(window.getTabPath());

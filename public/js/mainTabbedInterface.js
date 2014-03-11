@@ -42,7 +42,12 @@ $(function()
 	}
     window.addTab = addTab;							//set addTab as a global function 
  
-    
+    // set saved file editing status to false 
+    function setFileEdit()
+    {
+    	edited[tabs.tabs("option","active")+1] = false;
+    }
+    window.setFileEdit = setFileEdit;
 
     // get path of current opened tab
     function getPath()
