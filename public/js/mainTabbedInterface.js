@@ -11,7 +11,7 @@ $(function()
         tabCounter = 1,								//count number of tabs
         tabTrack = new Array();
     var	tabs = $( "#tabs" ).tabs();
-    var edited;										//a flag for edited file 
+    var edited = new Array();					    //an array holds editing status of files 
 
 	// actual addTab function: adds new tab by passing the filepath and content of files
 	function addTab(filePath, tabContent)
@@ -35,9 +35,9 @@ $(function()
 		tabCounter++;
 		document.getElementById(id).name = label;	//set the name of tabs
 		var editor = ace.edit(id);   				//editor format
-		edited = false;								
+		edited[tabCounter] = false;								
 		editor.getSession().on('change', function(e){
-    		edited = true;
+    		edited[tabs.tabs("option","active")+1] = true;
 		});
 	}
     window.addTab = addTab;							//set addTab as a global function 
@@ -65,7 +65,7 @@ $(function()
 	tabs.delegate( "span.ui-icon-close", "click", function() 
 	{
 		//To check if files have been changed
-		if(edited){
+		if(edited[tabs.tabs("option","active")+1]){
 			var confirmBtn = confirm("The file has changed. Are you sure you want to close?");
 			if(confirmBtn!=true)
 			{
