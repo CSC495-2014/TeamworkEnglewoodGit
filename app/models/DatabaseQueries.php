@@ -21,7 +21,7 @@ class DatabaseQueries{
 	* 
 	* @param string $userName
 	*/
-	public static function DeleteUsers($userName) 
+	public static function DeleteUser($userName) 
 	{
         	$data = DB::table('users')->where('username', $userName)->delete();
         	return $data;
