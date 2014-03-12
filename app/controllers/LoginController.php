@@ -16,17 +16,17 @@ class LoginController extends BaseController {
 			$validUser = $gitHubLogin->processUser();
 			if($validUser)
 			{
-				$gitHubLogin->publicKeyPost();
+				//$gitHubLogin->publicKeyPost();
 				//begin session
-				echo "<script type='text/javascript'>alert('Beggining Session');</script>";
+				//echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 				$user = $gitHubLogin->getUserName();
 				Session::put('uid',$gitHubLogin->getUserName());
 				Session::put('tableId', $gitHubLogin->getTableId());
 				Session::put('email', $gitHubLogin->getEmail());
 				Session::put('token', $gitHubLogin->getToken());
-				echo "<script type='text/javascript'>alert('Populated Session');</script>";
+				//echo "<script type='text/javascript'>alert('Populated Session');</script>";
 				//Route to Projects Page
-				echo "<script type='text/javascript'>alert('Attempting Route');</script>";
+				//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
 				return Redirect::to(URL::to("/user/$user/projects"));
 			}
 			else
@@ -34,12 +34,11 @@ class LoginController extends BaseController {
 				$org = Config::get('oauth.organization');
 				echo "<script type='text/javascript'>alert('Login Failed: You are Not a Member of $org on GitHub. Please join $org and try again.');</script>";
 				return Redirect::to(URL::to("/"));
-				//Stay on login page
 			}
 		}
 		else
 		{
-			echo "<script type='text/javascript'>alert('Offline Login');</script>";
+			//echo "<script type='text/javascript'>alert('Offline Login');</script>";
 			//Offline Testing Session
 			$user = Config::get('oauth.offlineUserName');
 			$userId = Config::get('oauth.offlineTableId');
@@ -49,7 +48,7 @@ class LoginController extends BaseController {
 			Session::put('tableId', $userId);
 			Session::put('token', $token);
 			
-			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
+			//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
 			return Redirect::to(URL::to("/user/$user/projects"));
 		}
     }

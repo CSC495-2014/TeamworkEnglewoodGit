@@ -24,7 +24,7 @@ class Login
     */
     function __construct()
     {
-		echo "<script type='text/javascript'>alert('Starting Login');</script>";
+		//echo "<script type='text/javascript'>alert('Starting Login');</script>";
 		$this->provider = $this->_getProvider();
 			$this->organization = Config::get('oauth.organization');
 			if(!isset($_GET['code']))
@@ -35,11 +35,11 @@ class Login
 			{
 				try
 				{
-					echo "<script type='text/javascript'>alert('Get Token');</script>";
+					//echo "<script type='text/javascript'>alert('Get Token');</script>";
 					$this->token = $this->_getToken();
 					try
 					{
-						echo "<script type='text/javascript'>alert('Get Details');</script>";
+						//echo "<script type='text/javascript'>alert('Get Details');</script>";
 						$this->userDetails = $this->_getDetails();
 						$this->userName = $this->userDetails->nickname;
 						$this->email = $this->userDetails->email;
@@ -98,7 +98,8 @@ class Login
     *
     * Once the userDetails are obtained, check if they are present in our user table, then check if
     * they are a member of the specified group
-    * 
+    *
+    * @return bool $validUser
     */
     public function processUser()
     {
@@ -108,8 +109,8 @@ class Login
 		
 		if($userInGroup)
 		{
-			echo "<script type='text/javascript'>alert('In Group');</script>";
-			echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
+			//echo "<script type='text/javascript'>alert('In Group');</script>";
+			//echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
 			/*
 			if(!is_null($this->tableId))
 			{
@@ -171,13 +172,18 @@ class Login
 			}
     }
 	
+	/**
+    *
+    * Call for the generation of an RSA key pair, and post the public key to the user account under the name TeamworkEnglewoodGit
+    *
+    */
 	public function publicKeyPost()
 	{
 		$publicKey = FileSystem::sshKeyGen($this->userName);
 		
 		$headers = [
 			'Accept' => 'application/json',
-			'Authorization' => "token $this->token",
+			'Authorization' => "token /*Put token here*/",
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		
@@ -189,21 +195,45 @@ class Login
 		$request = Requests::post("https://api.github.com/$this->userName/keys", $headers, $data);
 	}
     
+	/**
+    *
+    * Return the user name of the current user
+    *
+    *@return string $userName
+    */
     public function getUserName()
     {
 		return $this->userName;
     }
     
+	/**
+    *
+    * Return the table Id of the current user
+    *
+    *@return int $tableId
+    */
     public function getTableId()
     {
 		return $this->tableId;
     }
     
+	/**
+    *
+    * Return the user token of the current user
+    *
+    *@return string $token
+    */
     public function getToken()
     {
 		return $this->token;
     }
 	
+	/**
+    *
+    * Return the email of the current user
+    *
+    *@return string $email
+    */
 	public function getEmail()
 	{
 		return $this->email;
