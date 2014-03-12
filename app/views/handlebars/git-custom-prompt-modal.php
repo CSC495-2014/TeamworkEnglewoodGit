@@ -6,7 +6,7 @@
                 <h4 class="modal-title" id="promptModalLabel">Custom Git Command</h4>
             </div>
             <div class="modal-body">
-                <input type="text" class="form-control" id="promptModalInput" placeholder="{{ placeholder }}">
+                <input type="text" class="form-control" id="git-custom-command" placeholder="{{ placeholder }}">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default negative" data-dismiss="modal">Cancel</button>

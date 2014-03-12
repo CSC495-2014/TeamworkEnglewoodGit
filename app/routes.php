@@ -38,6 +38,8 @@ Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
 Route::post('user/{user}/project/{project}/move', 'FileController@movePost');
 Route::post('user/{user}/project/{project}/copy', 'FileController@copyPost');
 
+Route::post('/user/{user}/project/{project}/git-cmd', 'GitController@cmd');
+
 Route::get('/user/{user}/project/{project}/git-status', 'GitController@gitStatus');
 
 /*
