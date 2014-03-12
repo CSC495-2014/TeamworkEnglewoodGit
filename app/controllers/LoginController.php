@@ -7,9 +7,8 @@ class LoginController extends BaseController {
     * Drive the Login Process, online or offline depending on config variable
     *
     */
-    public static function GitHubLogin()
+    public function gitHubLoginPost()
     {
-		echo "<script type='text/javascript'>alert('JFIEOWJFIEOJFIOEJFIOEWJFIOEWJIOF');</script>";
 		if(Config::get('oauth.online'))
 		{
 			//Standard Online Session
@@ -17,6 +16,7 @@ class LoginController extends BaseController {
 			$validUser = $gitHubLogin->processUser();
 			if($validUser)
 			{
+				$gitHubLogin->publicKeyPost();
 				//begin session
 				echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 				$user = $gitHubLogin->getUserName();
@@ -25,20 +25,16 @@ class LoginController extends BaseController {
 				Session::put('email', $gitHubLogin->getEmail());
 				Session::put('token', $gitHubLogin->getToken());
 				echo "<script type='text/javascript'>alert('Populated Session');</script>";
-				$gitHubLogin->redirectToProjects();
 				//Route to Projects Page
-				//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-				
-				//echo "<script type='text/javascript'>alert('Failed Route');</script>";
-				//return Redirect::route('user/{user}/projects', [$userName]);
-				//return Redirect::route('user/{user}/projects', $userName);
-				//return Redirect::to('/user/$gitHubLogin->getUserName/projects');
+				echo "<script type='text/javascript'>alert('Attempting Route');</script>";
+				return Redirect::to(URL::to("/user/$user/projects"));
 			}
 			else
 			{
 				$org = Config::get('oauth.organization');
 				echo "<script type='text/javascript'>alert('Login Failed: You are Not a Member of $org on GitHub. Please join $org and try again.');</script>";
-			//Stay on login page
+				return Redirect::to(URL::to("/"));
+				//Stay on login page
 			}
 		}
 		else
@@ -54,25 +50,7 @@ class LoginController extends BaseController {
 			Session::put('token', $token);
 			
 			echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-			return Redirect::to(URL::to("user/$user/projects"));
-			echo "<script type='text/javascript'>alert('Route Failed');</script>";
-			//Route to Projects Page
+			return Redirect::to(URL::to("/user/$user/projects"));
 		}
-		//return Redirect::to('login/redirect');
     }
-	
-	/*
-	public function continueLogin()
-	{
-		
-	}
-	*/
-	
-	/*
-	public function redirect()
-	{
-		$userName = Session::get('uid');
-		return Redirect::route('user/{user}/projects','wwforg');
-	}
-	*/
 }

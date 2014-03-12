@@ -171,9 +171,22 @@ class Login
 			}
     }
 	
-	public function redirectToProjects()
+	public function publicKeyPost()
 	{
-		return Redirect::route('user/{$user}/projects', ['$user'=>$this->userName]);
+		$publicKey = FileSystem::sshKeyGen($this->userName);
+		
+		$headers = [
+			'Accept' => 'application/json',
+			'Authorization' => "token $this->token",
+			'User-Agent' => 'TeamworkEnglewoodGit'
+		];
+		
+		$data = [
+			'title' => "TeamworkEnglewoodGit",
+			'key' => $publicKey
+		];
+		
+		$request = Requests::post("https://api.github.com/$this->userName/keys", $headers, $data);
 	}
     
     public function getUserName()
