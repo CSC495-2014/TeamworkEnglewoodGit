@@ -11,7 +11,7 @@ class ProjectsController extends Controller {
 	* @return $proj
 	**/
 
-	public function display($user) {
+	public function display() {
 		//get the users authentication token from the session
 //		$userToken = Session::get('token');
 		//get the users userID from the session....BUT WHERE DOES THIS GO???
