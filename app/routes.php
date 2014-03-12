@@ -28,7 +28,7 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
 	return View::make('editor', ['user' => $user, 'project' => $project]);
 });
 
-Route::get('user/{user}/projects', array('as'=>'projects', 'uses'=>'ProjectsController@display'));
+Route::get('user/{user}/projects', 'ProjectsController@display');
 
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');
@@ -36,6 +36,8 @@ Route::post('user/{user}/project/{project}/mkdir', 'FileController@mkdirPost');
 Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
 Route::post('user/{user}/project/{project}/move', 'FileController@movePost');
 Route::post('user/{user}/project/{project}/copy', 'FileController@copyPost');
+
+Route::get('/user/{user}/project/{project}/git-status', 'GitController@gitStatus');
 
 /*
 Branch Operations:Commit Operations

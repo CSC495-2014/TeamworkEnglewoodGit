@@ -154,7 +154,7 @@ class FileSystem extends AbstractFileSystem
         fwrite($handle, $contents);
         fclose($handle);
         // after writing to the file, change the perm to RW for user 
-        chmod($searchFile, 0600);
+        chmod($searchFile, Config::get('filesystem.permissions.file'));
     }
 
     public function read($path)
@@ -169,11 +169,11 @@ class FileSystem extends AbstractFileSystem
             //Copies First directory then calls recursive copy function
             if(!file_exists(FileSystem::getPath($destPath)))
             {
-                mkdir(FileSystem::getPath($destPath), 0700);
+                mkdir(FileSystem::getPath($destPath), Config::get('filesystem.permissions.directory'));
             }
             if(!file_exists(FileSystem::getPath($destPath)."/".$sourcePath))
             {
-                mkdir(FileSystem::getPath($destPath)."/".$sourcePath, 0700);
+                mkdir(FileSystem::getPath($destPath)."/".$sourcePath, Config::get('filesystem.permissions.directory'));
             }
             $this->_copy(FileSystem::getPath($sourcePath), FileSystem::getPath($destPath)."/".$sourcePath);
         }
@@ -196,12 +196,12 @@ class FileSystem extends AbstractFileSystem
             //If the folders does not exist create them
             if(!file_exists($destPath))
             {
-                mkdir($destPath, 0700, true);
+                mkdir($destPath, Config::get('filesystem.permissions.directory'), true);
             }
             if(!file_exists(dirname($destPath)))
             {
             
-                mkdir(dirname($destPath), 0700, true);
+                mkdir(dirname($destPath), Config::get('filesystem.permissions.directory'), true);
             }
             
             $srcfile = rtrim($sourcePath, '/') .'/'. $file;
@@ -220,13 +220,13 @@ class FileSystem extends AbstractFileSystem
                     if (!file_exists($destfile))
                     { 
 
-                        mkdir($destfile, 0700);
+                        mkdir($destfile, Config::get('filesystem.permissions.directory'));
                         
                     } 
                     if(!file_exists(dirname($destPath)))
                     {
                     
-                        mkdir(dirname($destPath), 0700, true);
+                        mkdir(dirname($destPath), Config::get('filesystem.permissions.directory'), true);
                     }
                     //recursively call copy to handle all sub-directories
                     $this->_copy($srcfile, $destfile);
@@ -267,7 +267,7 @@ class FileSystem extends AbstractFileSystem
     */
     public function makeDir($dirPath)
     {
-        return mkdir(FileSystem::getPath($dirPath), 0700);
+        return mkdir(FileSystem::getPath($dirPath), Config::get('filesystem.permissions.directory'));
     }
     
 
@@ -292,9 +292,9 @@ class FileSystem extends AbstractFileSystem
         // need to first create user dir since this gets called when a user first logs in.
         $userPath = FileSystem::ROOT . 'users/' . $user;
         $privateKeyPath = $userPath . '/ida_rsa';
-        mkdir($userPath, 0700, true); // RW for user
+        mkdir($userPath, Config::get('filesystem.permissions.directory'), true); // RW for user
         file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
-        chmod($privateKeyPath, 0600); // set perms for private key
+        chmod($privateKeyPath, Config::get('filesystem.permissions.file')); // set perms for private key
         return $publickey;
     }
 

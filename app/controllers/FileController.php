@@ -163,12 +163,7 @@ class FileController extends \BaseController {
         $src = Input::get('src');
         $dest = Input::get('dest');
 
-        if (FileController::containsParentDirectoryReference([$user, $project, $src]))
-        {
-            return FileController::makeParentDirectoryResponse();
-        }
-
-        if (FileController::containsParentDirectoryReference($dest))
+        if (FileController::containsParentDirectoryReference([$user, $project, $src, $dest]))
         {
             return FileController::makeParentDirectoryResponse();
         }

@@ -17,11 +17,11 @@
         {{ HTML::script('/js/mainTabbedInterface.js') }}
         {{ HTML::script('/js/ace.js') }}
 
-		{{ HTML::script('/js/ui/jquery.ui.position.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.core.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.widget.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.button.js') }}
-		{{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.position.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.core.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.widget.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.button.js') }}
+        {{ HTML::script('/js/ui/jquery.ui.tabs.js') }}
 
         {{ HTML::script('/js/handlebars-1.0.rc.1.min.js') }}
 
@@ -30,56 +30,56 @@
         <script id="h-git-commit-modal" type="text/x-handlebars-template">@include('handlebars/git-commit-modal')</script>
         <script id="h-git-push-modal" type="text/x-handlebars-template">@include('handlebars/git-push-modal')</script>
 
-		<style>
-		#tabs { margin-top: 0em; }
-		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
-		#add_tab { cursor: pointer; }
-		</style>
-		<body background="{{ URL::asset('css/images/adjbackground.png') }} ">
-			<div id="container">
-				<div id="topContent">
-					<div id="topLeft">
-					
-					</div>
-					<div id="header">
-						<h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
-						<h4 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h4>
-					</div>
-					<div id="topRight">
-						<a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
-						<a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
-						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
-					</div>
-				</div>
-				<div id="mainContent"> 		  
-					<div id="filesystem">
-					
-                    <!--Tabbed Interface-->	
-					</div>
-					<div id="editor">
-						<div id="tabs">
-							<ul>
-							</ul>
-						</div>
-					</div>
+        <style>
+        #tabs { margin-top: 0em; }
+        #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+        #add_tab { cursor: pointer; }
+        </style>
+        <body background="{{ URL::asset('css/images/adjbackground.png') }} ">
+            <div id="container">
+                <div id="topContent">
+                    <div id="topLeft">
+
+                    </div>
+                    <div id="header">
+                        <h1 style="color:#FFFFFF; text-align: center; padding-top:20px;">{{ $project }}</h1>
+                        <h4 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h4>
+                    </div>
+                    <div id="topRight">
+                        <a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
+                        <a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
+                        <button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
+                    </div>
+                </div>
+                <div id="mainContent">
+                    <div id="filesystem">
+
+                    <!--Tabbed Interface-->
+                    </div>
+                    <div id="editor">
+                        <div id="tabs">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
                     <!--End of Tabbed Interface-->
-                    
-					<div id="optionSideBar">
-						<div class="panel panel-default">
-						  <div class="panel-body">
-							<h4>File Options</h4>
-							<button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
+
+                    <div id="optionSideBar">
+                        <div class="panel panel-default">
+                          <div class="panel-body">
+                            <h4>File Options</h4>
+                            <button class="btn btn-lg btn-file btn-block" type="button" onclick="saveFile()">Save</button>
                             <div id="saveAlert"></div>
-							<hr/>
-							<h4>Git Options</h4>
-							<button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
-							<button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
+                            <hr/>
+                            <h4>Git Options</h4>
+                            <button id="git-commit" class="btn btn-lg btn-project btn-block" type="button">Commit</button>
+                            <button id="git-push" class="btn btn-lg btn-project btn-block" type="button">Push</button>
                             <button id="git-custom" class="btn btn-lg btn-project btn-block" type="button">Custom</button>
-						  </div>
-						</div>
-					</div>
-				</div>
-			</div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @include('modals')
             {{ HTML::script('/js/filesystem.js') }}
             <script>
@@ -113,18 +113,48 @@
 
                         // Execute a request and show results modal.
                         $commitModal.find('.positive').bind('click', function(executeEvent){
+                            var message = $('#git-commit-modal-message').val();
+
+                            if (!message) {
+                                alert('Commit message required.');
+                                return;
+                            }
+
                             var $commitButton = $(executeEvent.target);
                             // Remove callbacks so user does not make multiple requests with one modal.
                             $commitButton.unbind();
+
                             // Change button text when it is clicked while the AJAX call is being made.
                             $commitButton.text('Executing...');
 
-                            // TODO: do some ajax call here...
-                            setTimeout(function(){
-                                $commitModal.modal('hide');
-                                applyGitStatus();
-                            }, 1000); // end setTimeout
-
+                            $.ajax({
+                                url: '{{ URL::to("/user/$user/project/$project/git-commit") }}',
+                                type: 'POST',
+                                data: JSON.stringify({
+                                    message: message
+                                }),
+                                contentType: 'application/json; charset=utf-8',
+                                statusCode: {
+                                    500: function() {
+                                        alert('Not yet implemented on server.');
+                                        $commitButton.text('Commit');
+                                    },
+                                    400:function(data) {
+                                        alert('Nothing to commit, working directory clean.');
+                                        $commitButton.text('Commit');
+                                        $commitModal.modal('hide');
+                                    }
+                                },
+                                success: function(data) {
+                                    console.log('Git commit: ' + message);
+                                    $commitModal.modal('hide');
+                                    applyGitStatus();
+                                },
+                                failure: function(data) {
+                                    alert('Unable to commit. Error: ' + data ? data : 1);
+                                    $commitButton.text('Commit');
+                                }
+                            });
                         });
 
                         // Make the commit modal visible.
@@ -138,8 +168,8 @@
                         var commitSource = $('#h-git-push-modal').html();
                         var commitTemplate = Handlebars.compile(commitSource);
                         var commitData = {
-                            remotePlaceholder: 'origin',
-                            branchPlaceholder: 'master'
+                            remotePlaceholder: 'remote (example: origin)',
+                            branchPlaceholder: 'branch (example: master)'
                         };
                         var commitView = commitTemplate(commitData);
 
@@ -151,18 +181,45 @@
 
                         // Execute a request and show results modal.
                         $commitModal.find('.positive').bind('click', function(executeEvent){
+                            var remote = $('#git-push-modal-remote').val();
+                            var branch = $('#git-push-modal-branch').val();
+
+                            if (!remote && !branch) {
+                                alert('Must provide remote and branch.');
+                                return;
+                            }
+
                             var $commitButton = $(executeEvent.target);
                             // Remove callbacks so user does not make multiple requests with one modal.
                             $commitButton.unbind();
+
                             // Change button text when it is clicked while the AJAX call is being made.
                             $commitButton.text('Executing...');
 
-                            // TODO: do some ajax call here...
-                            setTimeout(function(){
-                                $commitModal.modal('hide');
-                                applyGitStatus();
-                            }, 1000); // end setTimeout
-
+                            $.ajax({
+                                url: '{{ URL::to("/user/$user/project/$project/git-push") }}',
+                                type: 'POST',
+                                data: JSON.stringify({
+                                    remote: remote,
+                                    branch: branch
+                                }),
+                                contentType: 'application/json; charset=utf-8',
+                                statusCode: {
+                                    500: function(data) {
+                                        alert(data.responseText);
+                                        $commitButton.text('Push');
+                                    }
+                                },
+                                success: function(data) {
+                                    console.log('git push ' + remote + ' ' + branch);
+                                    $commitModal.modal('hide');
+                                    applyGitStatus();
+                                },
+                                failure: function(data) {
+                                    alert('Unable to push. Error: ' + data ? data : 1);
+                                    $commitButton.text('Push');
+                                }
+                            });
                         });
 
                         // Make the commit modal visible.
@@ -238,30 +295,18 @@
 
                     $.ajax({
                         // TODO: fix this
-                        url: '{{ URL::to("/user/$user/projects") }}',
+                        url: '{{ URL::to("/user/$user/project/$project/git-status") }}',
                         type: 'GET',
-//                        dataType: 'json',
+                        dataType: 'json',
                         success: function (result) {
-                            console.log('Returned from server');
-                            alert('git status not yet implemented on server');
-
-                            result = {
-                                "/artisan": " M",
-                                "/composer.json": "??",
-                                "/readme.md": "A ",
-                                "/bootstrap/": "A ",
-                                "/app/filters.php": " M",
-                                "/app/start/": " M"
-                            };
-
                             var rel = null;
 
                             $files.each(function(idx) {
                                 rel = $(this).attr('rel');
 
-                                if (result.hasOwnProperty(rel)) {
+                                if (result.hasOwnProperty(rel.substr(1))) {
 
-                                    switch (result[rel]) {
+                                    switch (result[rel.substr(1)]) {
                                         case 'A ':
                                             console.log('git-added: ' + rel);
                                             $(this).addClass('git-added'); break;
@@ -321,24 +366,24 @@
                         }).addClass(getFileExtension(filename));
                     }
 
-                    alert('Broken on server @jkwendt #94');
-//                    $.ajax({
-//                        url: '{{ URL::to("/user/$user/project/$project/move") }}',
-//                        type: 'POST',
-//                        data: JSON.stringify({
-//                            src: source,
-//                            dest: destination
-//                        }),
-//                        statusCode: {
-//                            500: function() {
-//                                alert('Not yet implemented on server.');
-//                            }
-//                        },
-//                        contentType: 'application/json; charset=utf-8',
-//                        failure: function(data) {
-//                            alert('Unable to rename file. Error: ' + data ? data : 1);
-//                        }
-//                    });
+//                    alert('Broken on server @jkwendt #94');
+                    $.ajax({
+                        url: '{{ URL::to("/user/$user/project/$project/move") }}',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            src: source,
+                            dest: destination
+                        }),
+                        statusCode: {
+                            500: function() {
+                                alert('Not yet implemented on server.');
+                            }
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        failure: function(data) {
+                            alert('Unable to rename file. Error: ' + data ? data : 1);
+                        }
+                    });
 
                     var $item = $file.parent();
                     var $containingFolder = $file.parent().parent();
@@ -525,7 +570,7 @@
                         url: '{{ URL::to("/user/$user/project/$project/git-add") }}',
                         type: 'POST',
                         data: JSON.stringify({
-                            item: path
+                            item: path.substr(1)
                         }),
                         contentType: 'application/json; charset=utf-8',
                         statusCode: {
@@ -549,7 +594,7 @@
                   * @param {string} path Path of file to save.
                */
                 function saveFile(){
-                    
+
                     $.ajax({
                          url: '{{ URL::to("/user/$user/project/$project/file") }}' + window.getTabPath(),
                          type: 'PUT',
@@ -561,15 +606,16 @@
                          },
                          success: function(data) {
                              document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                             window.setFileEdit(); //set saved file editing status false 
                          },
                          failure: function(data) {
                              //document.getElementById("saveAlert").innerHTML= 'Fail to save ' + basename(window.getTabPath());
                              alert('Unable to save file. Error: ' + data ? data : 1);
-                         },
+                         }
                    });
 
                 }
 
             </script>
-		</body>
+        </body>
 @endsection
