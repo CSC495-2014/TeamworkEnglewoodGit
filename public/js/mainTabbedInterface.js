@@ -9,7 +9,9 @@ $(function()
 {
     var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
         tabCounter = 1,								//count number of tabs
-        tabTrack = new Array();
+        tabTrack = new Array();						//track filepath 
+    var openedTabCtr = 1;							//numbers of tab opened on tabbed interface
+    var idTrack = new Array();						//track opened tab ID
     var	tabs = $( "#tabs" ).tabs();
     var edited = new Array();					    //an array holds editing status of files 
 
@@ -20,25 +22,30 @@ $(function()
 		if(tabTrack.indexOf(filePath) != -1){		//if filePath is not found in tabTrack array, it will return -1
 			return;
 		}		
+
 		//else - create a new tab
 		var tabTitle = window.basename(filePath);
 		var label = tabTitle || "Untitled",
 			id = "tabs-" + tabCounter,
 			li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ),
 			tabContentHtml = tabContent || "";
-		tabTrack[tabCounter] = filePath;			//track opened file
+		tabTrack[openedTabCtr] = filePath;			//track opened file
+		idTrack[openedTabCtr] = id;
 
 		tabs.find( ".ui-tabs-nav" ).append( li );
 		tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
 		tabs.tabs( "refresh" );	
-		tabs.tabs( "option", "active", -1 );		//A negative value selects panels going backward from the last panel.
-		tabCounter++;
+		tabs.tabs( "option", "active", -1 );		//A negative value selects panels going backward from the last panel
+
 		document.getElementById(id).name = label;	//set the name of tabs
 		var editor = ace.edit(id);   				//editor format
-		edited[tabCounter] = false;								
+		edited[openedTabCtr] = false;								
 		editor.getSession().on('change', function(e){
     		edited[tabs.tabs("option","active")+1] = true;
 		});
+
+		tabCounter++;
+		openedTabCtr++;
 	}
     window.addTab = addTab;							//set addTab as a global function 
  
@@ -59,11 +66,10 @@ $(function()
     // get content of current opened tab
     function getContent()
     {	
-    	var editor = ace.edit("tabs-"+ (tabs.tabs("option","active") + 1));
+    	var editor = ace.edit(idTrack[tabs.tabs("option","active") + 1]);
     	return editor.getValue();
     }
     window.getTabContent = getContent;
-
     
 
 	// close icon: removing the tab on click
@@ -79,8 +85,23 @@ $(function()
 		}
 		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
 		$( "#" + panelId ).remove();
-		tabTrack[panelId.charAt(panelId.length-1)]='';		//remove file from tabTrack array
+		var rmID = tabs.tabs("option","active")+1;
+		alert(rmID);
+		//update tabTrack/edited/idTrack array 
+		for(rmID; rmID < tabTrack.length - 1; rmID ++)
+		{
+			tabTrack[rmID] = tabTrack[rmID+1];
+			edited[rmID] = edited[rmID+1];
+			idTrack[rmID] = idTrack[rmID+1];
+		}
+
+		//if the closed tab is the last one, then erase it. 
+		if(rmID==tabTrack.length - 1)
+		{
+			tabTrack[rmID] = "";
+		}
 		tabs.tabs( "refresh" );
+		openedTabCtr --;
 	});
 	tabs.bind( "keyup", function( event ) 
 	{
