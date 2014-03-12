@@ -73,4 +73,4 @@ Route::post('/user/{user}/project/{project}/git-clone', 'GitController@gitClone'
 /*
 Custom Command Handling
 */
-Route::post('/user/{user}/project/{project}/git', 'GitController@customCmd');
+Route::post('/user/{user}/project/{project}/git', 'GitController@cmd');
