@@ -16,7 +16,7 @@ class LoginController extends BaseController {
 			$validUser = $gitHubLogin->processUser();
 			if($validUser)
 			{
-				$gitHubLogin->publicKeyPost();
+				//$gitHubLogin->publicKeyPost();
 				//begin session
 				echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 				$user = $gitHubLogin->getUserName();
