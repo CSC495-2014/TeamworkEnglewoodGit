@@ -9,15 +9,15 @@
         * Calls the organzieProjects method to rearrange the projects from oldest to newest.
         * @return array $project
         **/
-        public function getProjects(/*$user*/) {
+        public function getProjects($user) {
             $projects_object = null;
 
-//            $headers = [
-//                'Accept' => 'application/json',
-//                'Authorization' => "token $oauthToken",
-//                'User-Agent' => 'TeamworkEnglewoodGit'
-//            ];
-            $user = "kwpembrook";
+//           $headers = [
+//               'Accept' => 'application/json',
+//               'Authorization' => "token $oauthToken",
+//               'User-Agent' => 'TeamworkEnglewoodGit'
+//           ];
+            //$user = "kwpembrook";
 //            $request = Requests::get("https://api.github.com/users/$user/keys", $headers, []);
             $request = Requests::get('https://api.github.com/users/'.$user.'/repos');
 
@@ -54,8 +54,14 @@
                 sscanf($curDate, "%d-%d-%d", $curYear, $curMonth, $curDay);
                 sscanf($nextDate, "%d-%d-%d", $nextYear, $nextMonth, $nextDay);
 
-                if($curYear = $nextYear) {
+                if($curYear == $nextYear) {
                     //FIGURE OUT IF I WANT TO DO < OR > FOR CHECKING
+                    if($curMonth == $nextMonth) {
+                        if ($curDay == $nextDay) {
+                            //check time
+
+                        }
+                    }
                 }
 
 

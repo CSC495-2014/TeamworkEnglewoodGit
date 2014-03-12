@@ -10,16 +10,16 @@ class ProjectsController extends Controller {
 	* Retreives data from the model and passes on to the view
 	* @return $proj
 	**/
-	public function display() {
+	public function display($user) {
 		//get the users authentication token from the session
 //		$userToken = Session::get('token');
 		//get the users userID from the session....BUT WHERE DOES THIS GO???
 //		$userId = Session::get('uid');
-		$user = "kwpembrook";
+//		$user = "kwpembrook";
 
 		//instantiate project object
 		$project = new Projects();
-		$project_object = $project->getProjects(/*$userToken*/);
+		$project_object = $project->getProjects($user);
 
 		//insert check and handling of null projects object
 
@@ -29,7 +29,7 @@ class ProjectsController extends Controller {
 		//GitHub returned a null object
 		if($size == 0) {
 			//pass null object to the view to display a message that the user has no projects
-			return View::make($this->list)->with('projects', $project_object);
+			return View::make($this->list)->with('projects', $project_object)->with('user', $user);
 		}
 		else {
 			//For each project...
@@ -55,7 +55,7 @@ class ProjectsController extends Controller {
 
 			$sortedProjects = $project->organizeProjects($projectsArray);
 
-			return View::make($this->list)->with('projects', $projectsArray);
+			return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
 		}
 	}//end display function
 }//end ProjectsController class
