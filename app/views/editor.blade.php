@@ -647,7 +647,7 @@
                              }
                          },
                          success: function(data) {
-                             var saveMessage = document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                             var saveMessage = document.getElementById("saveAlert").innerHTML = basename(window.getTabPath()) + ' is saved!';
 
                              //Use a timeout to clear the save message under the save button after 2 seconds
                              setTimeout(function(){document.getElementById("saveAlert").innerHTML = "";},2000);     

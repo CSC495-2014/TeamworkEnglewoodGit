@@ -86,7 +86,6 @@ $(function()
 		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
 		$( "#" + panelId ).remove();
 		var rmID = tabs.tabs("option","active")+1;
-		alert(rmID);
 		//update tabTrack/edited/idTrack array 
 		for(rmID; rmID < tabTrack.length - 1; rmID ++)
 		{
