@@ -19,6 +19,45 @@ use GitWrapper\GitException;
 
 class GitController extends \BaseController {
 
+
+	private function checkRouteParams($user, $project)
+	{
+		if($user == null or $project == null)
+		{
+			$exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: "
+			switch(true)
+			{
+				$userNull = false;
+				case($user == null):
+				{
+					$exceptionMessage = $exceptionMessage."user"; //add to message
+					$userNull = true; //mark for later formatting
+				}
+				case($project == null):
+				{
+					$toConcat; //to be concatenated to message
+					if($userNull) //user is already listed
+					{
+						$toConcat = ", project.";
+						break; //both are null, exit switch
+					} 
+					$toConcat = "project."; //project is the only null value
+					
+					$exceptionMessage = $exceptionMessage.$toConcat; //concatinate the strings
+					break;
+				}
+				case($userNull and $project != null): //user is the only null parameter, add a period
+				{
+					$exceptionMessage=$exceptionMessage.'.';
+				}
+			}
+			//return the exception message string indicating a failure
+			return $exceptionMessage;
+		}
+		//no problems were detected
+		return null;
+	}
+	
     /**
      * Get results of `git status` from server.
      *
