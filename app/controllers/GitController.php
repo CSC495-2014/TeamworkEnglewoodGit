@@ -227,7 +227,7 @@ class GitController extends \BaseController {
         $alias = Input::get("remote");
         $url = Input::get("url");
 
-        //check if url starts with Git@github.com:
+        //check if url starts with git@github.com:
         if (!(strpos($url, "git@github.com:") === 0))
         {
             return Response::json("URL must start with git@github.com", 500);
