@@ -28,6 +28,8 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
 
 Route::get('user/{user}/projects', 'ProjectsController@display');
 
+Route::get('/user/{user}/project/{project}/is-cloned', 'GitController@isCloned');
+
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');
 Route::post('user/{user}/project/{project}/mkdir', 'FileController@mkdirPost');
