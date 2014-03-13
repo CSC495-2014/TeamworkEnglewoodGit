@@ -1,5 +1,7 @@
 <?php
 
+use GitWrapper\GitException;
+
 /**
  * GitController - Class that handles git functionality and interfaces
  * with the file system.
@@ -57,7 +59,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitAdd($path);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -90,7 +92,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitRm($path);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -128,7 +130,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitCommit($msg);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 400);
@@ -162,7 +164,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitPush($remote, $branch);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -196,7 +198,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitPull($ra, $rb);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -237,7 +239,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitRemoteAdd($alias, $url);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -269,7 +271,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitRemoteRm($alias);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -297,7 +299,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitClone();
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -329,7 +331,7 @@ class GitController extends \BaseController {
         {
             $return = $gitCommands->git($args);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
