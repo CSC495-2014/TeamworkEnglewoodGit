@@ -4,63 +4,50 @@ class DatabaseQueries{
 	/**
 	* Insert a user into the Users table
 	* 
-	* @param string $userName
-        * @param string $email
+	* @param string $param1
+	* @param string $param2
 	* @returns user_id
 	*/
-	public function insertUsers(string $userName, string $email) 
-	{		
-		return DB::table('users')->insertGetId(
-		array('username' => '$userName', 'useremail' => '$email')
-		);
-	}
+	public static function InsertUser($param1, $param2)
+    	{
+        	$data = DB::table('users')->insertGetId(
+        	array('username' => $param1, 'useremail' => $param2));       
+   
+        	return $data;
+    	}
 	
 	/**
 	* Delete a user from the Users table
 	* 
-        * @param string $userName
+	* @param string $userName
 	*/
-	public function deleteUsers(string $userName) {
-		
-		DB::table('users')->where('username', '$userName')->delete();
-	}
+	public static function DeleteUser($userName) 
+	{
+        	$data = DB::table('users')->where('username', $userName)->delete();
+        	return $data;
+    	}
 	
 	/**
 	* Fetch the specified user's ID
 	* 
-        * @param string $userName
+	* @param string $userName
 	* @returns user_id
 	*/
-	public function getUserId(string $userName) {
-		
-		return DB::table('users')->where('username', '$userName')->pluck('user_id');
+	public static function GetUserId($userName) 
+	{
+        	$data = DB::table('users')->where('username', $userName)->pluck('user_id');
+        	return $data;
 	}
 	
 	/**
 	* Fetch the specified user's email
 	* 
-        * @param string $userName
+	* @param string $userName
 	* @returns useremail
 	*/
-	public function getUserEmail(string $userName) {
-		
-		return DB::table('users')->where('username', '$userName')->pluck('useremail');
-	}	
-	
-	/** 
-	* Find if a user exits in the Users table
-	* 
-        * @param string $userName
-	* @returns user_id (if they do exist)
-	*/
-	public function userExists(string $userName) {
-		
-		DB::table('users')->whereExists(function($query)
-		{
-			$query->select('user_id')
-			->from('users')
-			->whereRaw('username = $userName');
-		})
-		->get();
-	}
+	public static function GetUserEmail($userName) 
+	{
+        	$data = DB::table('users')->where('username', $userName)->pluck('useremail');
+        	return $data;
+    	}	
 }
