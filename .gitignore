@@ -8,4 +8,5 @@ Thumbs.db
 
 /*.iml
 /.idea
-/data
+/data/users/*
+!/data/users/.gitkeep
