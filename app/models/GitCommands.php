@@ -33,11 +33,16 @@ class GitCommands extends AbstractFileSystem
         parent::__construct($userName, $projectName);
 				// Setting GitWrapper object
 				$this->wrapper = new GitWrapper();
+				// Setting Private Key that should have been created with the FileSystem->sshKeyGen()
+				// on the user's first successful login.
 				$this->wrapper->setPrivateKey('../data/' . 'users/' . $userName . '/id_rsa');
+				// Setting git editor env variable to null, so we can supress the editor locally, and the
+				// the client side can catch the error.
+				$this->wrapper->setEnvVar('GIT_EDITOR', '');
 				// Setting the GitHub identification for the user. This allows for commits.
 				$this->getWorkingCopy()
 							->config('user.name', $this->getUserName())
-							->config('user.email', "zachary.mance@gmail.com");
+							->config('user.email', "example@gmail.com");
 
 
 				/* TODO WHEN DATABASE GETS THEIR PART DONE
