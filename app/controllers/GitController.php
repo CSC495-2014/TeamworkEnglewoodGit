@@ -23,7 +23,7 @@ class GitController extends \BaseController {
 	{
 		if($user == null or $project == null)
 		{
-			$exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: "
+			$exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: ";
 			switch(true)
 			{
 				$userNull = false;
