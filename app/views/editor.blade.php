@@ -243,18 +243,31 @@
 
                         // Execute a request and show results modal.
                         $promptModal.find('.positive').bind('click', function(executeEvent){
+                            var command = $('#git-custom-command').val();
+                            command = command.substr(0, 4) == 'git ' ? command.substr(4) : command;
+                            console.log('command: ' + command);
+
+                            if (!command) {
+                                alert('Command cannot be empty.');
+                                return;
+                            }
+
                             var $promptButton = $(executeEvent.target);
                             // Remove callbacks so user does not make multiple requests with one modal.
                             $promptButton.unbind();
                             // Change button text when it is clicked while the AJAX call is being made.
                             $promptButton.text('Executing...');
 
-                            // TODO: do some ajax call here...
-                            setTimeout(function(){
+                            var responseCallback = function(message) {
+                                console.log('Executed: ' + command);
+                                console.log('Typeof(message): ' + message);
+//                                console.log(message);
+                                $promptModal.modal('hide');
+
                                 var confirmSource = $('#h-git-custom-confirm-modal').html();
                                 var confirmTemplate = Handlebars.compile(confirmSource);
                                 var confirmData = {
-                                    output: 'Successful command\nwith\nsome\nnewlines\nand a really long line that bleeds off of the side of the modal, boy do I hope this is scrollable'
+                                    output: message
                                 };
                                 var confirmView = confirmTemplate(confirmData);
 
@@ -268,11 +281,40 @@
                                 });
 
                                 $confirmModal.modal();
-
                                 $promptModal.modal('hide');
                                 applyGitStatus();
-                            }, 1000); // end setTimeout
+                            };
 
+                            $.ajax({
+                                url: '{{ URL::action("GitController@cmd", [$user, $project]); }}',
+                                type: 'POST',
+                                data: JSON.stringify({
+                                    args: command
+                                }),
+                                contentType: 'application/json; charset=utf-8',
+                                statusCode: {
+                                    500: function (data) {
+                                        console.log(data);
+                                        if (data.responseJSON) {
+                                            console.log('500 (responseJSON): ' + data.responseJSON);
+                                            responseCallback(data.responseJSON);
+                                        } else {
+                                            console.log('500 (responseText): ' + data.responseText);
+                                            responseCallback(data.responseText);
+                                        }
+                                    }
+                                },
+                                success: function (message) {
+                                    console.log('Successfully executed: ' + command);
+                                    console.log('200: ' + message);
+                                    responseCallback(message);
+                                },
+                                failure: function(data) {
+                                    console.log('Failure executing: ' + command);
+                                    alert('Unable to perform: ' + command + ', error: ' + data ? data : 1);
+                                    $promptButton.text('Execute');
+                                }
+                            });
                         });
 
                         // Make the prompt modal visible.
@@ -605,7 +647,7 @@
                              }
                          },
                          success: function(data) {
-                             var saveMessage = document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                             var saveMessage = document.getElementById("saveAlert").innerHTML = basename(window.getTabPath()) + ' is saved!';
 
                              //Use a timeout to clear the save message under the save button after 2 seconds
                              setTimeout(function(){document.getElementById("saveAlert").innerHTML = "";},2000);     

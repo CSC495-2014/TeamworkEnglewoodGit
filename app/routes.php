@@ -34,12 +34,16 @@ Route::get('user/{user}/project/{project}/editor', function($user, $project)
 
 Route::get('user/{user}/projects', 'ProjectsController@display');
 
+Route::get('/user/{user}/project/{project}/is-cloned', 'GitController@isCloned');
+
 Route::pattern('file', '.*');
 Route::resource('user.project.file', 'FileController');
 Route::post('user/{user}/project/{project}/mkdir', 'FileController@mkdirPost');
 Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
 Route::post('user/{user}/project/{project}/move', 'FileController@movePost');
 Route::post('user/{user}/project/{project}/copy', 'FileController@copyPost');
+
+Route::post('/user/{user}/project/{project}/git-cmd', 'GitController@cmd');
 
 Route::get('/user/{user}/project/{project}/git-status', 'GitController@gitStatus');
 
