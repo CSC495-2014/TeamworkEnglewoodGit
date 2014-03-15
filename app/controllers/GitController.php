@@ -24,9 +24,9 @@ class GitController extends \BaseController {
 		if($user == null or $project == null)
 		{
 			$exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: ";
+			$userNull = false;
 			switch(true)
 			{
-				$userNull = false;
 				case($user == null):
 				{
 					$exceptionMessage = $exceptionMessage."user"; //add to message
@@ -35,7 +35,7 @@ class GitController extends \BaseController {
 				case($project == null):
 				{
 					$toConcat; //to be concatenated to message
-					if($userNull == true) //user is already listed
+					if($userNull) //user is already listed
 					{
 						$toConcat = ", project.";
 						break; //both are null, exit switch
@@ -45,10 +45,12 @@ class GitController extends \BaseController {
 					$exceptionMessage = $exceptionMessage.$toConcat; //concatinate the strings
 					break;
 				}
-				case($userNull==true and $project != null): //user is the only null parameter, add a period
+				case($userNull and $project != null): //user is the only null parameter, add a period
 				{
 					$exceptionMessage=$exceptionMessage.'.';
 				}
+				default:
+					break;
 			}
 			//return the exception message string indicating a failure
 			return $exceptionMessage;
