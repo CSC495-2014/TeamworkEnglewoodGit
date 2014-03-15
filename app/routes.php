@@ -11,6 +11,12 @@
 |
 */
 
+//Added this route in order to be able to test the database queries
+Route::get('test', array(
+    'as' => 'testName',
+    'uses' => 'DatabaseController@QueryTest'
+));
+
 Route::get('/', function()
 {
 	return View::make('login');
