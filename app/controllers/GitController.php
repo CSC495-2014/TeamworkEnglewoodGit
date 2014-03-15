@@ -1,5 +1,7 @@
 <?php
 
+use GitWrapper\GitException;
+
 /**
  * GitController - Class that handles git functionality and interfaces
  * with the file system.
@@ -17,6 +19,44 @@
 
 class GitController extends \BaseController {
 
+	private function checkRouteParams($user, $project)
+	{
+		if($user == null or $project == null)
+		{
+			$exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: "
+			switch(true)
+			{
+				$userNull = false;
+				case($user == null):
+				{
+					$exceptionMessage = $exceptionMessage."user"; //add to message
+					$userNull = true; //mark for later formatting
+				}
+				case($project == null):
+				{
+					$toConcat; //to be concatenated to message
+					if($userNull) //user is already listed
+					{
+						$toConcat = ", project.";
+						break; //both are null, exit switch
+					} 
+					$toConcat = "project."; //project is the only null value
+					
+					$exceptionMessage = $exceptionMessage.$toConcat; //concatinate the strings
+					break;
+				}
+				case($userNull and $project != null): //user is the only null parameter, add a period
+				{
+					$exceptionMessage=$exceptionMessage.'.';
+				}
+			}
+			//return the exception message string indicating a failure
+			return $exceptionMessage;
+		}
+		//no problems were detected
+		return null;
+	}
+	
     /**
      * Get results of `git status` from server.
      *
@@ -49,6 +89,15 @@ class GitController extends \BaseController {
      */
     public function gitAdd($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
 
         $path = Input::get("item");
@@ -57,7 +106,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitAdd($path);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -82,6 +131,14 @@ class GitController extends \BaseController {
      */
     public function gitRm($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
         $gitCommands = new GitCommands($user, $project);
 
         $path = Input::get("item");
@@ -90,7 +147,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitRm($path);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -115,6 +172,15 @@ class GitController extends \BaseController {
      */
     public function commit($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
 
         $msg = Input::get("message");
@@ -128,7 +194,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitCommit($msg);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 400);
@@ -153,6 +219,15 @@ class GitController extends \BaseController {
      */
     public function push($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
 
         $remote = Input::get("remote");
@@ -162,7 +237,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitPush($remote, $branch);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -187,6 +262,15 @@ class GitController extends \BaseController {
      */
     public function pull($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
 
         $ra = Input::get("remote");
@@ -196,7 +280,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitPull($ra, $rb);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -221,8 +305,16 @@ class GitController extends \BaseController {
      */
     public function addRemote($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
-
 
         $alias = Input::get("remote");
         $url = Input::get("url");
@@ -237,7 +329,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitRemoteAdd($alias, $url);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -261,6 +353,15 @@ class GitController extends \BaseController {
      */
     public function removeRemote($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
 
         $alias = Input::get("remote");
@@ -269,7 +370,7 @@ class GitController extends \BaseController {
         {
             $gitCommands->gitRemoteRm($alias);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -291,13 +392,22 @@ class GitController extends \BaseController {
      */
     public function gitClone($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
 
         try
         {
             $gitCommands->gitClone();
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -323,13 +433,22 @@ class GitController extends \BaseController {
      */
     public function cmd($user, $project)
     {
+		//verify both parameters are non-null
+		$nullCheck = this->checkRouteParams($user, $project);
+		//checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+		if(!($nullCheck==null))
+		{
+			//return exception message
+			return Response::json($nullCheck, 500);
+		}
+		
         $gitCommands = new GitCommands($user, $project);
         $args = Input::get("args");
         try
         {
             $return = $gitCommands->git($args);
         }
-        catch (Exception $e)
+        catch (GitException $e)
         {
             $exceptionMessage = $e->getMessage();
             return Response::json($exceptionMessage, 500);
@@ -337,5 +456,4 @@ class GitController extends \BaseController {
 
         return Response::json($return, 200);
     }
-
 }
