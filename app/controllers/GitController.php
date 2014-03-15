@@ -35,7 +35,7 @@ class GitController extends \BaseController {
 				case($project == null):
 				{
 					$toConcat; //to be concatenated to message
-					if($userNull) //user is already listed
+					if($userNull == true) //user is already listed
 					{
 						$toConcat = ", project.";
 						break; //both are null, exit switch
@@ -45,7 +45,7 @@ class GitController extends \BaseController {
 					$exceptionMessage = $exceptionMessage.$toConcat; //concatinate the strings
 					break;
 				}
-				case($userNull and $project != null): //user is the only null parameter, add a period
+				case($userNull==true and $project != null): //user is the only null parameter, add a period
 				{
 					$exceptionMessage=$exceptionMessage.'.';
 				}
