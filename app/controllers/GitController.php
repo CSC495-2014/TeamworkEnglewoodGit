@@ -328,14 +328,26 @@ class GitController extends \BaseController {
         try
         {
             $return = $gitCommands->git($args);
+
+            if (!$return) {
+                $return =  'Command may or may not have completed successfully. ';
+                $return .= 'Try running git status to determine whether your command was successful.';
+            }
+
+            return Response::json($return, 200);
         }
         catch (Exception $e)
         {
             $exceptionMessage = $e->getMessage();
+
+            if (!$exceptionMessage) {
+                $exceptionMessage =  'Command did not complete successfully. ';
+                $exceptionMessage .= 'Try running git status to determine the state of your repository.';
+            }
+
             return Response::json($exceptionMessage, 500);
         }
 
-        return Response::json($return, 200);
     }
 
 }
