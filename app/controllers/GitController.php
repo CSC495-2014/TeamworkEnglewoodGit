@@ -53,37 +53,26 @@ class GitController extends \BaseController
     private function buildMessage($user, $project)
     {
         $exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: ";
-        $userNull = false;
-        switch(true)
+        if($user == null and $project == null )
         {
-            case($user == null):
-                {
-                    $exceptionMessage = $exceptionMessage."user"; //add to message
-                    $userNull = true; //mark for later formatting
-                }
-            case($project == null):
-                {
-                    if($userNull)
-                    { //user is already listed
-                        $toConcat = ", project.";
-                        break; //both are null, exit switch
-                    }
-                    $toConcat = "project."; //project is the only null value
-
-                    $exceptionMessage = $exceptionMessage.$toConcat; //concatinate the strings
-                    break;
-                }
-            case($userNull and $project != null): //user is the only null parameter, add a period
-                {
-                    $exceptionMessage = $exceptionMessage.'.';
-                }
-            default:
-                {
-                    break;
-                }
+            $exceptionMessage = $exceptionMessage."user, project.";
+            return $exceptionMessage;
+        } //else
+            
+        if($user == null)
+        {
+            $exceptionMessage = $exceptionMessage."user.";
+            return $exceptionMessage;
+        } //else
+        
+        if($project == null)
+        {
+                $exceptionMessage = $exceptionMessage."project.";
+                return $exceptionMessage;
         }
-        //return the exception message string indicating a failure
-        return $exceptionMessage;
+        
+        //should never get here if this function is called correctly
+        return "Unexpected behavior has occurred within GitController buildMessage function.";
     }
 
     /**
