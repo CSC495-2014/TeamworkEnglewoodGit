@@ -18,7 +18,7 @@ class LoginController extends BaseController {
 			{
 				$gitHubLogin->publicKeyPost();
 				//begin session
-				//echo "<script type='text/javascript'>alert('Beggining Session');</script>";
+				echo "<script type='text/javascript'>alert('Beggining Session');</script>";
 				$user = $gitHubLogin->getUserName();
 				Session::put('uid',$gitHubLogin->getUserName());
 				Session::put('tableId', $gitHubLogin->getTableId());

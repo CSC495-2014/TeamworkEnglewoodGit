@@ -179,7 +179,6 @@ class Login
     */
 	public function publicKeyPost()
 	{
-		echo "<script type='text/javascript'>alert('calling ssh with $this->userName');</script>";
 		$publicKey = FileSystem::sshKeyGen($this->userName);
 		
 		$headers = [
