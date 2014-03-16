@@ -32,12 +32,12 @@
 
             </div>
             <div id="header">
-                <h1 style="color:#FFFFFF; text-align: center; padding-top:10px;"> $user </h1>   <!-- FIX $USER -->
+                <h1 style="color:#FFFFFF; text-align: center; padding-top:10px;">{{ $user }}</h1>
             </div>
             <div id="topRight">
                 <center>
                     <ul class="nav nav-pills-square nav-stacked">
-                         <a href ="https://github.com/ $user " class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>   <!-- FIX $USER IN URL -->
+                         <a href ="https://github.com/{{ $user }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
                         <button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
                     </ul>
                 </center>
@@ -45,6 +45,16 @@
             <center>
                 <div id="popup">
                     <!-- David's popup window will go here upon clicking on a project name -->
+                </div>
+                <div class="panel panel-default" id="modal" hidden="true">
+                    <div class="panel-body">
+                        <div class="progress progress-striped active">
+                            <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
+                                <span class="sr-only">45% Complete</span>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <div id="projectsPage">
                     <table id="projectsTable" class="table table-hover" border="">
@@ -62,4 +72,84 @@
                 </div>
             </center>
         </body>
+
+        <script>
+        //document.getElementById("popupbutton").onclick =
+        function popUp(user, project)   //can i get these passed in? do i need them?
+        {
+
+            //div id ="popup"
+            //make modal in javascript and display onclick
+            var element=document.getElementById("popup");
+            //element.innerHTML =     alert("bootstrap popup not working yet.");
+
+            element.innerHTML =
+                "<div class=\"panel panel-default\">" +
+                    "<div class=\"panel-body\">" +
+                        "<div class=\"progress progress-striped active\">" +
+                            "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"45\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 75%\">" +
+                                "<span class=\"sr-only\">45% Complete</span>" +
+                            "</div>" +
+                        "</div>" +
+                        "Please wait while Cloning project. Thank you for your patience!" +
+                    "</div>" +
+                "</div>";
+
+            $.ajax(
+            {
+                url: '{{ URL::to("/user/'+user+'/project/'+project+'/is-cloned") }}',
+                type: 'GET',    //post or get???
+                statusCode:
+                {
+                    400: function()
+                    {
+                        alert('Unable to find project.');//??
+                    }
+                },
+
+                success: function ()
+                {
+                    alert("file found");
+                    //goto editor of selected project   -   which one of these calls do i use??
+                    //location.href = "/user/{user}/project/{project}/editor";
+                    //URL::to("/user/{user}/project/{project}/editor");
+                },
+
+                failure: function ()
+                {
+                    $.ajax(
+                    {
+                        url: '{{ URL::to("/user/'+user+'/project/'+project+'/git-clone") }}',
+                        type: 'GET',
+                        statusCode:
+                        {
+                            400: function()
+                            {
+                                alert('Unable to clone project.');//??
+                            }
+                        },
+
+                        success: function ()
+                        {
+                            alert("clone success");
+                            //goto editor of selected project   -   which one of these calls do i use??
+                            //location.href = "/user/{user}/project/{project}/editor";
+                            //URL::to("/user/{user}/project/{project}/editor");
+                        },
+
+                        failure: function ()
+                        {
+                            alert("clone fail");
+                            //go back to project page   -   which one of these calls do i use??
+                            //location.href = "/user/{user}/projects";
+                            //URL::to("/user/{user}/projects");
+                        }
+                    });
+                }
+
+            });
+        }
+
+    </script>
+
 @endsection

@@ -64,26 +64,9 @@ body {
 }
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
-  background-color: #444444; /* dark grey */
-  /*background-color: #26AE42; /* light green */
-  /*background-color: #1D703A; /* dark green */
+  background-color: #B8B8B8;
 }
-/* NEITHER ELEMENTS ARE NEEDED OR USED ON PROJECTS PAGE
-#editor {
-  height: 650px;
-  width: 60%;
-  background-color: #FAFAFA;
-  padding-top: 0px;
-  float: left;
-  overflow: hidden;
-}
-#optionSideBar {
-  height: 650px;
-  width: 20%;
-  background-color: #085c2f;
-  float: left;
-}
-*/
+
 /*Buttons*/
 .btn-project {
   color: #000000;

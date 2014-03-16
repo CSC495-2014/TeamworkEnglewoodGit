@@ -12372,7 +12372,7 @@ position: absolute;\
 -webkit-box-sizing: border-box;\
 box-sizing: border-box;\
 cursor: text;\
-min-width: 100%;\
+max-width: 100%;\
 }\
 .ace_dragging, .ace_dragging * {\
 cursor: move !important;\

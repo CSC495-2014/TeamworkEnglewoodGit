@@ -232,7 +232,7 @@
                         // Load the modal from the handlebars template.
                         var promptSource = $('#h-git-custom-prompt-modal').html();
                         var promptTemplate = Handlebars.compile(promptSource);
-                        var promptData = {placeholder: 'git add /path/to/file' };
+                        var promptData = {placeholder: 'git add path/to/file' };
                         var promptView = promptTemplate(promptData);
 
                         $(document.body).append(promptView);
@@ -261,7 +261,7 @@
                             var responseCallback = function(message) {
                                 console.log('Executed: ' + command);
                                 console.log('Typeof(message): ' + message);
-//                                console.log(message);
+
                                 $promptModal.modal('hide');
 
                                 var confirmSource = $('#h-git-custom-confirm-modal').html();
@@ -352,6 +352,7 @@
                                         case 'A ':
                                             console.log('git-added: ' + rel);
                                             $(this).addClass('git-added'); break;
+                                        case 'AM':
                                         case ' M':
                                             console.log('git-modified: ' + rel);
                                             $(this).addClass('git-modified'); break;
@@ -647,12 +648,13 @@
                              }
                          },
                          success: function(data) {
-                             var saveMessage = document.getElementById("saveAlert").innerHTML= basename(window.getTabPath()) + ' is saved!';
+                             var saveMessage = document.getElementById("saveAlert").innerHTML = basename(window.getTabPath()) + ' is saved!';
 
                              //Use a timeout to clear the save message under the save button after 2 seconds
                              setTimeout(function(){document.getElementById("saveAlert").innerHTML = "";},2000);     
 
-                             window.setFileEdit(); //set saved file editing status false 
+                             window.setFileEdit(); //set saved file editing status false
+                             applyGitStatus();
                          },
                          failure: function(data) {
                              //document.getElementById("saveAlert").innerHTML= 'Fail to save ' + basename(window.getTabPath());
