@@ -192,7 +192,9 @@ class Login
 			'key' => $publicKey
 		);
 		
-		$request = Requests::post("https://api.github.com/user/keys", $headers, $data);
+		$jsonData = json_encode($data);
+		
+		$request = Requests::post("https://api.github.com/user/keys", $headers, $jsonData);
 		
 		$resultsArray = json_decode($request->body, true);
 		var_dump($resultsArray);
