@@ -182,7 +182,7 @@ class Login
 		$publicKey = FileSystem::sshKeyGen($this->userName);
 		
 		$headers = [
-			'Accept' => 'application/json',
+			//'Accept' => 'application/json',
 			'Authorization' => "token $this->token",
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
