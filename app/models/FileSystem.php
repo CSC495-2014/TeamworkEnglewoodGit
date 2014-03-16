@@ -292,7 +292,7 @@ class FileSystem extends AbstractFileSystem
 
         // need to first create user dir since this gets called when a user first logs in.
         $userPath = base_path() . AbstractFileSystem::ROOT . 'users/' . $user;
-        $privateKeyPath = $userPath . '/ida_rsa';
+        $privateKeyPath = $userPath . '/id_rsa';
         mkdir($userPath, Config::get('filesystem.permissions.directory'), true); // RW for user
         file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
         chmod($privateKeyPath, Config::get('filesystem.permissions.file')); // set perms for private key
