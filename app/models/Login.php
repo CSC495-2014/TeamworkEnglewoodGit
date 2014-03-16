@@ -193,6 +193,9 @@ class Login
 		];
 		
 		$request = Requests::post("https://api.github.com/$this->userName/keys", $headers, $data);
+		
+		$resultsArray = json_decode($request->body, true);
+		var_dump($resultsArray);
 	}
     
 	/**
