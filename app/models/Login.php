@@ -183,7 +183,7 @@ class Login
 		
 		$headers = [
 			'Accept' => 'application/json',
-			'Authorization' => "token /*Put token here*/",
+			'Authorization' => "token $this->token",
 			'User-Agent' => 'TeamworkEnglewoodGit'
 		];
 		
