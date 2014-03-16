@@ -291,7 +291,7 @@ class FileSystem extends AbstractFileSystem
         extract($rsa->createKey(1024)); // creates $privatekey and $publickey variables
 
         // need to first create user dir since this gets called when a user first logs in.
-        $userPath = FileSystem::ROOT . 'users/' . $user;
+        $userPath = base_path() . AbstractFileSystem::ROOT . 'users/' . $user;
         $privateKeyPath = $userPath . '/ida_rsa';
         mkdir($userPath, Config::get('filesystem.permissions.directory'), true); // RW for user
         file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
