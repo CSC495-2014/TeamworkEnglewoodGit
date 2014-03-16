@@ -18,7 +18,6 @@ use GitWrapper\GitException;
  */
 class GitController extends \BaseController
 {
-
     /**
      * checkRouteParams function
      * 
@@ -33,31 +32,12 @@ class GitController extends \BaseController
      */
     private function checkRouteParams($user, $project)
     {
-        if($user == null or $project == null)
-        {
-            return buildMessage($user, $project);
-        }
-        //no problems were detected
-        return null;
-    }
-
-    /**
-     * buildMessage function
-     * 
-     * Build an appropriate error message based on which parameters are null.
-     * 
-     * @param string $user
-     * @param string $project
-     * @return string message
-     */
-    private function buildMessage($user, $project)
-    {
         $exceptionMessage = "The following parameter(s) passed to the git controller function is(are) null: ";
         if($user == null and $project == null )
         {
             $exceptionMessage = $exceptionMessage."user, project.";
             return $exceptionMessage;
-        } //else
+        } //else - just one parameter is null
             
         if($user == null)
         {
@@ -69,10 +49,10 @@ class GitController extends \BaseController
         {
                 $exceptionMessage = $exceptionMessage."project.";
                 return $exceptionMessage;
-        }
+        } //else
         
-        //should never get here if this function is called correctly
-        return "Unexpected behavior has occurred within GitController buildMessage function.";
+        //both parameters are non-null values
+        return null;
     }
 
     /**
