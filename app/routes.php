@@ -23,7 +23,7 @@ Route::get('/', function()
 
 Route::post('login', 'LoginController@gitHubLoginPost');
 Route::get('login', 'LoginController@gitHubLoginPost');
-Route::post('logout', 'LoginController@logoutPost');
+Route::get('logout', 'LoginController@logoutPost');
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
 {

@@ -48,9 +48,7 @@
                     <div id="topRight">
                         <a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
                         <a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
-                        <form action="{{ URL::action('LoginController@logoutPost'); }}" method="POST" role="form">
-							<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
-						</form>
+						<button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
                     </div>
                 </div>
                 <div id="mainContent">
