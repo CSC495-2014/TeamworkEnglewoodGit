@@ -66,6 +66,10 @@ body {
 .table-hover > tbody > tr:hover > th {
   background-color: #B8B8B8;
 }
+ol {
+  cursor: pointer;
+  cursor: hand;
+}
 
 /*Buttons*/
 .btn-project {
@@ -186,7 +190,7 @@ body {
 }
 
 /*Options Sidebar CSS*/
-.panel {
+/*.panel {
   overflow: hidden;
   color: #000000;
   width: 90%;
@@ -197,7 +201,7 @@ body {
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-
+*/
 hr {
   color: #111;
   background-color: #111;

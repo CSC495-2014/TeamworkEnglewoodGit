@@ -1,5 +1,4 @@
 <?php
-	// Here is where all of the code for the controller will go
 class ProjectsController extends Controller {
 
 	// The layout used for the response
@@ -7,15 +6,14 @@ class ProjectsController extends Controller {
 	protected $list = 'projects_list';
 
 	/**
-	* Retreives data from the model and passes on to the view
-	* @return $proj
+	* Retrieves data from the model and passes on to the view
+	*
+	* @param String $user
+	* @return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
 	**/
 	public function display($user) {
 		//get the users authentication token from the session
 //		$userToken = Session::get('token');
-		//get the users userID from the session....BUT WHERE DOES THIS GO???
-//		$userId = Session::get('uid');
-//		$user = "kwpembrook";
 
 		//instantiate project object
 		$project = new Projects();
@@ -40,20 +38,24 @@ class ProjectsController extends Controller {
 				$description = ($project_object[$i]->description);
 				$date = ($project_object[$i]->updated_at);
 
-				$time = $project->timeFormat($date);		//must stay first because date below no longer contains the time
+				// //WILL NEED TO GO IN A LOOP TO FORMAT THE PROJECTS AFTER THEY HAVE BEEN SORTED BY DATE.
+				// $time = $project->timeFormat($date);		//must stay first because date below no longer contains the time
 				$date = $project->dateFormat($date);
 
-				if($description == null)
+				if($description == null) {
 					$description = " -- No Description -- ";
+				}
 
 				//store that information in an array for that individual project
 				$project_array = array("id"=>$id, "name"=>$name, "description"=>$description, "date"=>$date);
 
-				//store that individual project array in a larger array that will conatin all the projects
+				//store that individual project array in a larger array that will contain all the projects
 				$projectsArray[$i] = $project_array;
 			}
 
-			$sortedProjects = $project->organizeProjects($projectsArray);
+			//sort the projects by date with newest at the top and oldest at the bottom
+			//NOT BEING USED YET...FINISH SORTING METHOD FIRST
+			//$sortedProjects = $project->organizeProjects($projectsArray);
 
 			return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
 		}
