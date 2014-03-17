@@ -12,9 +12,6 @@ class ProjectsController extends Controller {
 	* @return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
 	**/
 	public function display($user) {
-		//get the users authentication token from the session
-//		$userToken = Session::get('token');
-
 		//instantiate project object
 		$project = new Projects();
 		$project_object = $project->getProjects($user);
@@ -38,8 +35,6 @@ class ProjectsController extends Controller {
 				$description = ($project_object[$i]->description);
 				$date = ($project_object[$i]->updated_at);
 
-				// //WILL NEED TO GO IN A LOOP TO FORMAT THE PROJECTS AFTER THEY HAVE BEEN SORTED BY DATE.
-				// $time = $project->timeFormat($date);		//must stay first because date below no longer contains the time
 				$date = $project->dateFormat($date);
 
 				if($description == null) {
@@ -51,14 +46,24 @@ class ProjectsController extends Controller {
 
 				//store that individual project array in a larger array that will contain all the projects
 				$projectsArray[$i] = $project_array;
-			}
+			}//end for
 
-			//sort the projects by date with newest at the top and oldest at the bottom
-			//NOT BEING USED YET...FINISH SORTING METHOD FIRST
-			//$sortedProjects = $project->organizeProjects($projectsArray);
+			function cmp($a, $b) {
+            				global $array;
+            				return strtotime($array[$a]['date'], $array[$b]['date']);
+        			}//end cmp function
+
+			usort($projectsArray, 'cmp');
 
 			return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
-		}
+		}//end else
 	}//end display function
 }//end ProjectsController class
+
+/**
+* Comments about code:
+*
+* The sorting function is not working correctly in all cases.
+*
+**/
 ?>

@@ -48,7 +48,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title"> Processing </h4>
+                                <h4 class="modal-title"> Processing... </h4>
                             </div><!-- /.modal-header -->
                             <div class="modal-body">
                                 <div class="progress progress-striped active">
@@ -77,15 +77,15 @@
         </body>
 
         <script>
-        function popUp(username, projectname)
+        function popUp(username, projectname, URL)
         {
             //div id ="popup"
             //make modal in javascript and display onclick
-            $('#popup').modal({"backdrop": "static", "keyboard": false, "show": true });
+            $('#popup').modal({"backdrop": "static", "keyboard": false, "show": false });
 
             $.ajax(
             {
-                url: '{{ URL::to("/user/'+username+'/project/'+projectname+'/git-clone") }}',
+                url: URL,
                 type: 'POST',
                 statusCode:
                 {
@@ -98,8 +98,7 @@
                 //on success - redirect to editor
                 success: function ()
                 {
-                    alert("file found");
-                    location.replace("/user/"+username+"/project/"+projectname+"editor");
+                    location.href = "/capstone/user/"+username+"/project/"+projectname+"/editor";
                 },
 
                 //on fail -
