@@ -82,7 +82,17 @@ Route::filter('csrf', function()
 Route::filter('verifyUser', function($route)
 {
 	$user = $route->parameter('user');
-    if (Session::get('uid') != $user) {
-        return View::make('login');
-    }
+	if (Session::has('uid'))
+	{
+		if (Session::get('uid') != $user)
+		{
+			$loggedUser = Session::get('uid');
+			return Redirect::to(URL::to("/user/$loggedUser/projects"));
+		}
+	}
+	else
+	{
+		return View::make('login');
+	}
+    
 });
