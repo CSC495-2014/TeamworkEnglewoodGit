@@ -35,7 +35,7 @@ class GitCommands extends AbstractFileSystem
 				$this->wrapper = new GitWrapper();
 				// Setting Private Key that should have been created with the FileSystem->sshKeyGen()
 				// on the user's first successful login.
-				$this->wrapper->setPrivateKey('../data/' . 'users/' . $userName . '/id_rsa');
+				$this->wrapper->setPrivateKey(base_path() . AbstractFileSystem::ROOT . 'users/' . $userName . '/id_rsa');
 				// Setting git editor env variable to null, so we can supress the editor locally, and the
 				// the client side can catch the error.
 				$this->wrapper->setEnvVar('GIT_EDITOR', '');
