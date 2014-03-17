@@ -119,7 +119,7 @@ class Login
 			else
 			{
 				echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-				DatabaseQueries::insertUsers($this->userName, $this->email);
+				DatabaseQueries::InsertUser($this->userName, $this->email);
 				echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
 			
@@ -132,7 +132,7 @@ class Login
 			if(!is_null($this->tableId))
 			{
 				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group. User deleted');</script>";
-				DatabaseQueries::deleteUsers($this->userName);
+				DatabaseQueries::DeleteUser($this->userName);
 			}
 			else
 			{
