@@ -39,7 +39,7 @@ Route::get('user/{user}/project/{project}/editor',
 
 //array('before' => 'verifyUser:$user', 
 
-Route::get('user/{user}/projects','ProjectsController@display');
+Route::get('user/{user}/projects', array('before'=>'verifyUser', 'ProjectsController@display'));
 
 Route::get('/user/{user}/project/{project}/is-cloned', 'GitController@isCloned');
 

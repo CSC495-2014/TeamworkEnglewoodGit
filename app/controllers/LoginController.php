@@ -54,7 +54,6 @@ class LoginController extends BaseController {
 	
 	public function logoutPost()
 	{
-		echo "<script type='text/javascript'>alert('LOGGING OUT FJIEOWPJFIEWOJFIEWOJFIEOJFWIO');</script>";
 		Session::flush();
 		return Redirect::to(URL::to("/"));
 	}
