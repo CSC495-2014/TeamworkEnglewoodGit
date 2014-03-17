@@ -26,7 +26,7 @@ class LoginController extends BaseController {
 				//echo "<script type='text/javascript'>alert('Populated Session');</script>";
 				//Route to Projects Page
 				//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
-				//return Redirect::to(URL::to("/user/$user/projects"));
+				return Redirect::to(URL::to("/user/$user/projects"));
 			}
 			else
 			{
