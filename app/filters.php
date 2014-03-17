@@ -81,7 +81,7 @@ Route::filter('csrf', function()
 
 Route::filter('verifyUser', function($route)
 {
-	$user = Request::segment(1);
+	$user = $route->parameter('users');
     if (Session::get('uid') != $user) {
         return View::make('login');
     }
