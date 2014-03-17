@@ -16,7 +16,7 @@ class LoginController extends BaseController {
 			$validUser = $gitHubLogin->processUser();
 			if($validUser)
 			{
-				//$gitHubLogin->publicKeyPost();
+				
 				//begin session
 				$user = $gitHubLogin->getUserName();
 				Session::put('uid',$gitHubLogin->getUserName());
