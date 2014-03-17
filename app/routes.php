@@ -22,7 +22,7 @@ Route::get('/', function()
 //});
 
 Route::post('login', 'LoginController@gitHubLoginPost');
-Route::get('login', 'LoginController@gitHubLoginGet');
+Route::get('login', 'LoginController@gitHubLoginPost');
 
 Route::get('user/{user}/project/{project}/editor', function($user, $project)
 {
