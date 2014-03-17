@@ -104,7 +104,7 @@ class Login
     public function processUser()
     {
 		//$databaseObj = new DatabaseQueries();
-		$this->tableId = DatabaseQueries::userExists($this->userName);
+		$this->tableId = DatabaseQueries::GetUserId($this->userName);
 		$userInGroup = $this->_checkUserGroup();
 		
 		if($userInGroup)
