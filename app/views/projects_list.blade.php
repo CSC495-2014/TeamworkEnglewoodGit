@@ -14,7 +14,7 @@
                 <td  id="projectName" onclick="popUp('{{$user}}', '{{$projects[$i]['name']}}');">
                     <h3><ol>
                         <center>{{ $projects[$i]['name'] }}</center>
-                    </h3></ol>
+                   </ol></h3>
                 </td>
                 <td><p><center>{{ $projects[$i]['description'] }}</center></p></td>
                 <td><h4><center>{{ $projects[$i]['date'] }}</center></h4></td>
