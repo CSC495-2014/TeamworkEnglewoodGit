@@ -87,8 +87,8 @@ class GitController extends \BaseController
     public function gitAdd($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -126,8 +126,8 @@ class GitController extends \BaseController
     public function gitRm($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -167,8 +167,8 @@ class GitController extends \BaseController
     public function commit($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -214,8 +214,8 @@ class GitController extends \BaseController
     public function push($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -257,8 +257,8 @@ class GitController extends \BaseController
     public function pull($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -300,8 +300,8 @@ class GitController extends \BaseController
     public function addRemote($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -348,8 +348,8 @@ class GitController extends \BaseController
     public function removeRemote($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -387,8 +387,8 @@ class GitController extends \BaseController
     public function gitClone($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -428,8 +428,8 @@ class GitController extends \BaseController
     public function cmd($user, $project)
     {
         //verify both parameters are non-null
-        $nullCheck = checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        $nullCheck = $this->checkRouteParams($user, $project);
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
