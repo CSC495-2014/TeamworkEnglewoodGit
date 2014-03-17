@@ -81,7 +81,7 @@
         {
             //div id ="popup"
             //make modal in javascript and display onclick
-            $('#popup').modal({"backdrop": "static", "keyboard": false, "show": false });
+            $('#popup').modal({"backdrop": "static", "keyboard": false, "show": true });
 
             $.ajax(
             {
