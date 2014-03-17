@@ -24,7 +24,6 @@ class Login
     */
     function __construct()
     {
-		//echo "<script type='text/javascript'>alert('Starting Login');</script>";
 		$this->provider = $this->_getProvider();
 			$this->organization = Config::get('oauth.organization');
 			if(!isset($_GET['code']))
@@ -35,11 +34,9 @@ class Login
 			{
 				try
 				{
-					//echo "<script type='text/javascript'>alert('Get Token');</script>";
 					$this->token = $this->_getToken();
 					try
 					{
-						//echo "<script type='text/javascript'>alert('Get Details');</script>";
 						$this->userDetails = $this->_getDetails();
 						$this->userName = $this->userDetails->nickname;
 						$this->email = $this->userDetails->email;
@@ -109,25 +106,22 @@ class Login
 		
 		if($userInGroup)
 		{
-			//echo "<script type='text/javascript'>alert('In Group');</script>";
-			//echo "<script type='text/javascript'>alert('Login for $this->userName');</script>";
-			
 			if(!is_null($this->tableId))
 			{
-				echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
+				//echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
 			}
 			else
 			{
-				echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
+				//echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
 				$gitHubLogin->publicKeyPost();
 				DatabaseQueries::InsertUser($this->userName, $this->email);
-				echo "<script type='text/javascript'>alert('Added User');</script>";
+				//echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
 			return true;
 		}
 		else
 		{
-			echo "<script type='text/javascript'>alert('Not In Group');</script>";
+			//echo "<script type='text/javascript'>alert('Not In Group');</script>";
 			
 			if(!is_null($this->tableId))
 			{

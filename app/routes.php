@@ -16,20 +16,10 @@ Route::get('/', function()
 	return View::make('login');
 });
 
-//Route::get('login', function()
-//{
-//	return View::make('login');
-//});
-
 Route::post('login', 'LoginController@gitHubLoginPost');
 Route::get('login', 'LoginController@gitHubLoginPost');
 Route::get('logout', 'LoginController@logoutPost');
-/*
-Route::get('user/{user}/project/{project}/editor', function($user, $project)
-{
-	return View::make('editor', ['user' => $user, 'project' => $project]);
-});
-*/
+
 Route::get('user/{user}/project/{project}/editor',
 		   array('before' => 'verifyUser:$user',
 		   function($user, $project)

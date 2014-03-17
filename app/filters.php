@@ -79,6 +79,18 @@ Route::filter('csrf', function()
 	}
 });
 
+/*
+|--------------------------------------------------------------------------
+| Verify User
+|--------------------------------------------------------------------------
+|
+| This filter will check the username used in the URL, and if it does not
+| match the username in the session it will either redirect to the current
+| user's projects page, or if no one is logged in it will redirect to the
+| login page. Used to protect against user's entering other user's pages
+| directly into the URL.
+|
+*/
 Route::filter('verifyUser', function($route)
 {
 	$user = $route->parameter('user');

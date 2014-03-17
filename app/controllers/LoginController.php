@@ -17,15 +17,12 @@ class LoginController extends BaseController {
 			if($validUser)
 			{
 				
-				//begin session
+				//Begin Session
 				$user = $gitHubLogin->getUserName();
 				Session::put('uid',$gitHubLogin->getUserName());
 				Session::put('tableId', $gitHubLogin->getTableId());
 				Session::put('email', $gitHubLogin->getEmail());
 				Session::put('token', $gitHubLogin->getToken());
-				//echo "<script type='text/javascript'>alert('Populated Session');</script>";
-				//Route to Projects Page
-				//echo "<script type='text/javascript'>alert('Attempting Route');</script>";
 				return Redirect::to(URL::to("/user/$user/projects"));
 			}
 			else
@@ -37,7 +34,6 @@ class LoginController extends BaseController {
 		}
 		else
 		{
-			//echo "<script type='text/javascript'>alert('Offline Login');</script>";
 			//Offline Testing Session
 			$user = Config::get('oauth.offlineUserName');
 			$userId = Config::get('oauth.offlineTableId');
@@ -52,6 +48,12 @@ class LoginController extends BaseController {
 		}
     }
 	
+	/**
+    *
+    * This will logout a user. The session will be flushed of all variables
+    * and will then be redirected to the login page. 
+    *
+    */
 	public function logoutPost()
 	{
 		Session::flush();
