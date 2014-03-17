@@ -94,7 +94,7 @@ class FileController extends \BaseController {
         }
         catch (Exception $e)
         {
-            return Response::make(null, 400);
+            return Response::make($e->getMessage(), 400);
         }
 
         return Response::make(null, 200);

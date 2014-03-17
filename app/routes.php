@@ -37,8 +37,6 @@ Route::post('user/{user}/project/{project}/files', 'FileController@indexPost');
 Route::post('user/{user}/project/{project}/move', 'FileController@movePost');
 Route::post('user/{user}/project/{project}/copy', 'FileController@copyPost');
 
-Route::post('/user/{user}/project/{project}/git-cmd', 'GitController@cmd');
-
 Route::get('/user/{user}/project/{project}/git-status', 'GitController@gitStatus');
 
 /*
@@ -75,4 +73,4 @@ Route::post('/user/{user}/project/{project}/git-clone', 'GitController@gitClone'
 /*
 Custom Command Handling
 */
-Route::post('/user/{user}/project/{project}/git', 'GitController@customCmd');
+Route::post('/user/{user}/project/{project}/git', 'GitController@cmd');
