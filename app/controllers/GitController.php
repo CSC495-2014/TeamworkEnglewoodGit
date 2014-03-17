@@ -88,7 +88,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -127,7 +127,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -168,7 +168,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -215,7 +215,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -258,7 +258,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -301,7 +301,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -349,7 +349,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -388,7 +388,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message
@@ -429,7 +429,7 @@ class GitController extends \BaseController
     {
         //verify both parameters are non-null
         $nullCheck = $this->checkRouteParams($user, $project);
-        //checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
+        //$this->checkRouteParams function returns null if both of the parameters passed in are OK(non-null)
         if($nullCheck)
         {
             //return exception message

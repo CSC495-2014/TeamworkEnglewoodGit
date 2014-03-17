@@ -643,8 +643,8 @@
                          type: 'PUT',
                          data: window.getTabContent(),
                          statusCode: {
-                             400: function() {
-                                 alert('Unable to create file.');
+                             400: function(response) {
+                                 alert('Unable to create file. Problem: ' + response.responseText);
                              }
                          },
                          success: function(data) {
