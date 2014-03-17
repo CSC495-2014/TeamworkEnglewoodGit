@@ -1,6 +1,6 @@
 <?php
 
-class kTest extends TestCase {
+class FileSystemTest extends TestCase {
 
 	/**
          * Code written for testing the clinet side Filesystem
