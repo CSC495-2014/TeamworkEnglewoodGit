@@ -39,6 +39,11 @@ class Login
         return $this->provider->getAccessToken('authorization_code', array('code' => $_GET['code']));
     }
 	
+	public function providerAuthorize()
+	{
+		$this->provider->authorize();
+	}
+	
 	/**
     *
     * Using the token, make a request to GitHub to provide array of user details

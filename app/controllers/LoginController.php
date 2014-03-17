@@ -13,7 +13,7 @@ class LoginController extends BaseController {
 		{
 			//Standard Online Session
 			$gitHubLogin = new Login();
-			$gitHubLogin->provider->authorize();
+			$gitHubLogin->providerAuthorize();
 		}
 		else
 		{
