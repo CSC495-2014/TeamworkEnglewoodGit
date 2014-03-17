@@ -113,7 +113,7 @@ class Login
 			else
 			{
 				//echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-				$gitHubLogin->publicKeyPost();
+				$this->publicKeyPost();
 				DatabaseQueries::InsertUser($this->userName, $this->email);
 				//echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
