@@ -51,4 +51,10 @@ class LoginController extends BaseController {
 			return Redirect::to(URL::to("/user/$user/projects"));
 		}
     }
+	
+	public function logoutPost()
+	{
+		Session::flush();
+		return Redirect::to(URL::to("/"));
+	}
 }
