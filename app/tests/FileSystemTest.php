@@ -8,68 +8,66 @@ class kTest extends TestCase {
 	 * 	file tree.
          * author: Kenneth McMahon
 	*/
-	public function setUp(){
-		parent::setUp();
-		$user = 'kjmcmahon';
-
-	        //FileSystem::sshKeyGen($user);
+	public static function setUpBeforeClass(){
+                FileSystem::sshKeyGen('testuser');
+                fwrite(STDOUT,"\n".getcwd()."\n");
+                fwrite(STDOUT, "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                //all that exists is /data/users/testuser
+                mkdir(getcwd()."/data/users/testuser/projects");
+                mkdir(getcwd()."/data/users/testuser/projects/testproject");
 	}
-	
-	public function testmakeDir(){
-		$fs = new FileSystem('kjmcmahon','testproject');
-		
-		$newdir = $fs->makeDir("testmakedir");
-		$highdir = $fs->makeDir("../updir");
-		$this->assertTrue($newdir);
-		$this->assertTrue($highdir);
-
-	}
-       	
-	public function testisDir(){
-		$fs = new FileSystem('kjmcmahon','testproject');
-		
-                $this->assertTrue($fs->isDir(".."));
-		$this->assertTrue($fs->isDir("files"));
-		$this->assertTrue($fs->isDir("folderone"));
-		$this->assertTrue($fs->isDir("foldertwo"));
-		$this->assertTrue($fs->isDir("inProject"));
-		$this->assertFalse($fs->isDir("notafolder"));
-		$this->assertFalse($fs->isDir("toplevel.html"));
-		$this->assertFalse($fs->isDir("madeup"));	
+        public static function tearDownAfterClass(){
+                rmdir(getcwd()."/data/users/testuser/projects/testproject");
+                rmdir(getcwd()."/data/users/testuser/projects");
+                rmdir(getcwd()."/data/users/testuser");
         }
-	
+
+	public function testmakeDir(){
+		$fs = new FileSystem('testuser','testproject');
+		
+                $filesdir = $fs->makeDir("files");
+                $folderone = $fs->makeDir("folderone");
+                $foldertwo = $fs->makeDir("foldertwo");
+                $copies = $fs->makeDir("files/copies");
+		$this->assertTrue($filesdir);
+		$this->assertTrue($folderone);
+                $this->assertTrue($foldertwo);
+                $this->assertTrue($copies);
+
+        }
+
+        /**
+         * @depends testmakeDir
+         */
 	public function testsave(){
-		$fs = new FileSystem('kjmcmahon','testproject/files');
+		$fs = new FileSystem('testuser','testproject/files');
 		
                 $fs->save("file1.txt", "file1");
 		$fs->save("file2.txt", "file2");
 		$fs->save("file3.txt", "file3");
 		$fs->save("file4.txt", "file4");
 		$fs->save("file5.txt", "file5");
-		
-		
         }
+
 	/**
 	* @depends testmakeDir
 	*/
-	public function testremoveDir(){
-		$fs = new FileSystem('kjmcmahon','testproject');
+	public function testisDir(){
+		$fs = new FileSystem('testuser','testproject');
 		
-		$fs->removeDir("testmakedir");
-		$fs->removeDir("../updir");
-		// Creating files with . .. or / is prevented by
-		// 	the client webpage
+                $this->assertTrue($fs->isDir(".."));
+		$this->assertTrue($fs->isDir("files"));
+		$this->assertTrue($fs->isDir("folderone"));
+		$this->assertTrue($fs->isDir("foldertwo"));
+		$this->assertFalse($fs->isDir("/files/file1.txt"));
+        }
 
-		$this->assertFileNotExists("/home/ken/lampstack/frameworks/laravel/data/users/kjmcmahon/projects/testproject/testmakedir");
-		$this->assertFileNotExists("/home/ken/lampstack/frameworks/laravel/data/users/kjmcmahon/projects/updir");
-	}
-	
 	
 	/**
 	* @depends testsave
 	*/
 	public function testread(){
-		$fs = new FileSystem('kjmcmahon', 'testproject/files');
+		$fs = new FileSystem('testuser', 'testproject/files');
 		
 		$contents = $fs->read('file1.txt');
 		$this->assertEquals("file1", $contents);
@@ -90,7 +88,7 @@ class kTest extends TestCase {
 	* @depends testread
 	*/
 	public function testcopy(){
-		$fs = new FileSystem('kjmcmahon', 'testproject/files');
+		$fs = new FileSystem('testuser', 'testproject/files');
 
 		$fs->copy("file1.txt", "copies/file1copy.txt");
 		$fs->copy("file2.txt", "../file2copy.txt");
@@ -113,46 +111,69 @@ class kTest extends TestCase {
 	* @depends testsave
 	*/
 	public function testmove(){
-		$fs = new FileSystem('kjmcmahon','testproject/files');
-		$basepath = "/home/ken/lampstack/frameworks/laravel/data/users/kjmcmahon/projects/testproject/files";
+		$fs = new FileSystem('testuser','testproject/files');
+		$basepath = getcwd()."/data/users/testuser/projects/testproject";
 
-		$this->assertFileExists($basepath."/file1.txt");
+
+		$this->assertFileExists($basepath."/files/file1.txt");
 		$fs->move("file1.txt", "copies/file1.txt");
-		$this->assertFileNotExists($basepath."/file1.txt");
+		$this->assertFileNotExists($basepath."/files/file1.txt");
 		
-		$this->assertFileExists($basepath."/copies/file1.txt");
+		$this->assertFileExists($basepath."/files/copies/file1.txt");
 		$fs->move("copies/file1.txt", "file1.txt");
-		$this->assertFileNotExists($basepath."/copies/file1.txt");
+		$this->assertFileNotExists($basepath."/files/copies/file1.txt");
 		
 	}
 	/**
 	* @depends testcopy
 	*/
 	public function testremoveFile(){
-		$fs = new FileSystem('kjmcmahon', 'testproject/files');
-		$basepath = "/home/ken/lampstack/frameworks/laravel/data/users/kjmcmahon/projects/testproject/files/";		
+		$fs = new FileSystem('testuser', 'testproject');
+		$basepath = getcwd()."/data/users/testuser/projects/testproject"; 	
 
-		$this->assertFileExists($basepath."copies/file1copy.txt");
-		$this->assertFileExists($basepath."../file2copy.txt");
-		$this->assertFileExists($basepath."../folderone/file3copy.txt");
-		$this->assertFileExists($basepath."../foldertwo/file4copy.txt");
-		$this->assertFileExists($basepath."file5copy.txt");		
+		$this->assertFileExists($basepath."/files/copies/file1copy.txt");
+		$this->assertFileExists($basepath."/file2copy.txt");
+		$this->assertFileExists($basepath."/folderone/file3copy.txt");
+		$this->assertFileExists($basepath."/foldertwo/file4copy.txt");
+		$this->assertFileExists($basepath."/files/file5copy.txt");		
 
-		$fs->removeFile("copies/file1copy.txt");
-		$fs->removeFile("../file2copy.txt");
-		$fs->removeFile("../folderone/file3copy.txt");
-		$fs->removeFile("../foldertwo/file4copy.txt");
-		$fs->removeFile("file5copy.txt");
+		$fs->removeFile("/files/copies/file1copy.txt");
+		$fs->removeFile("/file2copy.txt");
+		$fs->removeFile("/folderone/file3copy.txt");
+		$fs->removeFile("/foldertwo/file4copy.txt");
+                $fs->removeFile("/files/file5copy.txt");
+
+                $fs->removeFile("/files/file1.txt");
+                $fs->removeFile("/files/file2.txt");
+                $fs->removeFile("/files/file3.txt");
+                $fs->removeFile("/files/file4.txt");
+                $fs->removeFile("/files/file5.txt");
+                $fs->removeFile("../../id_rsa");
 		
-		$this->assertFileNotExists($basepath."copies/file1copy.txt");
-		$this->assertFileNotExists($basepath."copies/file2copy.txt");
-		$this->assertFileNotExists($basepath."copies/file3copy.txt");
-		$this->assertFileNotExists($basepath."copies/file4copy.txt");
-		$this->assertFileNotExists($basepath."copies/file5copy.txt");
-		
+		$this->assertFileNotExists($basepath."/files/copies/file1copy.txt");
+		$this->assertFileNotExists($basepath."/file2copy.txt");
+		$this->assertFileNotExists($basepath."/folderone/file3copy.txt");
+		$this->assertFileNotExists($basepath."/foldertwo/file4copy.txt");
+		$this->assertFileNotExists($basepath."/files/file5copy.txt");
 	}
 
-	
-	
+	/**
+	* @depends testmakeDir
+        * @depends testremoveFile
+	*/
+	public function testremoveDir(){
+		$fs = new FileSystem('testuser','testproject');
+		$projpath = getcwd()."/data/users/testuser/projects/testproject";
 
+                $fs->removeDir("files/copies");
+		$fs->removeDir("files");
+                $fs->removeDir("folderone");
+                $fs->removeDir("foldertwo");
+
+		$this->assertFileNotExists($projpath."/files");
+		$this->assertFileNotExists($projpath."/files/copies");
+		$this->assertFileNotExists($projpath."/folderone");
+		$this->assertFileNotExists($projpath."/foldertwo");
+	}
+	
 }
