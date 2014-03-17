@@ -39,7 +39,8 @@
                     <ul class="nav nav-pills-square nav-stacked">
                          <a href ="https://github.com/{{ $user }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
                         <form action="{{ URL::action('LoginController@logoutPost'); }}" method="GET" role="form">
-                            <button id="submit" class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
+                        <a href ="{{ URL::to("logout") }}" class="btn btn-lgr btn-account btn-block" type="button">Logout</a>
+                        <!--<button id="submit" class="btn btn-lgr btn-account btn-block" type="button">Logout</button> -->
                         </form>
                     </ul>
                 </center>

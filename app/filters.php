@@ -78,3 +78,10 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+Route::filter('verifyUser', function($user)
+{
+    if (Session::get('uid') != $user) {
+        return View::make('login');
+    }
+});
