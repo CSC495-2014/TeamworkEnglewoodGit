@@ -23,7 +23,8 @@ class LoginController extends BaseController {
 				Session::put('tableId', $gitHubLogin->getTableId());
 				Session::put('email', $gitHubLogin->getEmail());
 				Session::put('token', $gitHubLogin->getToken());
-				return Redirect::to(URL::to("/user/$user/projects"));
+				echo "<script type='text/javascript'>alert('User: $gitHubLogin->getUserName(), ID: $gitHubLogin->getTableId(), Email: $gitHubLogin->getEmail()');</script>";
+				//return Redirect::to(URL::to("/user/$user/projects"));
 			}
 			else
 			{
