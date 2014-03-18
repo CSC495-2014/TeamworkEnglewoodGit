@@ -113,8 +113,8 @@ class Login
 			else
 			{
 				//echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-				$this->publicKeyPost();
 				DatabaseQueries::InsertUser($this->userName, $this->email);
+				$this->publicKeyPost();
 				//echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
 			return true;
