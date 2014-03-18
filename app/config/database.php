@@ -54,8 +54,8 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '54.200.185.101',
-			'database'  => 'laravel_db',
+			'host'      => 'localhost',
+			'database'  => 'database',
 			'username'  => 'root',
 			'password'  => '',
 			'charset'   => 'utf8',
