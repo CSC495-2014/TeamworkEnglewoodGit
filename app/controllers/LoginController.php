@@ -19,11 +19,13 @@ class LoginController extends BaseController {
 				
 				//Begin Session
 				$user = $gitHubLogin->getUserName();
+				$Id = $gitHubLogin->getTableId();
+				$Email = $gitHubLogin->getEmail();
 				Session::put('uid',$gitHubLogin->getUserName());
 				Session::put('tableId', $gitHubLogin->getTableId());
 				Session::put('email', $gitHubLogin->getEmail());
 				Session::put('token', $gitHubLogin->getToken());
-				echo "<script type='text/javascript'>alert('User: $gitHubLogin->getUserName(), ID: $gitHubLogin->getTableId(), Email: $gitHubLogin->getEmail()');</script>";
+				echo "<script type='text/javascript'>alert('User: $user, ID: $Id, Email: $Email');</script>";
 				//return Redirect::to(URL::to("/user/$user/projects"));
 			}
 			else
