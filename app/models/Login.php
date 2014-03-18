@@ -108,11 +108,11 @@ class Login
 		{
 			if(!is_null($this->tableId))
 			{
-				echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
+				//echo "<script type='text/javascript'>alert('In Group, In Table');</script>";
 			}
 			else
 			{
-				echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
+				//echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
 				$this->publicKeyPost();
 				DatabaseQueries::InsertUser($this->userName, $this->email);
 				//echo "<script type='text/javascript'>alert('Added User');</script>";
