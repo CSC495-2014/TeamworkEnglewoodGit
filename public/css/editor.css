@@ -84,6 +84,10 @@ UL.jqueryFileTree A:hover {
   overflow: hidden;
 }
 
+#saveAlert {
+  font-size: 10pt;
+}
+
 /*Buttons*/
 .btn-project {
   color: #000000;

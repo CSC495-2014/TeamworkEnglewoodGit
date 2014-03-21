@@ -48,7 +48,7 @@
                     <div id="topRight">
                         <a href ="{{ URL::to("user/$user/projects") }}" class="btn btn-lgr btn-account btn-block" type="button">My Projects</a>
                         <a href ="https://github.com/{{ $user }}/{{ $project }}" class="btn btn-lgr btn-account btn-block" type="button">GitHub</a>
-                        <button class="btn btn-lgr btn-account btn-block" type="button">Logout</button>
+						<a href ="{{ URL::to("logout") }}" class="btn btn-lgr btn-account btn-block" type="button">Logout</a>
                     </div>
                 </div>
                 <div id="mainContent">
