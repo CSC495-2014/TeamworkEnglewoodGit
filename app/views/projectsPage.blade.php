@@ -77,11 +77,11 @@
         </body>
 
         <script>
-        function popUp(username, projectname, URL)
+        function popUp(username, projectname, URL, editorURL)
         {
             //div id ="popup"
             //make modal in javascript and display onclick
-            $('#popup').modal({"backdrop": "static", "keyboard": false, "show": true });
+            $('#popup').modal({"backdrop": "static", "keyboard": false, "show": true});
 
             $.ajax(
             {
@@ -98,7 +98,9 @@
                 //on success - redirect to editor
                 success: function ()
                 {
-                    location.href = "/capstone/user/"+username+"/project/"+projectname+"/editor";
+                    //alert("File Found!");//REMOVE
+                   //location.href  = "/capstone/user/"+username+"/project/"+projectname+"/editor";
+                   location.href = editorURL;   //works but check with mike and st. clair
                 },
 
                 //on fail -
