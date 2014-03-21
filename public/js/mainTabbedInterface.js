@@ -39,6 +39,43 @@ $(function()
 
 		document.getElementById(id).name = label;	//set the name of tabs
 		var editor = ace.edit(id);   				//editor format
+		editor.setTheme("ace/theme/eclipse");
+
+		//set highlight format based on different files 
+		//ace edior has lots of program language modes. The followings are just the most common ones 
+		if(tabTitle.indexOf(".css") != -1)
+		{
+			editor.getSession().setMode("ace/mode/css");
+		}
+		else if(tabTitle.indexOf(".js") != -1)
+		{
+			editor.getSession().setMode("ace/mode/javascript");
+		}
+    	else if(tabTitle.indexOf(".html") != -1 || tabTitle.indexOf(".htm") != -1)
+    	{
+    		editor.getSession().setMode("ace/mode/html");
+    	}
+    	else if(tabTitle.indexOf(".java") != -1)
+		{
+			editor.getSession().setMode("ace/mode/java");
+		}
+		else if(tabTitle.indexOf(".json") != -1)
+		{
+			editor.getSession().setMode("ace/mode/json");
+		}
+		else if(tabTitle.indexOf(".tex") != -1)
+		{
+			editor.getSession().setMode("ace/mode/tex");
+		}
+		else if(tabTitle.indexOf(".xml") != -1)
+		{
+			editor.getSession().setMode("ace/mode/xml");
+		}
+		else 
+		{
+			editor.getSession().setMode("ace/mode/text");
+		}	
+
 		edited[openedTabCtr] = false;								
 		editor.getSession().on('change', function(e){
     		edited[tabs.tabs("option","active")+1] = true;
