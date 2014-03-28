@@ -19,8 +19,8 @@
           //     'User-Agent' => 'TeamworkEnglewoodGit'
           // ];
 
-          //  $request = Requests::get("https://api.github.com/users/$user/repos", $headers, []);
-            $request = Requests::get('https://api.github.com/users/'.$user.'/repos');
+           //$request = Requests::get("https://api.github.com/users/$user/repos", $headers, []);
+           $request = Requests::get('https://api.github.com/users/'.$user.'/repos');
 
             //decode the JSON request body into an object
             $projects_object = json_decode($request->body);
@@ -41,7 +41,7 @@
             sscanf($date, "%d-%d-%dT%d:%d:%dZ", $year, $month, $day, $hour, $minutes, $seconds);
 
             //concatenate formatted date string with its respective separated variables
-            $format_date = (String)$year . "-" . (String)$month . "-" . (String)$day;
+            $format_date = (String)$month . "-" . (String)$day . "-" . (String)$year;
 
             return $format_date;
         }//end dateFormat

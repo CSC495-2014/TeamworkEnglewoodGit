@@ -1,6 +1,5 @@
 <?php
 class ProjectsController extends Controller {
-
 	// The layout used for the response
 	protected $layout = 'projectsPage';
 	protected $list = 'projects_list';
@@ -15,8 +14,6 @@ class ProjectsController extends Controller {
 		//instantiate project object
 		$project = new Projects();
 		$project_object = $project->getProjects($user);
-
-		//insert check and handling of null projects object
 
 		$size = sizeof($project_object);
 		$projectsArray = array($size);
@@ -35,8 +32,6 @@ class ProjectsController extends Controller {
 				$description = ($project_object[$i]->description);
 				$date = ($project_object[$i]->updated_at);
 
-				$date = $project->dateFormat($date);
-
 				if($description == null) {
 					$description = " -- No Description -- ";
 				}
@@ -48,22 +43,20 @@ class ProjectsController extends Controller {
 				$projectsArray[$i] = $project_array;
 			}//end for
 
-			function cmp($a, $b) {
-            				global $array;
-            				return strtotime($array[$a]['date'], $array[$b]['date']);
-        			}//end cmp function
+			//sort the array with most recent dates at the top
+			usort($projectsArray, function($a, $b) {
+					return ($a['date'] < $b['date']) ? 1 :- 1;	// ? -1:1 reverses order
+			});
 
-			usort($projectsArray, 'cmp');
+			//format the date so it is user friendly
+			for ($i=0; $i<$size; $i++) {
+				$oldDate = $projectsArray[$i]['date'];
+				$formatDate = $project->dateFormat($oldDate);
+				$projectsArray[$i]['date'] = $formatDate;
+			}
 
 			return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
 		}//end else
 	}//end display function
 }//end ProjectsController class
-
-/**
-* Comments about code:
-*
-* The sorting function is not working correctly in all cases.
-*
-**/
 ?>

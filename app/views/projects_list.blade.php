@@ -11,7 +11,7 @@
     @endif
     @for($i = 0; $i < sizeOf($projects); $i++)
             <tr class="tr">
-                <td  id="projectName" onclick="popUp('{{$user}}', '{{$projects[$i]['name']}}', '{{URL::to("/user/".$user."/project/".$projects[$i]['name']."/git-clone")}}')">
+                <td  id="projectName" onclick="popUp('{{$user}}', '{{$projects[$i]['name']}}', '{{URL::to("/user/".$user."/project/".$projects[$i]['name']."/git-clone")}}', '{{URL::to("/user/".$user."/project/".$projects[$i]['name']."/editor")}}')">
                     <h3><ol><center>{{ $projects[$i]['name'] }}</center></ol></h3>
                 </td>
                 <td><p><center>{{ $projects[$i]['description'] }}</center></p></td>
