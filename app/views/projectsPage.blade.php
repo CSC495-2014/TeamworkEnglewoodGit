@@ -98,9 +98,8 @@
                 //on success - redirect to editor
                 success: function ()
                 {
-                    //alert("File Found!");//REMOVE
                    //location.href  = "/capstone/user/"+username+"/project/"+projectname+"/editor";
-                   location.href = editorURL;   //works but check with mike and st. clair
+                   location.href = editorURL;
                 },
 
                 //on fail -
