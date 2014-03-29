@@ -15,7 +15,7 @@
         {{ HTML::script('/js/helpers.js') }}
         {{ HTML::script('/js/bootstrap.js') }}
         {{ HTML::script('/js/mainTabbedInterface.js') }}
-        {{ HTML::script('/js/ace.js') }}
+        {{ HTML::script('/js/src-noconflict/ace.js') }}
 
         {{ HTML::script('/js/ui/jquery.ui.position.js') }}
         {{ HTML::script('/js/ui/jquery.ui.core.js') }}
