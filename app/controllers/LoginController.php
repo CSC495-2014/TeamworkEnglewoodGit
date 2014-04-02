@@ -14,7 +14,7 @@ class LoginController extends BaseController {
 			//Standard Online Session
 			$gitHubLogin = new Login();
 			$validUser = $gitHubLogin->processUser();
-			if($validUser->valid = 1)
+			if($validUser["valid"] === 1)
 			{
 				
 				//Begin Session
@@ -29,13 +29,13 @@ class LoginController extends BaseController {
 				//echo "<script type='text/javascript'>alert('User: $user, ID: $Id, Email: $Email');</script>";
 				return Redirect::to(URL::to("/user/$user/projects"));
 			}
-			else if ($validUser->group = 1)
+			else if ($validUser["group"] === 1)
 			{
 				$org = Config::get('oauth.organization');
 				echo "<script type='text/javascript'>alert('Login Failed: You are Not a Member of $org on GitHub. Please join $org and try again.');</script>";
 				return Redirect::to(URL::to("/"));
 			}
-			else if ($validUser->email = 1)
+			else if ($validUser["email"] === 1)
 			{
 				return Redirect::to(URL::to("loginerror"));
 			}
