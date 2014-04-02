@@ -1,28 +1,19 @@
 <?php
-	// Here is where all of the code for the controller will go
 class ProjectsController extends Controller {
-
 	// The layout used for the response
 	protected $layout = 'projectsPage';
 	protected $list = 'projects_list';
 
 	/**
-	* Retreives data from the model and passes on to the view
-	* @return $proj
+	* Retrieves data from the model and passes on to the view
+	*
+	* @param String $user
+	* @return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
 	**/
-
 	public function display($user) {
-		//get the users authentication token from the session
-//		$userToken = Session::get('token');
-		//get the users userID from the session....BUT WHERE DOES THIS GO???
-//		$userId = Session::get('uid');
-//		$user = "kwpembrook";
-
 		//instantiate project object
 		$project = new Projects();
 		$project_object = $project->getProjects($user);
-
-		//insert check and handling of null projects object
 
 		$size = sizeof($project_object);
 		$projectsArray = array($size);
@@ -41,23 +32,31 @@ class ProjectsController extends Controller {
 				$description = ($project_object[$i]->description);
 				$date = ($project_object[$i]->updated_at);
 
-				$time = $project->timeFormat($date);		//must stay first because date below no longer contains the time
-				$date = $project->dateFormat($date);
-
-				if($description == null)
+				if($description == null) {
 					$description = " -- No Description -- ";
+				}
 
 				//store that information in an array for that individual project
 				$project_array = array("id"=>$id, "name"=>$name, "description"=>$description, "date"=>$date);
 
-				//store that individual project array in a larger array that will conatin all the projects
+				//store that individual project array in a larger array that will contain all the projects
 				$projectsArray[$i] = $project_array;
+			}//end for
+
+			//sort the array with most recent dates at the top
+			usort($projectsArray, function($a, $b) {
+					return ($a['date'] < $b['date']) ? 1 :- 1;	// ? -1:1 reverses order
+			});
+
+			//format the date so it is user friendly
+			for ($i=0; $i<$size; $i++) {
+				$oldDate = $projectsArray[$i]['date'];
+				$formatDate = $project->dateFormat($oldDate);
+				$projectsArray[$i]['date'] = $formatDate;
 			}
 
-			$sortedProjects = $project->organizeProjects($projectsArray);
-
 			return View::make($this->list)->with('projects', $projectsArray)->with('user', $user);
-		}
+		}//end else
 	}//end display function
 }//end ProjectsController class
 ?>
