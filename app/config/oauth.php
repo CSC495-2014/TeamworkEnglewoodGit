@@ -21,7 +21,7 @@ return array(
     | ClientId
     |--------------------------------------------------------------------------
     |
-    | Holds the Client ID recieved when application is registered with GitHub
+    | Holds the Client ID received when application is registered with GitHub
     | for OAuth2 use
     |
     */
@@ -73,7 +73,7 @@ return array(
     |
     */
     
-    'offlineUserName' => 'firstuser',
+    'offlineUserName' => 'wwforg',
     
     /*
     |--------------------------------------------------------------------------
@@ -105,6 +105,16 @@ return array(
     | The name of the organization to confirm membership with
     |
     */
-    'organization' => 'CSC495-2014'
+    'organization' => 'CSC495-2014',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Superuser
+    |--------------------------------------------------------------------------
+    |
+    | The username that is able to access all user's projects pages
+    |
+    */
+    'superuser' => 'wwforg'
   
 );

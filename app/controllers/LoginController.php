@@ -14,13 +14,14 @@ class LoginController extends BaseController {
 			//Standard Online Session
 			$gitHubLogin = new Login();
 			$validUser = $gitHubLogin->processUser();
-			if($validUser)
+			if($validUser->valid = 1)
 			{
 				
 				//Begin Session
 				$user = $gitHubLogin->getUserName();
 				$Id = $gitHubLogin->getTableId();
 				$Email = $gitHubLogin->getEmail();
+				Session::flush();
 				Session::put('uid',$gitHubLogin->getUserName());
 				Session::put('tableId', $gitHubLogin->getTableId());
 				Session::put('email', $gitHubLogin->getEmail());
@@ -28,16 +29,21 @@ class LoginController extends BaseController {
 				//echo "<script type='text/javascript'>alert('User: $user, ID: $Id, Email: $Email');</script>";
 				return Redirect::to(URL::to("/user/$user/projects"));
 			}
-			else
+			else if ($validUser->group = 1)
 			{
 				$org = Config::get('oauth.organization');
 				echo "<script type='text/javascript'>alert('Login Failed: You are Not a Member of $org on GitHub. Please join $org and try again.');</script>";
 				return Redirect::to(URL::to("/"));
 			}
+			else if ($validUser->email = 1)
+			{
+				return Redirect::to(URL::to("loginerror"));
+			}
 		}
 		else
 		{
 			//Offline Testing Session
+			Session::flush();
 			$user = Config::get('oauth.offlineUserName');
 			$userId = Config::get('oauth.offlineTableId');
 			$token = Config::get('oauth.offlineToken');

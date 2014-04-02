@@ -16,6 +16,11 @@ Route::get('/', function()
 	return View::make('login');
 });
 
+Route::get('loginerror', function()
+{
+	return View::make('loginError');
+});
+
 Route::post('login', 'LoginController@gitHubLoginPost');
 Route::get('login', 'LoginController@gitHubLoginPost');
 Route::get('logout', 'LoginController@logoutPost');
