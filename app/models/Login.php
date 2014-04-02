@@ -116,14 +116,14 @@ class Login
 				//echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
 				if(is_null($this->email))
 				{
-					$results->email = 1;
+					$results["email"] = 1;
 					return $results;
 				}
 				DatabaseQueries::InsertUser($this->userName, $this->email);
 				$this->publicKeyPost();
 				//echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
-			$results->valid = 1;
+			$results["valid"] = 1;
 			return $results;
 		}
 		else
@@ -139,7 +139,7 @@ class Login
 			{
 				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 			}
-			$results->group = 1;
+			$results["group"] = 1;
 			return $results;
 		}
     }
