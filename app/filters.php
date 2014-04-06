@@ -94,9 +94,11 @@ Route::filter('csrf', function()
 Route::filter('verifyUser', function($route)
 {
 	$user = $route->parameter('user');
+	$super = Config::get('oauth.superuser');
 	if (Session::has('uid'))
 	{
-		if (Session::get('uid') != $user)
+		$logUser = Session::get('uid');
+		if ($logUser != $user && $super != $logUser)
 		{
 			$loggedUser = Session::get('uid');
 			return Redirect::to(URL::to("/user/$loggedUser/projects"));

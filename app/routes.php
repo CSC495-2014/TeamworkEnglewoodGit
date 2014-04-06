@@ -16,12 +16,17 @@ Route::get('/', function()
 	return View::make('login');
 });
 
+Route::get('loginerror', function()
+{
+	return View::make('loginError');
+});
+
 Route::post('login', 'LoginController@gitHubLoginPost');
 Route::get('login', 'LoginController@gitHubLoginPost');
 Route::get('logout', 'LoginController@logoutPost');
 
 Route::get('user/{user}/project/{project}/editor',
-		   array('before' => 'verifyUser:$user',
+		   array('before' => 'verifyUser',
 		   function($user, $project)
 {
 	return View::make('editor', ['user' => $user, 'project' => $project]);

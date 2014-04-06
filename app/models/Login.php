@@ -96,13 +96,14 @@ class Login
     * Once the userDetails are obtained, check if they are present in our user table, then check if
     * they are a member of the specified group
     *
-    * @return bool $validUser
+    * @return array $validUser
     */
     public function processUser()
     {
 		//$databaseObj = new DatabaseQueries();
 		$this->tableId = DatabaseQueries::GetUserId($this->userName);
 		$userInGroup = $this->_checkUserGroup();
+		$results = array('valid' => 0, 'group' => 0, 'email' => 0);
 		
 		if($userInGroup)
 		{
@@ -113,11 +114,17 @@ class Login
 			else
 			{
 				//echo "<script type='text/javascript'>alert('In Group, Not In Table');</script>";
-				$this->publicKeyPost();
+				if(is_null($this->email))
+				{
+					$results["email"] = 1;
+					return $results;
+				}
 				DatabaseQueries::InsertUser($this->userName, $this->email);
+				$this->publicKeyPost();
 				//echo "<script type='text/javascript'>alert('Added User');</script>";
 			}
-			return true;
+			$results["valid"] = 1;
+			return $results;
 		}
 		else
 		{
@@ -132,8 +139,8 @@ class Login
 			{
 				echo "<script type='text/javascript'>alert('Login Failed: Not a member of group');</script>";
 			}
-			
-			return false;
+			$results["group"] = 1;
+			return $results;
 		}
     }
     
