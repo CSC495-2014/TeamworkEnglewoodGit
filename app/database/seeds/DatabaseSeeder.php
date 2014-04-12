@@ -15,3 +15,13 @@ class DatabaseSeeder extends Seeder {
 	}
 
 }
+
+class UserTableSeeder extends Seeder {
+
+	public function run()
+	{
+		User::create(array('user_id' => '1',
+							'username' => 'Zach Mance',
+							'useremail' => 'zmance@noctrl.edu'));
+	}
+}
