@@ -1,7 +1,7 @@
 <?php
 use GitWrapper\GitWrapper;
 use GitWrapper\GitWorkingCopy;
-//require_once '../../vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 
 class GitCommands extends AbstractFileSystem
 {
@@ -40,18 +40,17 @@ class GitCommands extends AbstractFileSystem
 				// the client side can catch the error.
 				$this->wrapper->setEnvVar('GIT_EDITOR', '');
 				// Setting the GitHub identification for the user. This allows for commits.
+				/*
 				$this->getWorkingCopy()
-							->config('user.name', $this->getUserName())
+							->config('user.name', $userName)
 							->config('user.email', "example@gmail.com");
-
-
-				/* TODO WHEN DATABASE GETS THEIR PART DONE
-				$db = new DatabaseQueries();
-				$email = $db->getUserEmail($this->getUserName());
-				$this->getWorkingCopy()
-										->config('user.name', $this->getUserName())
-										->config('user.email', $email);
 				*/
+
+				$db = new DatabaseQueries();
+				$email = $db->GetUserEmail($userName);
+				$this->getWorkingCopy()
+										->config('user.name', $userName)
+										->config('user.email', $email);
 }
 
 	/**
@@ -90,16 +89,17 @@ class GitCommands extends AbstractFileSystem
 	/**
 	*
 	* clone a repo into a new directory
-	* The directory name will be the same as the project name
+	* The directory name will be the same as the project name. Will only clone the project if it,
+	* doesn't already exist.
 	*/
 	public function gitClone()
 	{
 		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
 		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
-		$path = $this->getPath();
-		if (!$this->_isCloned()) // if the project is not cloned, clone it
+		$projectPath = $this->getPath();
+		if (!file_exists($projectPath)) // if the project is not cloned, clone it
 		{
-				$this->getWrapper()->clone($repoURL, $path);
+			$this->getWrapper()->clone($repoURL, $path);
 		}
 	}
 
@@ -274,18 +274,18 @@ class GitCommands extends AbstractFileSystem
 	print "Attempting to clone " . $project . " project...\n";
 	$git->gitClone();
 	// Adding remote repo
-	//$git->gitRemoteAdd($remoteAlias, $remoteURL);
+	$git->gitRemoteAdd($remoteAlias, $remoteURL);
 
 	// Adding a file, commiting, then pushing.
 	touch($git->getPath() . $testFile); // must first create test file witihin the file system.
 	$git->gitAdd($testFile);
 	// printing out status
-	//print_r($git->gitStatus());
+	print_r($git->gitStatus());
 	//run custom git command
 	print $git->git('status');
 	// commit and push to origin master
-	//$git->gitCommit('Added my test file!');
-	//$git->gitPush('origin', 'master');
+	$git->gitCommit('Added my test file!');
+	$git->gitPush('origin', 'master');
 
 	/*
 	// Pushing it to the remote repo
