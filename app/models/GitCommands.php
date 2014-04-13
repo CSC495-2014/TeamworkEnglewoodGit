@@ -98,10 +98,10 @@ class GitCommands extends AbstractFileSystem
 		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
 		$projectDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/';
 		$projectPath = $projectDir . $this->getProjectName();
-		if (!file_exists($projectPath)) // if the project is not cloned, clone it
-		{
+		//if (!file_exists($projectPath)) // if the project is not cloned, clone it
+		//{
 			$this->getWrapper()->clone($repoURL, $projectPath);
-		}
+		//}
 	}
 	/**
 	*
