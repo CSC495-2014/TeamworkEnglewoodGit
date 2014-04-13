@@ -98,10 +98,21 @@ class GitCommands extends AbstractFileSystem
 		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
 		$projectDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/';
 		$projectPath = $projectDir . $this->getProjectName();
-		//if (!file_exists($projectPath)) // if the project is not cloned, clone it
-		//{
+		if (!$this->_isCloned())
+		{
 			$this->getWrapper()->clone($repoURL, $projectPath);
-		//}
+		}
+	}
+	/**
+	*
+	* Checks whether a repository has already been cloned in the user's project's directory.
+	*
+	* @return boolean
+	*/
+	private function _isCloned()
+	{
+		$WorkingCopy = $this->getWorkingCopy();
+		return $WorkingCopy->isCloned();
 	}
 	/**
 	*
