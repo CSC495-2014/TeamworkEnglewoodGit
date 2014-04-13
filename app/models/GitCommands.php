@@ -96,8 +96,7 @@ class GitCommands extends AbstractFileSystem
 	{
 		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
 		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
-		$projectDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/';
-		$projectPath = $projectDir . $this->getProjectName();
+		$projectPath = $this->getPath();
 		if (!$this->_isCloned())
 		{
 			$this->getWrapper()->clone($repoURL, $projectPath);
@@ -123,7 +122,7 @@ class GitCommands extends AbstractFileSystem
 	public function gitAdd($path)
 	{
 		// this only supports adding a single file at a time.
-    	$WorkingCopy = $this->getWorkingCopy(); // This
+    		$WorkingCopy = $this->getWorkingCopy(); // This
 		return $WorkingCopy->add($path);
 	}
 
@@ -135,7 +134,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitCommit($message)
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		$WorkingCopy->commit($message);
 	}
 
@@ -147,7 +146,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitRm($path)
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->rm($path);
 	}
 
@@ -159,16 +158,16 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitStatus()
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		$outputLines = explode("\n", $WorkingCopy->status(['porcelain' => true])->getOutput());
 
-    	$array = [];
-    	foreach($outputLines as $line) {
+    		$array = [];
+    		foreach($outputLines as $line) {
 			$status = substr($line, 0, 2);
 			$file = substr($line, 3);
 			$array[$file] = $status;
-    	}
-    	return $array;
+    		}
+    		return $array;
 	}
 
 	/**
@@ -181,7 +180,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitRemoteAdd($alias, $url)
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->remote('add', $alias, $url);
 	}
 
@@ -193,7 +192,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitRemoteRm($alias)
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->remote('remove', $alias);
 	}
 
@@ -206,7 +205,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitPull($remoteAlias, $remoteBranch)
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->pull($remoteAlias, $remoteBranch);
 	}
 
@@ -219,7 +218,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitPush($remoteAlias, $remoteBranch)
 	{
-    	$WorkingCopy = $this->getWorkingCopy();
+    		$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->push($remoteAlias, $remoteBranch);
 	}
 
