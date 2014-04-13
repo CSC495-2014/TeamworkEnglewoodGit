@@ -38,12 +38,6 @@ class GitCommands extends AbstractFileSystem
 				// Setting git editor env variable to null, so we can supress the editor locally, and the
 				// the client side can catch the error.
 				$this->wrapper->setEnvVar('GIT_EDITOR', '');
-				// Setting the GitHub identification for the user. This allows for commits.
-				/*
-				$this->getWorkingCopy()
-							->config('user.name', $userName)
-							->config('user.email', "example@gmail.com");
-				*/
 				// Create projects dir
 				$projectDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $userName . '/projects/';
 				if (!file_exists($projectDir))
@@ -51,6 +45,7 @@ class GitCommands extends AbstractFileSystem
 					mkdir($projectDir, Config::get('filesystem.permissions.directory'));
 
 				}
+				// Setting the GitHub identification for the user. This allows for commits.
 				$db = new DatabaseQueries();
 				$email = $db->GetUserEmail($userName);
 				$this->getWorkingCopy()
