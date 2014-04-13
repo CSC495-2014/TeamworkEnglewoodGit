@@ -38,20 +38,14 @@ class GitCommands extends AbstractFileSystem
 				// Setting git editor env variable to null, so we can supress the editor locally, and the
 				// the client side can catch the error.
 				$this->wrapper->setEnvVar('GIT_EDITOR', '');
-				// Setting the GitHub identification for the user. This allows for commits.
-				/*
-				$this->getWorkingCopy()
-							->config('user.name', $userName)
-							->config('user.email', "example@gmail.com");
-				*/
 				// Create projects dir
 				$projectDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $userName . '/projects/';
-				echo $projectDir;
 				if (!file_exists($projectDir))
 				{
 					mkdir($projectDir, Config::get('filesystem.permissions.directory'));
 
 				}
+				// Setting the GitHub identification for the user. This allows for commits.
 				$db = new DatabaseQueries();
 				$email = $db->GetUserEmail($userName);
 				$this->getWorkingCopy()
@@ -118,7 +112,7 @@ class GitCommands extends AbstractFileSystem
 	public function gitAdd($path)
 	{
 		// this only supports adding a single file at a time.
-    $WorkingCopy = $this->getWorkingCopy(); // This
+    	$WorkingCopy = $this->getWorkingCopy(); // This
 		return $WorkingCopy->add($path);
 	}
 
@@ -130,7 +124,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitCommit($message)
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		$WorkingCopy->commit($message);
 	}
 
@@ -142,7 +136,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitRm($path)
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->rm($path);
 	}
 
@@ -154,17 +148,16 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitStatus()
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		$outputLines = explode("\n", $WorkingCopy->status(['porcelain' => true])->getOutput());
 
-    $array = [];
-
-    foreach($outputLines as $line) {
-    	$status = substr($line, 0, 2);
-      $file = substr($line, 3);
-      $array[$file] = $status;
-    }
-    return $array;
+    	$array = [];
+    	foreach($outputLines as $line) {
+			$status = substr($line, 0, 2);
+			$file = substr($line, 3);
+			$array[$file] = $status;
+    	}
+    	return $array;
 	}
 
 	/**
@@ -177,7 +170,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitRemoteAdd($alias, $url)
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->remote('add', $alias, $url);
 	}
 
@@ -189,7 +182,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitRemoteRm($alias)
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->remote('remove', $alias);
 	}
 
@@ -202,7 +195,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitPull($remoteAlias, $remoteBranch)
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->pull($remoteAlias, $remoteBranch);
 	}
 
@@ -215,7 +208,7 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function gitPush($remoteAlias, $remoteBranch)
 	{
-    $WorkingCopy = $this->getWorkingCopy();
+    	$WorkingCopy = $this->getWorkingCopy();
 		return $WorkingCopy->push($remoteAlias, $remoteBranch);
 	}
 
@@ -229,7 +222,6 @@ class GitCommands extends AbstractFileSystem
 	*/
 	public function git($commands)
 	{
-
 		$path = $this->getPath();
 		return $this->getWrapper()->git($commands,$path);
 	}
