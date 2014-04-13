@@ -45,10 +45,10 @@ class GitCommands extends AbstractFileSystem
 							->config('user.email', "example@gmail.com");
 				*/
 				// Create projects dir
-				$projectsDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $userName . 'projects/';
+				$projectDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $userName . 'projects/';
 				if (!file_exists($projectDir))
 				{
-					mkdir($projectsDir, Config::get('filesystem.permissions.directory'));
+					mkdir($projectDir, Config::get('filesystem.permissions.directory'));
 
 				}
 				$db = new DatabaseQueries();
