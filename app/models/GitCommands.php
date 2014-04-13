@@ -43,7 +43,11 @@ class GitCommands extends AbstractFileSystem
 				if (!file_exists($projectDir))
 				{
 					mkdir($projectDir, Config::get('filesystem.permissions.directory'));
-
+					$projectPath = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName();
+					if (!file_exists($projectPath))
+					{
+						mkdir($projectPath, Config::get('filesystem.permissions.directory'));
+					}
 				}
 				// Setting the GitHub identification for the user. This allows for commits.
 				$db = new DatabaseQueries();
@@ -96,10 +100,8 @@ class GitCommands extends AbstractFileSystem
 	{
 		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
 		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
-		$projectPath = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName();
 		if (!file_exists($projectPath)) // if the project is not cloned, clone it
 		{
-			mkdir($projectPath, Config::get('filesystem.permissions.directory'));
 			$this->getWrapper()->clone($repoURL, $projectPath);
 		}
 	}
