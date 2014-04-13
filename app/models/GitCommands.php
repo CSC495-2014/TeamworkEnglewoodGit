@@ -44,7 +44,13 @@ class GitCommands extends AbstractFileSystem
 							->config('user.name', $userName)
 							->config('user.email', "example@gmail.com");
 				*/
+				// Create projects dir
+				$projectsDir = base_path() . AbstractFileSystem::ROOT . 'users/' . $user . 'projects/';
+				if (!file_exists($projectDir))
+				{
+					mkdir($projectsDir, Config::get('filesystem.permissions.directory'));
 
+				}
 				$db = new DatabaseQueries();
 				$email = $db->GetUserEmail($userName);
 				$this->getWorkingCopy()
@@ -98,20 +104,9 @@ class GitCommands extends AbstractFileSystem
 		$projectPath = $this->getPath();
 		if (!file_exists($projectPath)) // if the project is not cloned, clone it
 		{
-			$this->getWrapper()->clone($repoURL, $path);
+			mkdir($projectPath, Config::get('filesystem.permissions.directory'));
+			$this->getWrapper()->clone($repoURL, $projectPath);
 		}
-	}
-
-	/**
-	*
-	* Checks whether a repository has already been cloned in the user's project's directory.
-	*
-	* @return boolean
-	*/
-	private function _isCloned()
-	{
-		$WorkingCopy = $this->getWorkingCopy();
-		return $WorkingCopy->isCloned();
 	}
 	/**
 	*
