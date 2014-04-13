@@ -96,7 +96,7 @@ class GitCommands extends AbstractFileSystem
 	{
 		// example SSH URL - git@github.com:ZAM-/TestRepo.git'
 		$repoURL = 'git@github.com:' . $this->getUserName() . '/' . $this->getProjectName() . '.git';
-		$projectPath = $this->getPath();
+		$projectPath = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName() . '/';
 		if (!file_exists($projectPath)) // if the project is not cloned, clone it
 		{
 			mkdir($projectPath, Config::get('filesystem.permissions.directory'));
