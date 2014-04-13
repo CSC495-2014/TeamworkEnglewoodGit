@@ -43,7 +43,7 @@ class GitCommands extends AbstractFileSystem
 				if (!file_exists($projectDir))
 				{
 					mkdir($projectDir, Config::get('filesystem.permissions.directory'));
-					$projectPath = base_path() . AbstractFileSystem::ROOT . 'users/' . $this->getUserName() . '/projects/' . $this->getProjectName();
+					$projectPath = $projectDir . $this->getProjectName();
 					if (!file_exists($projectPath))
 					{
 						mkdir($projectPath, Config::get('filesystem.permissions.directory'));
