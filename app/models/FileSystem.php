@@ -295,7 +295,7 @@ class FileSystem extends AbstractFileSystem
         $privateKeyPath = $userPath . '/id_rsa';
         mkdir($userPath, Config::get('filesystem.permissions.directory'), true); // RW for user
         file_put_contents($privateKeyPath, $privatekey);// Save private key to file systems
-        chmod($privateKeyPath, Config::get('filesystem.permissions.file')); // set perms for private key
+        chmod($privateKeyPath, 0600); // set perms for private key
         return $publickey;
     }
 
